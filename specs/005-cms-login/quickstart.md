@@ -9,23 +9,26 @@ Validate the login flow for registered users and error handling for failures.
 - Open login form, enter valid email + password, submit.
 - Confirm authentication and redirect to home page.
 
-2) **Missing fields**
+2) **Registration option**
+- From login form, confirm a registration option is visible for new users.
+
+3) **Missing fields**
 - Submit with blank email or password.
 - Confirm required-fields error and no authentication.
 
-3) **Invalid credentials**
+4) **Invalid credentials**
 - Use non-existent email or wrong password.
 - Confirm invalid-credentials error and no authentication.
 
-4) **Database lookup failure**
+5) **Database lookup failure**
 - Simulate DB lookup failure.
 - Confirm login-unavailable error and transient log entry.
 
-5) **Session access**
+6) **Session access**
 - After login, access protected page and confirm session persists.
 - When unauthenticated, attempt protected access and confirm redirect to login.
 
-6) **Automated tests**
+7) **Automated tests**
 - Run `npm test` to execute unit, integration, and acceptance tests.
 
 ## Performance & Accessibility

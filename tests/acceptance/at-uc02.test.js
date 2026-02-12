@@ -2,7 +2,6 @@ import { createRegistrationView } from '../../src/views/registration-view.js';
 import { createRegistrationController } from '../../src/controllers/registration-controller.js';
 import { storageService } from '../../src/services/storage-service.js';
 import { sessionState } from '../../src/models/session-state.js';
-import { redirectLogging } from '../../src/services/redirect-logging.js';
 
 function setupAcceptance() {
   const view = createRegistrationView();
@@ -11,8 +10,6 @@ function setupAcceptance() {
     view,
     storage: storageService,
     sessionState,
-    redirectLogger: redirectLogging,
-    redirectToLogin: () => {},
   });
   controller.init();
   return view;

@@ -81,6 +81,13 @@ input:focus {
   outline: 3px solid var(--focus);
 }
 
+.button.secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  margin-top: 12px;
+}
+
 .status {
   margin-top: 16px;
   padding: 12px 14px;

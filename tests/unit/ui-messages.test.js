@@ -18,4 +18,5 @@ test('success copy present', () => {
   expect(UI_MESSAGES.loginSuccess.title).toContain('Login');
   expect(UI_MESSAGES.loginSuccess.body).toContain('home');
   expect(UI_MESSAGES.registrationSuccess.title).toContain('Registration');
+  expect(UI_MESSAGES.registrationSuccess.body).toContain('Signing you in');
 });

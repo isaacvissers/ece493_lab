@@ -53,13 +53,15 @@ export function createRegistrationView() {
   const status = createElement('div', 'status');
   status.setAttribute('aria-live', 'polite');
 
-  const redirectLink = document.createElement('a');
-  redirectLink.href = '#login';
-  redirectLink.className = 'helper';
-  redirectLink.textContent = 'Go to login';
-  redirectLink.style.display = 'none';
+  const loginRow = createElement('div', 'form-row');
+  const loginButton = document.createElement('button');
+  loginButton.type = 'button';
+  loginButton.className = 'button secondary';
+  loginButton.id = 'login-button';
+  loginButton.textContent = 'Back to login';
+  loginRow.append(loginButton);
 
-  form.append(emailRow, passwordRow, submitButton, status, redirectLink);
+  form.append(emailRow, passwordRow, submitButton, status, loginRow);
   container.append(title, helper, form);
 
   function clearErrors() {
@@ -67,7 +69,6 @@ export function createRegistrationView() {
     passwordError.textContent = '';
     status.textContent = '';
     status.className = 'status';
-    redirectLink.style.display = 'none';
   }
 
   function setFieldError(field, message, recovery) {
@@ -80,11 +81,6 @@ export function createRegistrationView() {
     status.className = isSuccess ? 'status success' : 'status';
   }
 
-  function showRedirectError(message) {
-    status.textContent = message;
-    status.className = 'status error';
-    redirectLink.style.display = 'inline-block';
-  }
 
   function focusField(field) {
     if (field === 'password') {
@@ -106,9 +102,11 @@ export function createRegistrationView() {
     setFieldError,
     clearErrors,
     focusField,
-    showRedirectError,
     onSubmit(handler) {
       form.addEventListener('submit', handler);
+    },
+    onLogin(handler) {
+      loginButton.addEventListener('click', handler);
     },
   };
 }

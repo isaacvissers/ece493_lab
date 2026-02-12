@@ -17,10 +17,11 @@ retry behavior, and auto-login redirect) in a local browser run.
 
 1. Open `index.html` in your browser.
 2. Navigate to the registration screen.
-3. Register with a new email (single “@”, local part, dot in domain) and a valid password
+3. Confirm a visible option exists to return to login.
+4. Register with a new email (single “@”, local part, dot in domain) and a valid password
    (min 8 chars, includes a number and a symbol).
-4. Confirm you see a success confirmation message and are auto-logged in to the dashboard.
-5. Open `tests/run.html` to execute unit, integration, and acceptance tests in-browser.
+5. Confirm you see a success confirmation message and are auto-logged in to the dashboard.
+6. Open `tests/run.html` to execute unit, integration, and acceptance tests in-browser.
 
 ## Performance Check Method
 
@@ -37,4 +38,5 @@ retry behavior, and auto-login redirect) in a local browser run.
 - Blank email or password blocks submission and identifies the missing field.
 - On data-store failure, a failure message is shown and retry succeeds after recovery with no partial account.
 - On success, account is created and user is signed in automatically.
+- Registration view provides a visible way to return to login.
 - Form is keyboard operable with visible focus states and screen-reader perceivable errors.

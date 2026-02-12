@@ -1,7 +1,7 @@
-# Data Model: Redirect to Login After Registration
+# Data Model: Auto-Login After Registration
 
 This feature does not introduce new persistent entities beyond existing CMS data.
-It relies on current account/session state and a lightweight redirect failure log.
+It relies on current account/session state to authenticate the user after registration.
 
 ## Entities
 
@@ -10,9 +10,5 @@ It relies on current account/session state and a lightweight redirect failure lo
 - **Key attributes**: id, email, status (active)
 
 ### Session State
-- **Purpose**: Tracks whether the user is authenticated.
+- **Purpose**: Tracks whether the user is authenticated after registration.
 - **Key attributes**: isAuthenticated, userId (optional)
-
-### Redirect Failure Log
-- **Purpose**: Records redirect failures for administrator review (transient; not persisted).
-- **Key attributes**: timestamp, destination, sessionId/userId (optional), errorSummary

@@ -2,7 +2,6 @@ import { createRegistrationView } from '../../src/views/registration-view.js';
 import { createRegistrationController } from '../../src/controllers/registration-controller.js';
 import { storageService } from '../../src/services/storage-service.js';
 import { sessionState } from '../../src/models/session-state.js';
-import { redirectLogging } from '../../src/services/redirect-logging.js';
 
 function setupAcceptance() {
   const view = createRegistrationView();
@@ -11,8 +10,6 @@ function setupAcceptance() {
     view,
     storage: storageService,
     sessionState,
-    redirectLogger: redirectLogging,
-    redirectToLogin: () => {},
   });
   controller.init();
   return view;
@@ -25,12 +22,19 @@ function submit(view, email, password) {
   view.element.querySelector('form').dispatchEvent(event);
 }
 
-test('success confirmation mentions redirect', () => {
+test('success confirmation mentions signed-in flow', () => {
   const view = setupAcceptance();
   submit(view, 'accept@example.com', 'valid1!a');
   const status = view.element.querySelector('.status').textContent;
   expect(status).toContain('Registration complete');
-  expect(status).toContain('Redirecting you to the login screen');
+  expect(status).toContain('Signing you in');
+  expect(sessionState.isAuthenticated()).toBe(true);
+});
+
+test('registration offers navigation back to login', () => {
+  const view = setupAcceptance();
+  const loginButton = view.element.querySelector('#login-button');
+  expect(loginButton).toBeTruthy();
 });
 
 test('invalid email shows recovery instruction', () => {

@@ -1,6 +1,8 @@
 import { createLoginView } from './views/login-view.js';
 import { createDashboardView } from './views/dashboard-view.js';
 import { createLoginController } from './controllers/login-controller.js';
+import { createRegistrationView } from './views/registration-view.js';
+import { createRegistrationController } from './controllers/registration-controller.js';
 import { storageService } from './services/storage-service.js';
 import { sessionState } from './models/session-state.js';
 import { loginLogging } from './services/login-logging.js';
@@ -24,12 +26,26 @@ function showLogin() {
     onLoginSuccess: showDashboard,
   });
   loginController.init();
+  loginView.onRegister(showRegistration);
   render(loginView.element);
 }
 
+function showRegistration() {
+  const registrationView = createRegistrationView();
+  const registrationController = createRegistrationController({
+    view: registrationView,
+    storage: storageService,
+    sessionState,
+    onRegistrationSuccess: showDashboard,
+  });
+  registrationController.init();
+  registrationView.onLogin(showLogin);
+  render(registrationView.element);
+}
+
 function showDashboard() {
-  if (!loginController || !loginController.requireAuth()) {
-    render(loginView.element);
+  if (!sessionState.isAuthenticated()) {
+    showLogin();
     return;
   }
   const dashboardView = createDashboardView(sessionState.getCurrentUser());
@@ -42,4 +58,8 @@ function bootstrap() {
 
 bootstrap();
 
-export { showLogin as __testShowLogin, showDashboard as __testShowDashboard };
+export {
+  showLogin as __testShowLogin,
+  showDashboard as __testShowDashboard,
+  showRegistration as __testShowRegistration,
+};

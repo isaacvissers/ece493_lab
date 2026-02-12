@@ -1,4 +1,4 @@
 # Contracts
 
-This feature does not add or modify external APIs. Redirect and logging are handled
-client-side within the MVC app.
+This feature does not add or modify external APIs. Auto-login and navigation are
+handled client-side within the MVC app.

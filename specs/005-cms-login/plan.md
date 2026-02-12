@@ -9,9 +9,10 @@
 
 Implement CMS login with email (login identifier) and password. The system validates
 credentials against stored user records, authenticates valid users, redirects to the
-home page, and blocks access for missing/invalid credentials. Database lookup failures
-produce a login-unavailable error and are logged (transient; no persistence). No
-lockout or MFA is included.
+home page, and blocks access for missing/invalid credentials. The login form includes
+an option to navigate to registration for new users. Database lookup failures produce
+a login-unavailable error and are logged (transient; no persistence). No lockout or
+MFA is included.
 
 ## Technical Context
 
@@ -23,7 +24,7 @@ lockout or MFA is included.
 **Project Type**: single (frontend-only MVC app)  
 **Performance Goals**: Login validation + redirect <= 2 seconds  
 **Constraints**: MVC separation; no external UI/JS frameworks; accessibility required  
-**Scale/Scope**: Login with email identifier only; no lockout/MFA
+**Scale/Scope**: Login with email identifier only; registration navigation link only; no lockout/MFA
 
 ## Constitution Check
 
@@ -71,7 +72,8 @@ src/
 ├── controllers/
 │   └── login-controller.js
 ├── views/
-│   └── login-view.js
+│   ├── login-view.js
+│   └── registration-view.js
 ├── services/
 │   └── login-logging.js
 ├── app.js

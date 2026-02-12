@@ -50,9 +50,9 @@ integration/acceptance tests mapped to AT-05.md cases.
 
 ## Phase 3: User Story 1 - Log In to CMS (Priority: P1) 🎯 MVP
 
-**Goal**: Authenticate registered users with email + password and redirect to home; reject invalid/missing credentials with clear errors.
+**Goal**: Authenticate registered users with email + password and redirect to home; reject invalid/missing credentials with clear errors; provide a registration option for new users.
 
-**Independent Test**: Valid credentials authenticate and redirect to home; invalid/missing credentials show errors and remain unauthenticated.
+**Independent Test**: Valid credentials authenticate and redirect to home; invalid/missing credentials show errors and remain unauthenticated; registration option is visible on the login form.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
@@ -70,7 +70,7 @@ integration/acceptance tests mapped to AT-05.md cases.
 - [X] T013 [US1] Implement user credential lookup in src/models/user-account.js
 - [X] T014 [US1] Implement session state tracking in src/models/session-state.js
 - [X] T015 [US1] Implement login failure logging (transient) in src/services/login-logging.js
-- [X] T016 [US1] Wire login flow into app bootstrap in src/app.js
+- [X] T016 [US1] Wire login flow + registration navigation into app bootstrap in src/app.js
 - [X] T017 [US1] Enforce protected page access gating based on session state in src/controllers/login-controller.js
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently

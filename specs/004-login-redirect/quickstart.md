@@ -1,41 +1,28 @@
-# Quickstart: Redirect to Login After Registration
+# Quickstart: Auto-Login After Registration
 
 ## Goal
-Validate the registration success confirmation and redirect-to-login flow.
+Validate the registration success confirmation and auto-login-to-dashboard flow.
 
 ## Scenarios to Verify
 
-1) **Happy path redirect**
+1) **Happy path auto-login**
 - Complete a successful registration.
 - Confirm a success message is visible.
-- After 1–3 seconds, confirm redirect to login and login form is visible.
+- After 1–3 seconds, confirm navigation to the dashboard.
 
-2) **Correct destination**
-- After redirect, verify the route/page is the login page (not dashboard).
+2) **Authenticated access**
+- After auto-login, verify protected content is accessible.
 
-3) **No auto-authentication**
-- Attempt to access a protected page after redirect without logging in.
-- Confirm access is blocked and user is treated as unauthenticated.
+3) **No login page detour**
+- Complete a successful registration.
+- Confirm the login page is not shown as part of the flow.
 
-4) **Auto-authentication recovery**
-- Simulate an unintended authenticated state after registration.
-- Confirm the system logs out and redirects to login.
+4) **Confirmation timing**
+- Confirm the success message is visible before or during dashboard navigation.
 
-5) **Redirect failure handling**
-- Simulate redirect/navigation failure.
-- Confirm an error message appears on the confirmation view and a manual login link/button is visible.
-
-6) **Redirect failure logging**
-- Simulate redirect failure.
-- Confirm a log entry exists with timestamp, destination, and session/user identifier if available.
-
-7) **Login form unavailable**
-- Simulate login form unavailable state.
-- Confirm error message is shown on confirmation view with manual login link/button and user remains unauthenticated.
-
-8) **Automated tests**
-- Open `tests/run.html` to execute unit, integration, and acceptance tests in-browser.
+5) **Automated tests**
+- Run `npm test` to execute unit, integration, and acceptance tests.
 
 ## Performance & Accessibility
-- Confirmation + redirect initiation completes within 3 seconds.
-- Error messages and manual navigation are accessible via keyboard and screen readers.
+- Confirmation + navigation initiation completes within 3 seconds.
+- Confirmation messages are accessible via keyboard and screen readers.

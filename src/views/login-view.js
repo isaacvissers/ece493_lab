@@ -53,7 +53,14 @@ export function createLoginView() {
   const status = createElement('div', 'status');
   status.setAttribute('aria-live', 'polite');
 
-  form.append(emailRow, passwordRow, button, status);
+  const registerRow = createElement('div', 'form-row');
+  const registerButton = createElement('button', 'button secondary');
+  registerButton.type = 'button';
+  registerButton.id = 'register-button';
+  registerButton.textContent = 'Create account';
+  registerRow.append(registerButton);
+
+  form.append(emailRow, passwordRow, button, status, registerRow);
   container.append(title, helper, form);
 
   function clearErrors() {
@@ -100,6 +107,9 @@ export function createLoginView() {
     focusField,
     onSubmit(handler) {
       form.addEventListener('submit', handler);
+    },
+    onRegister(handler) {
+      registerButton.addEventListener('click', handler);
     },
   };
 }

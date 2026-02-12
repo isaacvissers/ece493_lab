@@ -32,16 +32,18 @@ to their dashboard, with the new account stored.
 
 1. **Given** a logged-out user on the CMS homepage, **When** they select Register,
    **Then** the registration page and form are displayed.
-2. **Given** valid required information and a unique email, **When** the user submits the
+2. **Given** a user on the registration page, **When** they need to return to login,
+   **Then** a visible option is available to navigate back to the login form.
+3. **Given** valid required information and a unique email, **When** the user submits the
    form, **Then** the account is created, a success confirmation is shown, and the user
    is automatically signed in and redirected to their dashboard.
-3. **Given** an invalid email format, **When** the user submits the form, **Then**
+4. **Given** an invalid email format, **When** the user submits the form, **Then**
    registration is blocked and an email error message is shown.
-4. **Given** a password that violates the password policy, **When** the user submits the
+5. **Given** a password that violates the password policy, **When** the user submits the
    form, **Then** registration is blocked and a password error message is shown.
-5. **Given** an email that is already registered, **When** the user submits the form,
+6. **Given** an email that is already registered, **When** the user submits the form,
    **Then** registration is blocked and an email-in-use error message is shown.
-6. **Given** a database failure during account creation, **When** the user submits valid
+7. **Given** a database failure during account creation, **When** the user submits valid
    data, **Then** registration fails with an error message and no account is created.
 
 ### Edge Cases

@@ -1,18 +1,15 @@
-# Implementation Plan: Redirect to Login After Registration
+# Implementation Plan: Auto-Login After Registration
 
-**Branch**: `004-login-redirect` | **Date**: 2026-02-01 | **Spec**: /home/ivissers/ece_493/labs/lab2/lab2/specs/004-login-redirect/spec.md
+**Branch**: `004-login-redirect` | **Date**: 2026-02-12 | **Spec**: /home/ivissers/ece_493/labs/lab2/lab2/specs/004-login-redirect/spec.md
 **Input**: Feature specification from `/specs/004-login-redirect/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command.
 
 ## Summary
 
-Implement post-registration redirect to login with a visible success confirmation,
-short fixed delay (1–3 seconds), and explicit manual login requirement. If redirect
-fails or the login form is unavailable, the user remains on the confirmation view
-with a clear error and manual login link. Redirect failures are logged with
-sufficient context (transient; no persistence required). Auto-authentication is
-detected and corrected by logout + redirect to login.
+Implement post-registration auto-login with a visible success confirmation and
+short fixed delay (1–3 seconds), then navigate the authenticated user to the
+dashboard without showing the login page.
 
 ## Technical Context
 
@@ -22,9 +19,9 @@ detected and corrected by logout + redirect to login.
 **Testing**: Lightweight JS test harness using Node.js `assert` + DOM tests in browser  
 **Target Platform**: Modern desktop browsers (Chrome/Firefox/Edge)  
 **Project Type**: single (frontend-only MVC app)  
-**Performance Goals**: Confirmation + redirect initiated within 3 seconds; interactive actions <= 200 ms  
+**Performance Goals**: Confirmation + navigation initiated within 3 seconds; interactive actions <= 200 ms  
 **Constraints**: MVC separation; no external UI/JS frameworks; accessibility required  
-**Scale/Scope**: Registration success -> login redirect only (no auto-login)
+**Scale/Scope**: Registration success -> auto-login -> dashboard (no login redirect)
 
 ## Constitution Check
 
@@ -72,9 +69,7 @@ src/
 │   └── registration-controller.js
 ├── views/
 │   ├── registration-view.js
-│   └── login-view.js
-├── services/
-│   └── redirect-logging.js
+│   └── dashboard-view.js
 ├── app.js
 └── index.html
 
@@ -90,9 +85,9 @@ tests/
     └── at-uc04.test.js
 ```
 
-**Structure Decision**: Single frontend MVC app; redirect logic in controller, view
-handles confirmation/error UI, model tracks session/auth state, and a small logging
-service captures redirect failure context (transient, not persisted).
+**Structure Decision**: Single frontend MVC app; registration controller authenticates
+session state and triggers the post-registration navigation, view handles confirmation
+UI, and the dashboard view renders authenticated state.
 
 ## Complexity Tracking
 

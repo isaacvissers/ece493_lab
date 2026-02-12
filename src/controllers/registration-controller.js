@@ -19,8 +19,7 @@ export function createRegistrationController({
   view,
   storage,
   sessionState,
-  redirectLogger,
-  redirectToLogin,
+  onRegistrationSuccess,
 }) {
   function handleSubmit(event) {
     event.preventDefault();
@@ -101,19 +100,13 @@ export function createRegistrationController({
       return;
     }
 
-    sessionState.ensureLoggedOut();
+    sessionState.authenticate(account);
     const success = UI_MESSAGES.registrationSuccess;
     view.setStatus(`${success.title}. ${success.body}`, true);
 
     setTimeout(() => {
-      try {
-        redirectToLogin('/login');
-      } catch (error) {
-        redirectLogger.logFailure({
-          reason: 'redirect_failed',
-          error: error.message,
-        });
-        view.showRedirectError(UI_MESSAGES.redirectError);
+      if (onRegistrationSuccess) {
+        onRegistrationSuccess();
       }
     }, 1500);
   }

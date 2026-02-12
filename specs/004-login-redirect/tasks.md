@@ -3,7 +3,7 @@
 description: "Task list template for feature implementation"
 ---
 
-# Tasks: Redirect to Login After Registration
+# Tasks: Auto-Login After Registration
 
 **Input**: Design documents from `/specs/004-login-redirect/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
@@ -40,7 +40,7 @@ integration/acceptance tests mapped to AT-04.md cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [X] T004 [P] Define shared UI copy/constants for confirmation/redirect errors in src/services/ui-messages.js
+- [X] T004 [P] Define shared UI copy/constants for confirmation messaging in src/services/ui-messages.js
 - [X] T005 Implement MVC wiring bootstrap in src/app.js
 - [X] T006 Create traceability map UC-04 → S-04 → AT-04 → tests in /home/ivissers/ece_493/labs/lab2/lab2/specs/004-login-redirect/traceability.md
 
@@ -48,31 +48,27 @@ integration/acceptance tests mapped to AT-04.md cases.
 
 ---
 
-## Phase 3: User Story 1 - Redirect to Login After Registration (Priority: P1) 🎯 MVP
+## Phase 3: User Story 1 - Auto-Login After Registration (Priority: P1) 🎯 MVP
 
-**Goal**: Show confirmation, redirect to login after a short delay, remain unauthenticated, and recover from redirect or auto-auth issues.
+**Goal**: Show confirmation, authenticate the user, and navigate to the dashboard after a short delay.
 
-**Independent Test**: Successful registration shows confirmation, redirects to login, keeps user unauthenticated, and handles redirect failure with error + manual link.
+**Independent Test**: Successful registration shows confirmation, authenticates the user, and navigates to the dashboard without showing the login page.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
 - [X] T007 [P] [US1] Acceptance tests mapped to AT-04 in tests/acceptance/at-uc04.test.js
-- [X] T008 [P] [US1] Integration test for registration redirect flow in tests/integration/registration-redirect-flow.test.js
-- [X] T009 [P] [US1] Unit tests for registration controller redirect logic in tests/unit/registration-controller.test.js
+- [X] T008 [P] [US1] Integration test for post-registration auto-login flow in tests/integration/registration-redirect-flow.test.js
+- [X] T009 [P] [US1] Unit tests for registration controller auto-login logic in tests/unit/registration-controller.test.js
 
 ### Implementation for User Story 1
 
-- [X] T010 [US1] Implement confirmation display + redirect delay logic in src/controllers/registration-controller.js
-- [X] T011 [P] [US1] Build confirmation/redirect UI state in src/views/registration-view.js
-- [X] T012 [US1] Implement login view rendering for redirect destination in src/views/login-view.js
-- [X] T013 [US1] Enforce login route as redirect destination in src/controllers/registration-controller.js
-- [X] T014 [US1] Implement redirect failure handling + manual login link on confirmation view in src/views/registration-view.js
-- [X] T015 [US1] Implement redirect failure logging in src/services/redirect-logging.js
-- [X] T016 [US1] Detect auto-authentication and force logout + redirect to login in src/models/session-state.js
-- [X] T017 [US1] Ensure login form unavailable state shows error on confirmation view in src/views/registration-view.js
-- [X] T018 [US1] Wire redirect flow into app bootstrap in src/app.js
+- [X] T010 [US1] Implement confirmation display + navigation delay logic in src/controllers/registration-controller.js
+- [X] T011 [P] [US1] Build confirmation UI state in src/views/registration-view.js
+- [X] T012 [US1] Authenticate session after registration in src/models/session-state.js
+- [X] T013 [US1] Implement dashboard rendering for post-registration navigation in src/views/dashboard-view.js
+- [X] T014 [US1] Wire post-registration navigation into app bootstrap in src/app.js
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -82,9 +78,9 @@ integration/acceptance tests mapped to AT-04.md cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [X] T019 [P] Documentation updates in /home/ivissers/ece_493/labs/lab2/lab2/specs/004-login-redirect/quickstart.md
-- [X] T020 [P] Code cleanup and refactoring for MVC boundaries in src/
-- [X] T021 [P] Performance pass to ensure <=3s confirmation + redirect in src/ and styles/
+- [X] T015 [P] Documentation updates in /home/ivissers/ece_493/labs/lab2/lab2/specs/004-login-redirect/quickstart.md
+- [X] T016 [P] Code cleanup and refactoring for MVC boundaries in src/
+- [X] T017 [P] Performance pass to ensure <=3s confirmation + navigation in src/ and styles/
 
 ---
 
@@ -127,5 +123,5 @@ T007, T008, T009, T011
 
 ## Implementation Strategy
 
-- Deliver MVP as User Story 1 only (redirect-to-login flow).
+- Deliver MVP as User Story 1 only (auto-login flow).
 - Validate against AT-04 acceptance tests before polish tasks.

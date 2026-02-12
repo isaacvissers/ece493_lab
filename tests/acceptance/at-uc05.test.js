@@ -31,6 +31,11 @@ test('login form prompts for email and password', () => {
   expect(view.element.querySelector('#login-password')).toBeTruthy();
 });
 
+test('login form offers registration option', () => {
+  const { view } = setupAcceptance();
+  expect(view.element.querySelector('#register-button')).toBeTruthy();
+});
+
 test('valid credentials authenticate and redirect', () => {
   storageService.reset();
   storageService.saveAccount({

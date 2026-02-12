@@ -29,21 +29,23 @@ home; invalid or missing credentials are rejected with clear errors.
 
 1. **Given** a logged-out registered user, **When** they select Log In, **Then** the
    login form prompts for email (login identifier) and password.
-2. **Given** valid credentials, **When** the user submits the login form, **Then** the
+2. **Given** a user who does not have an account, **When** they view the login form,
+   **Then** a registration option is visible to navigate to account creation.
+3. **Given** valid credentials, **When** the user submits the login form, **Then** the
    system authenticates them and redirects to their home page with access to CMS
    features.
-3. **Given** a blank email or password, **When** the user submits, **Then** the
+4. **Given** a blank email or password, **When** the user submits, **Then** the
    system rejects the login and shows a required-fields error.
-4. **Given** a non-existent email, **When** the user submits, **Then** the system
+5. **Given** a non-existent email, **When** the user submits, **Then** the system
    rejects the login and shows an invalid-credentials error.
-5. **Given** an incorrect password, **When** the user submits, **Then** the system
+6. **Given** an incorrect password, **When** the user submits, **Then** the system
    rejects the login and shows an invalid-credentials error.
-6. **Given** a database lookup failure, **When** the user submits, **Then** the system
+7. **Given** a database lookup failure, **When** the user submits, **Then** the system
    rejects the login, shows a login-unavailable error, logs the failure, and keeps
    the user unauthenticated.
-7. **Given** a successful login, **When** the user navigates to protected pages,
+8. **Given** a successful login, **When** the user navigates to protected pages,
    **Then** access remains available for the session.
-8. **Given** an unauthenticated user, **When** they attempt to access protected pages,
+9. **Given** an unauthenticated user, **When** they attempt to access protected pages,
    **Then** access is blocked and they are redirected to login (or shown access denied).
 
 ### Edge Cases
@@ -78,6 +80,8 @@ home; invalid or missing credentials are rejected with clear errors.
 - **FR-002**: System MUST validate submitted credentials against stored user records.
 - **FR-003**: System MUST authenticate the user when credentials are valid.
 - **FR-004**: System MUST redirect the authenticated user to their home page on success.
+- **FR-004a**: The login form MUST provide a visible option to navigate to registration
+  for users who do not yet have an account.
 - **FR-005**: If the identifier or password is missing, the system MUST reject the
   login and display a required-fields error.
 - **FR-006**: If the identifier does not exist, the system MUST reject the login and

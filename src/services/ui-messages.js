@@ -5,9 +5,8 @@ export const UI_MESSAGES = {
   },
   registrationSuccess: {
     title: 'Registration complete',
-    body: 'Redirecting you to the login screen.',
+    body: 'Signing you in and taking you to your dashboard.',
   },
-  redirectError: 'We could not redirect you to login. Use the link below.',
   errors: {
     required: (field) => ({
       code: 'required',

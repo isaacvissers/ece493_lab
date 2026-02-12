@@ -30,6 +30,35 @@ test('app bootstraps login and redirects to dashboard on success', async () => {
   expect(appRoot.querySelector('h1').textContent).toContain('Dashboard');
 });
 
+test('app navigates to registration and auto-logins to dashboard', async () => {
+  jest.useFakeTimers();
+  await setupApp();
+  await import('../../src/app.js');
+
+  const appRoot = document.getElementById('app');
+  appRoot.querySelector('#register-button').click();
+  expect(appRoot.querySelector('#email')).toBeTruthy();
+  expect(appRoot.querySelector('#login-button')).toBeTruthy();
+
+  appRoot.querySelector('#email').value = 'newuser@example.com';
+  appRoot.querySelector('#password').value = 'valid1!a';
+  const event = new Event('submit', { bubbles: true, cancelable: true });
+  appRoot.querySelector('form').dispatchEvent(event);
+  jest.runAllTimers();
+
+  expect(appRoot.querySelector('h1').textContent).toContain('Dashboard');
+  jest.useRealTimers();
+});
+
+test('app can navigate back to login from registration', async () => {
+  await setupApp();
+  await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  appRoot.querySelector('#register-button').click();
+  appRoot.querySelector('#login-button').click();
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
+});
+
 test('app keeps user on login when unauthenticated', async () => {
   await setupApp();
   const module = await import('../../src/app.js');

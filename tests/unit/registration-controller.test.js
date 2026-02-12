@@ -12,10 +12,7 @@ function createMocks() {
       saveAccount: jest.fn(),
     },
     sessionState: {
-      ensureLoggedOut: jest.fn(() => true),
-    },
-    redirectLogger: {
-      logFailure: jest.fn(),
+      authenticate: jest.fn(),
     },
   };
 }
@@ -24,18 +21,15 @@ function setupController(overrides = {}) {
   const view = createRegistrationView();
   document.body.appendChild(view.element);
   const mocks = createMocks();
-  let redirectTarget = null;
+  const onRegistrationSuccess = jest.fn();
   const controller = createRegistrationController({
     view,
     storage: overrides.storage || mocks.storage,
     sessionState: overrides.sessionState || mocks.sessionState,
-    redirectLogger: overrides.redirectLogger || mocks.redirectLogger,
-    redirectToLogin: overrides.redirectToLogin || ((target) => {
-      redirectTarget = target;
-    }),
+    onRegistrationSuccess: overrides.onRegistrationSuccess || onRegistrationSuccess,
   });
   controller.init();
-  return { view, getRedirectTarget: () => redirectTarget, mocks };
+  return { view, mocks, onRegistrationSuccess };
 }
 
 function submitForm(view, email, password) {
@@ -56,28 +50,20 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-test('redirects to login after success', () => {
+test('authenticates and triggers registration success callback', () => {
   jest.useFakeTimers();
-  const { view, getRedirectTarget } = setupController();
+  const { view, onRegistrationSuccess, mocks } = setupController();
   submitForm(view, 'valid@example.com', 'valid1!a');
   jest.runAllTimers();
-  expect(getRedirectTarget()).toBe('/login');
+  expect(mocks.sessionState.authenticate).toHaveBeenCalled();
+  expect(onRegistrationSuccess).toHaveBeenCalled();
 });
 
-test('redirect failure shows error', () => {
-  jest.useFakeTimers();
-  const { view } = setupController({
-    redirectToLogin: () => {
-      throw new Error('redirect_failed');
-    },
-    redirectLogger: {
-      logFailure() {},
-    },
-  });
+test('success status mentions signed-in flow', () => {
+  const { view } = setupController();
   submitForm(view, 'valid@example.com', 'valid1!a');
-  jest.runAllTimers();
   const status = view.element.querySelector('.status').textContent;
-  expect(status).toContain('redirect');
+  expect(status).toContain('Signing you in');
 });
 
 test('requires email before submit', () => {
