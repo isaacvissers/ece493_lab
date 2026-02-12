@@ -29,6 +29,9 @@ is created, and failures are logged transiently.
 6) **Sensitive error replacement**
 - If any specific error appears, confirm it is replaced by the generic message and logged.
 
+7) **Automated tests**
+- Run `npm test` to execute unit, integration, and acceptance tests.
+
 ## Performance & Accessibility
 - Invalid-credential rejection completes within 2 seconds.
 - Error messages are accessible via keyboard and screen readers.

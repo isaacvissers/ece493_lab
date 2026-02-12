@@ -10,6 +10,7 @@ function setupController(overrides = {}) {
     authenticate: jest.fn(),
     isAuthenticated: jest.fn(() => false),
     getCurrentUser: jest.fn(() => null),
+    clear: jest.fn(),
   };
   const defaultStorage = {
     findByEmail: jest.fn(() => null),
@@ -91,6 +92,26 @@ test('logs and reports lookup failure', () => {
   expect(loginLogger.logFailure).toHaveBeenCalledWith({
     identifier: 'user@example.com',
     error: 'lookup_failed',
+    failureType: 'lookup_failure',
+  });
+});
+
+test('fallbacks to generic lookup error when message missing', () => {
+  const storage = {
+    findByEmail: jest.fn(() => {
+      throw { code: 'no_message' };
+    }),
+    normalizeEmail: (value) => (value || '').trim().toLowerCase(),
+  };
+  const loginLogger = { logFailure: jest.fn() };
+  const { view } = setupController({ storage, loginLogger });
+  submitForm(view, 'user@example.com', 'validPass1!');
+  const status = view.element.querySelector('.status').textContent;
+  expect(status).toContain(UI_MESSAGES.errors.loginUnavailable.message);
+  expect(loginLogger.logFailure).toHaveBeenCalledWith({
+    identifier: 'user@example.com',
+    error: 'lookup_failed',
+    failureType: 'lookup_failure',
   });
 });
 
@@ -106,6 +127,43 @@ test('authenticates and redirects on success', () => {
   expect(status).toContain(UI_MESSAGES.loginSuccess.title);
   expect(sessionState.authenticate).toHaveBeenCalled();
   expect(onLoginSuccess).toHaveBeenCalled();
+});
+
+test('logs invalid credentials and clears session', () => {
+  const sessionState = {
+    authenticate: jest.fn(),
+    isAuthenticated: jest.fn(() => true),
+    getCurrentUser: jest.fn(() => ({ email: 'user@example.com' })),
+    clear: jest.fn(),
+  };
+  const loginLogger = { logFailure: jest.fn() };
+  const { view } = setupController({ sessionState, loginLogger });
+  submitForm(view, 'user@example.com', 'wrong');
+  expect(sessionState.clear).toHaveBeenCalled();
+  expect(loginLogger.logFailure).toHaveBeenCalledWith({
+    identifier: 'user@example.com',
+    error: 'invalid_credentials',
+    failureType: 'invalid_credentials',
+  });
+});
+
+test('replaces sensitive error with generic message', () => {
+  const storage = {
+    findByEmail: jest.fn(() => {
+      throw new Error('username not found');
+    }),
+    normalizeEmail: (value) => (value || '').trim().toLowerCase(),
+  };
+  const loginLogger = { logFailure: jest.fn() };
+  const { view } = setupController({ storage, loginLogger });
+  submitForm(view, 'user@example.com', 'validPass1!');
+  const status = view.element.querySelector('.status').textContent;
+  expect(status).toContain(UI_MESSAGES.errors.invalidCredentials.message);
+  expect(loginLogger.logFailure).toHaveBeenCalledWith({
+    identifier: 'user@example.com',
+    error: 'username not found',
+    failureType: 'sensitive_error',
+  });
 });
 
 test('does not require onLoginSuccess callback', () => {
