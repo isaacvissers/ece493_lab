@@ -22,3 +22,21 @@ test('clears session', () => {
   sessionState.clear();
   expect(sessionState.isAuthenticated()).toBe(false);
 });
+
+test('ensureLoggedOut clears active session', () => {
+  storageService.reset();
+  storageService.setCurrentUser({
+    id: 'acct_2',
+    email: 'active@example.com',
+    createdAt: new Date().toISOString(),
+  });
+  const didLogout = sessionState.ensureLoggedOut();
+  expect(didLogout).toBe(true);
+  expect(sessionState.isAuthenticated()).toBe(false);
+});
+
+test('ensureLoggedOut returns false when no session', () => {
+  storageService.reset();
+  const didLogout = sessionState.ensureLoggedOut();
+  expect(didLogout).toBe(false);
+});

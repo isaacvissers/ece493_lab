@@ -1,5 +1,22 @@
-import { findAccountByCredentials } from '../../src/models/user-account.js';
+import { createUserAccount, findAccountByCredentials } from '../../src/models/user-account.js';
 import { storageService } from '../../src/services/storage-service.js';
+
+test('creates account with normalized email', () => {
+  const account = createUserAccount({ email: 'Test@Email.com', password: 'valid1!a' });
+  expect(account.email).toBe('test@email.com');
+  expect(account.id.startsWith('acct_')).toBe(true);
+  expect(account.createdAt).toBeTruthy();
+});
+
+test('throws on invalid email', () => {
+  expect(() => createUserAccount({ email: 'invalid', password: 'valid1!' }))
+    .toThrow('email_invalid');
+});
+
+test('throws on invalid password', () => {
+  expect(() => createUserAccount({ email: 'valid@domain.com', password: 'short' }))
+    .toThrow('password_invalid');
+});
 
 test('finds account by matching credentials', () => {
   storageService.reset();

@@ -53,7 +53,7 @@ export function createLoginController({
     }
 
     sessionState.authenticate(account);
-    view.setStatus(`${UI_MESSAGES.success.title}. ${UI_MESSAGES.success.body}`, false);
+    view.setStatus(`${UI_MESSAGES.loginSuccess.title}. ${UI_MESSAGES.loginSuccess.body}`, false);
     if (onLoginSuccess) {
       onLoginSuccess();
     }

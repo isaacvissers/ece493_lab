@@ -2,6 +2,7 @@ import { storageService } from '../../src/services/storage-service.js';
 
 test('normalizes email for lookup', () => {
   expect(storageService.normalizeEmail('  User@Example.com ')).toBe('user@example.com');
+  expect(storageService.normalizeEmail(null)).toBe('');
 });
 
 test('saves and finds accounts case-insensitively', () => {
@@ -29,6 +30,8 @@ test('persists and clears session', () => {
   expect(storageService.getCurrentUser()).toMatchObject({
     id: 'acct_2',
   });
+  storageService.setCurrentUser(null);
+  expect(storageService.getCurrentUser()).toBe(null);
   storageService.clearCurrentUser();
   expect(storageService.getCurrentUser()).toBe(null);
 });
@@ -49,17 +52,19 @@ test('loads cached data from storage when present', () => {
   };
   localStorage.setItem('cms.accounts', JSON.stringify(cachedAccounts));
   localStorage.setItem('cms.session', JSON.stringify(cachedSession));
+  localStorage.setItem('cms.validation_failures', JSON.stringify([{ type: 'format', field: 'email' }]));
   const accounts = storageService.getAccounts();
   expect(accounts.length).toBe(1);
   const session = storageService.getCurrentUser();
   expect(session.email).toBe('session@example.com');
+  storageService.logValidationFailure({ type: 'required', field: 'email' });
+  const log = JSON.parse(localStorage.getItem('cms.validation_failures') || '[]');
+  expect(log.length).toBe(2);
 });
 
 test('throws when storage failure mode enabled', () => {
   storageService.reset();
   storageService.setFailureMode(true);
-  expect(() => storageService.getAccounts()).toThrow('storage_failure');
-  expect(() => storageService.getCurrentUser()).toThrow('storage_failure');
   expect(() => storageService.saveAccount({
     id: 'acct_3',
     email: 'fail@example.com',
@@ -73,4 +78,13 @@ test('throws when storage failure mode enabled', () => {
     createdAt: new Date().toISOString(),
   })).toThrow('storage_failure');
   storageService.setFailureMode(false);
+});
+
+test('logs validation failures', () => {
+  storageService.reset();
+  storageService.logValidationFailure({ type: 'format', field: 'email' });
+  const raw = localStorage.getItem('cms.validation_failures');
+  const log = JSON.parse(raw || '[]');
+  expect(log.length).toBe(1);
+  expect(log[0].type).toBe('format');
 });

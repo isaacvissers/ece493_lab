@@ -1,5 +1,6 @@
 const ACCOUNTS_KEY = 'cms.accounts';
 const SESSION_KEY = 'cms.session';
+const VALIDATION_LOG_KEY = 'cms.validation_failures';
 
 let failureMode = false;
 let cachedAccounts = null;
@@ -10,9 +11,6 @@ function normalizeEmail(email) {
 }
 
 function loadAccounts() {
-  if (failureMode) {
-    throw new Error('storage_failure');
-  }
   if (cachedAccounts) {
     return cachedAccounts;
   }
@@ -30,9 +28,6 @@ function persistAccounts(accounts) {
 }
 
 function loadSession() {
-  if (failureMode) {
-    throw new Error('storage_failure');
-  }
   if (cachedSession) {
     return cachedSession;
   }
@@ -54,6 +49,11 @@ function persistSession(session) {
   cachedSession = session;
 }
 
+function loadValidationLog() {
+  const raw = localStorage.getItem(VALIDATION_LOG_KEY);
+  return raw ? JSON.parse(raw) : [];
+}
+
 export const storageService = {
   setFailureMode(enabled) {
     failureMode = Boolean(enabled);
@@ -64,6 +64,7 @@ export const storageService = {
     cachedSession = null;
     localStorage.removeItem(ACCOUNTS_KEY);
     localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(VALIDATION_LOG_KEY);
   },
 
   getAccounts() {
@@ -79,6 +80,15 @@ export const storageService = {
     const accounts = loadAccounts().slice();
     accounts.push(account);
     persistAccounts(accounts);
+  },
+
+  logValidationFailure(details) {
+    const log = loadValidationLog();
+    log.push({
+      ...details,
+      timestamp: new Date().toISOString(),
+    });
+    localStorage.setItem(VALIDATION_LOG_KEY, JSON.stringify(log));
   },
 
   setCurrentUser(account) {

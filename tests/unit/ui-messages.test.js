@@ -15,6 +15,7 @@ test('includes login error copy', () => {
 });
 
 test('success copy present', () => {
-  expect(UI_MESSAGES.success.title).toContain('Login');
-  expect(UI_MESSAGES.success.body).toContain('home');
+  expect(UI_MESSAGES.loginSuccess.title).toContain('Login');
+  expect(UI_MESSAGES.loginSuccess.body).toContain('home');
+  expect(UI_MESSAGES.registrationSuccess.title).toContain('Registration');
 });

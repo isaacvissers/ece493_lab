@@ -28,9 +28,9 @@ integration/acceptance tests mapped to AT-05.md cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure per implementation plan (src/, styles/, tests/)
-- [ ] T002 Initialize base HTML/CSS/JS entry files in src/index.html, src/app.js, styles/main.css
-- [ ] T003 [P] Create test directory scaffolding in tests/unit/, tests/integration/, tests/acceptance/
+- [X] T001 Create project structure per implementation plan (src/, styles/, tests/)
+- [X] T002 Initialize base HTML/CSS/JS entry files in src/index.html, src/app.js, styles/main.css
+- [X] T003 [P] Create test directory scaffolding in tests/unit/, tests/integration/, tests/acceptance/
 
 ---
 
@@ -40,9 +40,9 @@ integration/acceptance tests mapped to AT-05.md cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Define shared UI copy/constants for login errors in src/services/ui-messages.js
-- [ ] T005 Implement MVC wiring bootstrap in src/app.js
-- [ ] T006 Create traceability map UC-05 → S-05 → AT-05 → tests in /home/ivissers/ece_493/labs/lab2/lab2/specs/005-cms-login/traceability.md
+- [X] T004 [P] Define shared UI copy/constants for login errors in src/services/ui-messages.js
+- [X] T005 Implement MVC wiring bootstrap in src/app.js
+- [X] T006 Create traceability map UC-05 → S-05 → AT-05 → tests in /home/ivissers/ece_493/labs/lab2/lab2/specs/005-cms-login/traceability.md
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -58,20 +58,20 @@ integration/acceptance tests mapped to AT-05.md cases.
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T007 [P] [US1] Acceptance tests mapped to AT-05 in tests/acceptance/at-uc05.test.js
-- [ ] T008 [P] [US1] Integration test for login flow in tests/integration/login-flow.test.js
-- [ ] T009 [P] [US1] Unit tests for login controller validation in tests/unit/login-controller.test.js
-- [ ] T010 [P] [US1] Unit tests for session state in tests/unit/session-state.test.js
+- [X] T007 [P] [US1] Acceptance tests mapped to AT-05 in tests/acceptance/at-uc05.test.js
+- [X] T008 [P] [US1] Integration test for login flow in tests/integration/login-flow.test.js
+- [X] T009 [P] [US1] Unit tests for login controller validation in tests/unit/login-controller.test.js
+- [X] T010 [P] [US1] Unit tests for session state in tests/unit/session-state.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] Implement login form view and error presentation in src/views/login-view.js
-- [ ] T012 [US1] Implement login controller (credential validation + redirect) in src/controllers/login-controller.js
-- [ ] T013 [US1] Implement user credential lookup in src/models/user-account.js
-- [ ] T014 [US1] Implement session state tracking in src/models/session-state.js
-- [ ] T015 [US1] Implement login failure logging (transient) in src/services/login-logging.js
-- [ ] T016 [US1] Wire login flow into app bootstrap in src/app.js
-- [ ] T017 [US1] Enforce protected page access gating based on session state in src/controllers/login-controller.js
+- [X] T011 [US1] Implement login form view and error presentation in src/views/login-view.js
+- [X] T012 [US1] Implement login controller (credential validation + redirect) in src/controllers/login-controller.js
+- [X] T013 [US1] Implement user credential lookup in src/models/user-account.js
+- [X] T014 [US1] Implement session state tracking in src/models/session-state.js
+- [X] T015 [US1] Implement login failure logging (transient) in src/services/login-logging.js
+- [X] T016 [US1] Wire login flow into app bootstrap in src/app.js
+- [X] T017 [US1] Enforce protected page access gating based on session state in src/controllers/login-controller.js
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -81,9 +81,9 @@ integration/acceptance tests mapped to AT-05.md cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T018 [P] Documentation updates in /home/ivissers/ece_493/labs/lab2/lab2/specs/005-cms-login/quickstart.md
-- [ ] T019 [P] Code cleanup and refactoring for MVC boundaries in src/
-- [ ] T020 [P] Performance pass to ensure <=2s login validation + redirect in src/ and styles/
+- [X] T018 [P] Documentation updates in /home/ivissers/ece_493/labs/lab2/lab2/specs/005-cms-login/quickstart.md
+- [X] T019 [P] Code cleanup and refactoring for MVC boundaries in src/
+- [X] T020 [P] Performance pass to ensure <=2s login validation + redirect in src/ and styles/
 
 ---
 

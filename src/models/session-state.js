@@ -13,4 +13,12 @@ export const sessionState = {
   getCurrentUser() {
     return storageService.getCurrentUser();
   },
+  ensureLoggedOut() {
+    const current = storageService.getCurrentUser();
+    if (current) {
+      storageService.clearCurrentUser();
+      return true;
+    }
+    return false;
+  },
 };

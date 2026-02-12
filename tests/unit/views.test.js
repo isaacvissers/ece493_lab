@@ -1,4 +1,5 @@
 import { createLoginView } from '../../src/views/login-view.js';
+import { createRegistrationView } from '../../src/views/registration-view.js';
 import { createDashboardView } from '../../src/views/dashboard-view.js';
 
 test('login view exposes fields and status helpers', () => {
@@ -20,6 +21,22 @@ test('login view exposes fields and status helpers', () => {
 
   view.clearErrors();
   expect(view.element.querySelector('#login-email-error').textContent).toBe('');
+});
+
+test('registration view exposes fields and helpers', () => {
+  const view = createRegistrationView();
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('#email')).toBeTruthy();
+  expect(view.element.querySelector('#password')).toBeTruthy();
+
+  view.setStatus('registered', true);
+  const status = view.element.querySelector('.status');
+  expect(status.textContent).toBe('registered');
+  expect(status.className).toContain('success');
+
+  view.showRedirectError('redirect failed');
+  const link = view.element.querySelector('a');
+  expect(link.style.display).toBe('inline-block');
 });
 
 test('dashboard view includes email when provided', () => {

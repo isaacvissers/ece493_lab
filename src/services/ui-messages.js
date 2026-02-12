@@ -1,8 +1,13 @@
 export const UI_MESSAGES = {
-  success: {
+  loginSuccess: {
     title: 'Login successful',
     body: 'Redirecting you to your home page.',
   },
+  registrationSuccess: {
+    title: 'Registration complete',
+    body: 'Redirecting you to the login screen.',
+  },
+  redirectError: 'We could not redirect you to login. Use the link below.',
   errors: {
     required: (field) => ({
       code: 'required',
@@ -10,6 +15,48 @@ export const UI_MESSAGES = {
       message: `${field} is required.`,
       recovery: `Enter a valid ${field}.`,
     }),
+    emailFormat: {
+      code: 'email_invalid',
+      field: 'email',
+      message: 'Email format is invalid.',
+      recovery: 'Use one "@" and include a dot in the domain.',
+    },
+    emailDuplicate: {
+      code: 'email_duplicate',
+      field: 'email',
+      message: 'Email is already registered.',
+      recovery: 'Use a different email or sign in.',
+    },
+    passwordTooShort: {
+      code: 'password_too_short',
+      field: 'password',
+      message: 'Password is too short.',
+      recovery: 'Use at least 8 characters.',
+    },
+    passwordComplexity: {
+      code: 'password_complexity',
+      field: 'password',
+      message: 'Password must include a number and a symbol.',
+      recovery: 'Add at least one number and one symbol.',
+    },
+    passwordDisallowed: {
+      code: 'password_disallowed',
+      field: 'password',
+      message: 'Password contains disallowed content.',
+      recovery: 'Remove spaces or control characters.',
+    },
+    passwordUnavailable: {
+      code: 'password_unavailable',
+      field: 'password',
+      message: 'Password validation is unavailable. Try again later.',
+      recovery: 'Try again after a moment.',
+    },
+    storageFailure: {
+      code: 'storage_failure',
+      field: null,
+      message: 'We could not save your account.',
+      recovery: 'Please try again.',
+    },
     invalidCredentials: {
       code: 'invalid_credentials',
       field: null,

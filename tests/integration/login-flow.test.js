@@ -50,10 +50,13 @@ test('invalid credentials stay unauthenticated', () => {
 
 test('lookup failure logs and reports unavailable', () => {
   storageService.reset();
-  storageService.setFailureMode(true);
+  const originalFindByEmail = storageService.findByEmail;
+  storageService.findByEmail = () => {
+    throw new Error('lookup_failed');
+  };
   const { view } = setupIntegration();
   submit(view, 'user@example.com', 'validPass1!');
   expect(view.element.querySelector('.status').textContent).toContain('unavailable');
   expect(loginLogging.getFailures().length).toBe(1);
-  storageService.setFailureMode(false);
+  storageService.findByEmail = originalFindByEmail;
 });

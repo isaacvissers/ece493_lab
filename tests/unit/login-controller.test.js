@@ -21,7 +21,9 @@ function setupController(overrides = {}) {
   const storage = overrides.storage || defaultStorage;
   const sessionState = overrides.sessionState || defaultSessionState;
   const loginLogger = overrides.loginLogger || defaultLoginLogger;
-  const onLoginSuccess = jest.fn();
+  const onLoginSuccess = overrides.onLoginSuccess !== undefined
+    ? overrides.onLoginSuccess
+    : jest.fn();
   const controller = createLoginController({
     view,
     storage,
@@ -101,9 +103,21 @@ test('authenticates and redirects on success', () => {
   });
   submitForm(view, 'user@example.com', 'validPass1!');
   const status = view.element.querySelector('.status').textContent;
-  expect(status).toContain(UI_MESSAGES.success.title);
+  expect(status).toContain(UI_MESSAGES.loginSuccess.title);
   expect(sessionState.authenticate).toHaveBeenCalled();
   expect(onLoginSuccess).toHaveBeenCalled();
+});
+
+test('does not require onLoginSuccess callback', () => {
+  const { view, sessionState } = setupController({
+    onLoginSuccess: null,
+    storage: {
+      findByEmail: jest.fn(() => ({ email: 'user@example.com', password: 'validPass1!' })),
+      normalizeEmail: (value) => (value || '').trim().toLowerCase(),
+    },
+  });
+  submitForm(view, 'user@example.com', 'validPass1!');
+  expect(sessionState.authenticate).toHaveBeenCalled();
 });
 
 test('guards protected access when unauthenticated', () => {

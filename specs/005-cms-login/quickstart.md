@@ -25,6 +25,9 @@ Validate the login flow for registered users and error handling for failures.
 - After login, access protected page and confirm session persists.
 - When unauthenticated, attempt protected access and confirm redirect to login.
 
+6) **Automated tests**
+- Run `npm test` to execute unit, integration, and acceptance tests.
+
 ## Performance & Accessibility
 - Login validation + redirect completes within 2 seconds.
 - Errors are accessible via keyboard and screen readers.
