@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: Public Schedule API
+  version: 1.0.0
+paths:
+  /public/schedule:
+    get:
+      summary: Get public final schedule
+      responses:
+        '200':
+          description: Published schedule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicSchedule'
+        '404':
+          description: Schedule not available yet
+        '500':
+          description: Rendering failure
+  /public/announcement:
+    get:
+      summary: Get schedule announcement
+      responses:
+        '200':
+          description: Announcement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Announcement'
+components:
+  schemas:
+    PublicSchedule:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: [published, unpublished]
+        publishedAt:
+          type: string
+        lastUpdatedAt:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleEntry'
+    ScheduleEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        day:
+          type: string
+        time:
+          type: string
+        room:
+          type: string
+        session:
+          type: string
+        paperTitle:
+          type: string
+        authors:
+          type: array
+          items:
+            type: string
+        abstract:
+          type: string
+        isUnscheduled:
+          type: boolean
+    Announcement:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        summary:
+          type: string
+        scheduleLink:
+          type: string
+        lastUpdatedAt:
+          type: string

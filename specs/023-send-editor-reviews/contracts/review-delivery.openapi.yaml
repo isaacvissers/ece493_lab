@@ -1,0 +1,39 @@
+openapi: 3.0.3
+info:
+  title: Review Delivery API
+  version: 1.0.0
+paths:
+  /reviews/{reviewId}/deliver:
+    post:
+      summary: Deliver a submitted review to the assigned editor (in-app)
+      parameters:
+        - name: reviewId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Delivery completed or already delivered
+        "404":
+          description: Review or editor not found
+        "409":
+          description: Review not in submitted state
+  /reviews/{reviewId}/notify:
+    post:
+      summary: Send notifications for a submitted review (email + in-app)
+      parameters:
+        - name: reviewId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Notifications sent or already sent
+        "404":
+          description: Review or editor not found
+        "409":
+          description: Notifications disabled or review not in submitted state
+        "503":
+          description: Notification service unavailable

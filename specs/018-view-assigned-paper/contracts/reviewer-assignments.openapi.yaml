@@ -1,0 +1,46 @@
+openapi: 3.0.3
+info:
+  title: Reviewer Assignments API
+  version: 1.0.0
+paths:
+  /reviewers/{reviewerId}/assignments:
+    get:
+      summary: List accepted assignments for a reviewer
+      parameters:
+        - name: reviewerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Accepted assignments returned
+        "401":
+          description: Not authenticated
+        "503":
+          description: Assignment retrieval failure
+  /reviewers/{reviewerId}/assignments/{assignmentId}:
+    get:
+      summary: Get accepted assignment paper details
+      parameters:
+        - name: reviewerId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: assignmentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Paper details returned
+        "401":
+          description: Not authenticated
+        "403":
+          description: Assignment not accepted
+        "404":
+          description: Paper or manuscript unavailable
+        "503":
+          description: Retrieval failure

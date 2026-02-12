@@ -1,0 +1,119 @@
+openapi: 3.0.3
+info:
+  title: Payment Confirmation Ingestion
+  version: 1.0.0
+  description: Endpoints for ingesting payment confirmations via redirect or webhook.
+servers:
+  - url: /api
+paths:
+  /payments/confirmations/redirect:
+    post:
+      summary: Ingest payment confirmation from redirect
+      description: Validates HMAC signature and stores confirmation.
+      parameters:
+        - name: X-Signature
+          in: header
+          required: true
+          schema:
+            type: string
+          description: HMAC-SHA256 of the raw request body using the shared secret.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentConfirmationRequest'
+      responses:
+        '200':
+          description: Confirmation accepted or duplicate acknowledged
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationResponse'
+        '400':
+          description: Validation failed
+        '401':
+          description: Signature invalid or missing
+        '409':
+          description: Duplicate confirmation (idempotent ack)
+        '500':
+          description: Storage or status update failure
+  /payments/confirmations/webhook:
+    post:
+      summary: Ingest payment confirmation from webhook
+      description: Validates HMAC signature and stores confirmation.
+      parameters:
+        - name: X-Signature
+          in: header
+          required: true
+          schema:
+            type: string
+          description: HMAC-SHA256 of the raw request body using the shared secret.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentConfirmationRequest'
+      responses:
+        '200':
+          description: Confirmation accepted or duplicate acknowledged
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationResponse'
+        '400':
+          description: Validation failed
+        '401':
+          description: Signature invalid or missing
+        '409':
+          description: Duplicate confirmation (idempotent ack)
+        '500':
+          description: Storage or status update failure
+components:
+  schemas:
+    PaymentConfirmationRequest:
+      type: object
+      required:
+        - transaction_id
+        - amount
+        - currency
+        - timestamp
+        - attendee_ref
+        - status
+      properties:
+        transaction_id:
+          type: string
+        order_id:
+          type: string
+          nullable: true
+        payment_intent_id:
+          type: string
+          nullable: true
+        amount:
+          type: number
+        currency:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+          description: Must be within 5 minutes of receipt time.
+        attendee_ref:
+          type: string
+        status:
+          type: string
+          description: Provider status (e.g., confirmed)
+    ConfirmationResponse:
+      type: object
+      required:
+        - result
+      properties:
+        result:
+          type: string
+          description: stored | duplicate | rejected
+        registration_status:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true

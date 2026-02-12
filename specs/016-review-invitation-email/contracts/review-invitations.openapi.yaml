@@ -1,0 +1,59 @@
+openapi: 3.0.3
+info:
+  title: Review Invitation API
+  version: 1.0.0
+paths:
+  /review-invitations:
+    post:
+      summary: Create and send a review invitation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paperId:
+                  type: string
+                reviewerEmail:
+                  type: string
+              required:
+                - paperId
+                - reviewerEmail
+      responses:
+        "201":
+          description: Invitation created and email sent
+        "400":
+          description: Invalid input or missing email
+        "503":
+          description: Notification service failure
+  /review-invitations/{invitationId}/respond:
+    post:
+      summary: Respond to a review invitation
+      parameters:
+        - name: invitationId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                decision:
+                  type: string
+                  enum: [accept, reject]
+              required:
+                - decision
+      responses:
+        "200":
+          description: Response recorded
+        "404":
+          description: Invitation not found or expired
+        "409":
+          description: Duplicate response
+        "503":
+          description: Response record failure

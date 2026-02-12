@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: Assignment Rule Violations API
+  version: 1.0.0
+paths:
+  /papers/{paperId}/reviewers:
+    post:
+      summary: Validate and submit reviewer assignments
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reviewerEmails:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - reviewerEmails
+      responses:
+        "200":
+          description: Per-entry outcomes (partial apply)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accepted:
+                    type: array
+                    items:
+                      type: string
+                  blocked:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                        reason:
+                          type: string
+                  violations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                        rule:
+                          type: string
+                        message:
+                          type: string
+        "400":
+          description: Invalid input
+        "503":
+          description: Rule evaluation failure
+  /review-requests/{requestId}/respond:
+    post:
+      summary: Reviewer accepts or rejects a review request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                decision:
+                  type: string
+                  enum: [accept, reject]
+              required:
+                - decision
+      responses:
+        "200":
+          description: Response recorded
+        "404":
+          description: Request not found
+        "409":
+          description: Request already resolved

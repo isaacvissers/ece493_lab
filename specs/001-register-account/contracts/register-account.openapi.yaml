@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: CMS Registration API
+  version: 1.0.0
+  description: API contract for registering a new CMS user and starting an authenticated session.
+paths:
+  /register:
+    post:
+      summary: Register a new user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Account created and user authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterSuccess'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error during persistence
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          description: Must contain exactly one "@", a local part, and a domain with a dot.
+        password:
+          type: string
+          minLength: 8
+          description: Must include at least one number and one symbol.
+    RegisterSuccess:
+      type: object
+      required: [user, redirectTo, message]
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        redirectTo:
+          type: string
+          description: Dashboard URL or route for authenticated landing page.
+        message:
+          type: string
+          description: Short confirmation that account was created, user is signed in, and redirecting to dashboard.
+    User:
+      type: object
+      required: [id, email, createdAt]
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      required: [code, message, recovery]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+          description: Names the invalid field or failure cause.
+        field:
+          type: string
+          description: Optional field identifier (email or password).
+        recovery:
+          type: string
+          description: Single recovery instruction for the user.

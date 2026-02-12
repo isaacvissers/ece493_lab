@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: Conference Registration API
+  version: 1.0.0
+paths:
+  /registration:
+    post:
+      summary: Submit conference registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+      responses:
+        '200':
+          description: Registration created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registration'
+        '400':
+          description: Validation error
+        '403':
+          description: Registration closed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationClosed'
+  /registration/status:
+    get:
+      summary: Get current registration status
+      responses:
+        '200':
+          description: Registration status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registration'
+components:
+  schemas:
+    Registration:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        status:
+          type: string
+          enum: [Registered, PendingPayment, Failed]
+        name:
+          type: string
+        affiliation:
+          type: string
+        contactEmail:
+          type: string
+        attendanceType:
+          type: string
+          enum: [in_person, virtual]
+        paymentStatus:
+          type: string
+          enum: [required, not_required, succeeded, failed, pending]
+        receipt:
+          $ref: '#/components/schemas/Receipt'
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    RegistrationRequest:
+      type: object
+      required: [name, affiliation, contactEmail, attendanceType]
+      properties:
+        name:
+          type: string
+        affiliation:
+          type: string
+        contactEmail:
+          type: string
+        attendanceType:
+          type: string
+          enum: [in_person, virtual]
+    Receipt:
+      type: object
+      properties:
+        name:
+          type: string
+        affiliation:
+          type: string
+        attendanceType:
+          type: string
+          enum: [in_person, virtual]
+        registrationStatus:
+          type: string
+          enum: [Registered, PendingPayment, Failed]
+        paymentStatus:
+          type: string
+          enum: [required, not_required, succeeded, failed, pending]
+    RegistrationClosed:
+      type: object
+      properties:
+        message:
+          type: string
+        windowStart:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp in UTC
+        windowEnd:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp in UTC

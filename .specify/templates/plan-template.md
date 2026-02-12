@@ -3,7 +3,7 @@
 **Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
 **Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+**Note**: This template is filled in by the `/speckit.plan` command.
 
 ## Summary
 
@@ -31,7 +31,12 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- MVC architecture confirmed (models/controllers/views separated; vanilla HTML/CSS/JS only)
+- JavaScript style guide coverage planned (`style_guide.md`)
+- Traceability defined for UC-XX -> S-XX -> AT-XX -> tests
+- Required test types planned (unit for models/controllers; integration for multi-view flows)
+- UX consistency checklist captured (navigation, terminology, validation, accessibility)
+- Performance targets stated (<=200 ms interactions; no >50 ms main-thread tasks)
 
 ## Project Structure
 

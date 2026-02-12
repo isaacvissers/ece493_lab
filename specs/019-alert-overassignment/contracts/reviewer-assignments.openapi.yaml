@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Reviewer Assignment Over-Assignment API
+  version: 1.0.0
+paths:
+  /papers/{paperId}/reviewer-assignments:
+    post:
+      summary: Add reviewer assignment (block if >3)
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reviewerId:
+                  type: string
+              required:
+                - reviewerId
+      responses:
+        "201":
+          description: Assignment created
+        "409":
+          description: Over-assignment blocked
+        "503":
+          description: Count evaluation failure
+  /papers/{paperId}/reviewer-assignments/batch:
+    post:
+      summary: Batch add reviewer assignments (partial apply)
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reviewerIds:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - reviewerIds
+      responses:
+        "200":
+          description: Partial apply with blocked additions identified
+        "409":
+          description: Over-assignment blocked
+        "503":
+          description: Count evaluation failure
+  /papers/{paperId}/reviewer-assignments/alerts:
+    get:
+      summary: Get over-assignment alert state for a paper
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Alert state returned
+        "404":
+          description: Paper not found
+        "503":
+          description: Alert evaluation failure

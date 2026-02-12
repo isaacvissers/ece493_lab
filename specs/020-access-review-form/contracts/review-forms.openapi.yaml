@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info:
+  title: Review Form Access API
+  version: 1.0.0
+paths:
+  /papers/{paperId}/review-form:
+    get:
+      summary: Retrieve review form for assigned reviewer
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Review form returned (draft included if present)
+        "401":
+          description: Not authenticated
+        "403":
+          description: Not authorized or assignment not accepted
+        "404":
+          description: Review form not configured
+        "409":
+          description: Review period closed (view-only)
+        "503":
+          description: Form retrieval failure

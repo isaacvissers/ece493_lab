@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  title: Payment Confirmation API
+  version: 1.0.0
+paths:
+  /confirmations/{registrationId}:
+    get:
+      summary: Get confirmation ticket/receipt
+      parameters:
+        - in: path
+          name: registrationId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Confirmation available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationResponse'
+        '202':
+          description: Confirmation pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationPending'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationError'
+        '404':
+          description: Confirmation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationError'
+        '409':
+          description: Duplicate confirmation request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationError'
+  /confirmations/{registrationId}/notifications:
+    get:
+      summary: Get confirmation notification delivery status
+      parameters:
+        - in: path
+          name: registrationId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Delivery status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryStatus'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationError'
+        '404':
+          description: Status not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmationError'
+components:
+  schemas:
+    ConfirmationResponse:
+      type: object
+      properties:
+        registrationId:
+          type: string
+        attendeeName:
+          type: string
+        ticketType:
+          type: string
+        amountPaid:
+          type: number
+        transactionReference:
+          type: string
+        issuedAt:
+          type: string
+        summaryHtml:
+          type: string
+    ConfirmationPending:
+      type: object
+      properties:
+        message:
+          type: string
+    DeliveryStatus:
+      type: object
+      properties:
+        registrationId:
+          type: string
+        emailStatus:
+          type: string
+          enum: [sent, failed, retrying]
+        inAppStatus:
+          type: string
+          enum: [sent, failed, retrying]
+    ConfirmationError:
+      type: object
+      properties:
+        message:
+          type: string

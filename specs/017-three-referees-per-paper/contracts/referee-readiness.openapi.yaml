@@ -1,0 +1,69 @@
+openapi: 3.0.3
+info:
+  title: Referee Readiness API
+  version: 1.0.0
+paths:
+  /papers/{paperId}/review-readiness:
+    get:
+      summary: Evaluate readiness based on referee count
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Readiness evaluated
+        "409":
+          description: Referee count not equal to three
+        "503":
+          description: Count evaluation failure
+  /papers/{paperId}/referee-assignments:
+    post:
+      summary: Add a referee assignment
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refereeId:
+                  type: string
+              required:
+                - refereeId
+      responses:
+        "201":
+          description: Assignment created
+        "409":
+          description: Assignment would exceed three non-declined referees
+        "503":
+          description: Assignment save failure
+  /papers/{paperId}/referee-assignments/{assignmentId}:
+    delete:
+      summary: Remove or withdraw a referee assignment
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: assignmentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Assignment removed
+        "404":
+          description: Assignment not found
+        "503":
+          description: Assignment update failure

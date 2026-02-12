@@ -11,6 +11,11 @@
   IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
   Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
   you should still have a viable MVP (Minimum Viable Product) that delivers value.
+
+  Traceability REQUIRED:
+  - Reference existing artifacts in lab1_files/: UC-XX.md, S-XX.md, AT-XX.md
+  - Each user story MUST map to at least one UC-XX, S-XX, and AT-XX
+  - Acceptance Scenarios should be derived from the mapped S-XX/AT-XX
   
   Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
   Think of each story as a standalone slice of functionality that can be:

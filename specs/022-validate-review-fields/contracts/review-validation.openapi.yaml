@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: Review Validation API
+  version: 1.0.0
+paths:
+  /reviews/validate:
+    post:
+      summary: Validate review form fields on save/submit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                formId:
+                  type: string
+                action:
+                  type: string
+                  enum: [save_draft, submit_review]
+                content:
+                  type: object
+              required:
+                - formId
+                - action
+                - content
+      responses:
+        "200":
+          description: Validation passed
+        "400":
+          description: Validation failed (blanks, invalid chars, max length)
+        "503":
+          description: Validation rules unavailable

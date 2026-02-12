@@ -1,0 +1,21 @@
+openapi: 3.0.3
+info:
+  title: Decision Release API
+  version: 1.0.0
+paths:
+  /decisions/{decisionId}/release:
+    post:
+      summary: Release a decision to authors (staged release)
+      parameters:
+        - name: decisionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Decision released to authors
+        "409":
+          description: Decision not ready for release or already released
+        "500":
+          description: Release failed

@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: Review Submission API
+  version: 1.0.0
+paths:
+  /papers/{paperId}/reviews/submit:
+    post:
+      summary: Submit a completed review
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reviewerId:
+                  type: string
+                content:
+                  type: object
+              required:
+                - reviewerId
+                - content
+      responses:
+        "201":
+          description: Review submitted
+        "400":
+          description: Validation failed
+        "401":
+          description: Not authenticated
+        "403":
+          description: Not authorized (assignment not accepted)
+        "409":
+          description: Review already submitted or review period closed
+        "503":
+          description: Submission storage failure
+  /papers/{paperId}/reviews/status:
+    get:
+      summary: Get review submission status
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: reviewerId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Status returned (draft/submitted/closed)
+        "401":
+          description: Not authenticated
+        "403":
+          description: Not authorized
+        "404":
+          description: Review not found

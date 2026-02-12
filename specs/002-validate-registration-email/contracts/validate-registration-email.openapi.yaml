@@ -1,0 +1,69 @@
+openapi: 3.0.3
+info:
+  title: CMS Registration Email Validation API
+  version: 1.0.0
+  description: API contract for validating registration email format and uniqueness.
+paths:
+  /register/validate-email:
+    post:
+      summary: Validate registration email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateEmailRequest'
+      responses:
+        '200':
+          description: Email is valid and unique
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateEmailSuccess'
+        '400':
+          description: Invalid email format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateEmailError'
+        '409':
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateEmailError'
+        '500':
+          description: Validation failed due to data-store error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateEmailError'
+components:
+  schemas:
+    ValidateEmailRequest:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          description: Raw email input (may include whitespace).
+    ValidateEmailSuccess:
+      type: object
+      required: [valid, unique]
+      properties:
+        valid:
+          type: boolean
+          enum: [true]
+        unique:
+          type: boolean
+          enum: [true]
+    ValidateEmailError:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          description: error type (invalid_format, duplicate_email, store_failure)
+        message:
+          type: string
+          description: User-facing error message.

@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Schedule HTML View API
+  version: 1.0.0
+paths:
+  /conferences/{conferenceId}/schedule/html:
+    get:
+      summary: Render the published schedule as HTML
+      parameters:
+        - name: conferenceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: HTML schedule rendered
+        "401":
+          description: Unauthorized
+        "404":
+          description: No schedule available
+        "500":
+          description: Rendering failed
+        "504":
+          description: Rendering timeout

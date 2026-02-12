@@ -1,0 +1,39 @@
+openapi: 3.0.3
+info:
+  title: Final Decision API
+  version: 1.0.0
+paths:
+  /papers/{paperId}/decision:
+    post:
+      summary: Save final accept/reject decision for a paper
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: string
+                  enum: [accept, reject]
+                comments:
+                  type: string
+              required:
+                - value
+      responses:
+        "200":
+          description: Decision saved and status updated
+        "400":
+          description: Invalid decision input or review count not exactly three
+        "403":
+          description: Editor not authorized to decide
+        "409":
+          description: Decision already saved
+        "500":
+          description: Decision save failed

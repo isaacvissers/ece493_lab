@@ -1,0 +1,51 @@
+openapi: 3.0.3
+info:
+  title: Schedule Generation API
+  version: 1.0.0
+paths:
+  /conferences/{conferenceId}/schedule/generate:
+    post:
+      summary: Generate a draft schedule for accepted papers
+      parameters:
+        - name: conferenceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Draft schedule generated
+        "400":
+          description: Missing/invalid inputs or conflicts detected
+        "409":
+          description: Capacity shortfall; partial draft produced with unscheduled papers
+        "500":
+          description: Schedule generation failed
+  /conferences/{conferenceId}/schedule/save:
+    post:
+      summary: Save a draft schedule
+      parameters:
+        - name: conferenceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Draft schedule saved
+        "500":
+          description: Save failed
+  /conferences/{conferenceId}/schedule/publish:
+    post:
+      summary: Publish a saved schedule
+      parameters:
+        - name: conferenceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Schedule published
+        "500":
+          description: Publish failed

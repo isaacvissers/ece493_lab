@@ -1,0 +1,79 @@
+openapi: 3.0.3
+info:
+  title: Reviewer Assignment Limit API
+  version: 1.0.0
+paths:
+  /papers/{paperId}/reviewers: 
+    post:
+      summary: Assign one or more reviewers to a paper
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reviewerEmails:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - reviewerEmails
+      responses:
+        "200":
+          description: Assignment results (partial apply)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  assigned:
+                    type: array
+                    items:
+                      type: string
+                  rejected:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                        reason:
+                          type: string
+        "400":
+          description: Invalid input
+        "409":
+          description: Reviewer limit reached
+        "503":
+          description: Lookup or persistence failure
+  /reviewers/{reviewerId}/assignments/count:
+    get:
+      summary: Get active assignment count for a reviewer
+      parameters:
+        - name: reviewerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Active assignment count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reviewerId:
+                    type: string
+                  activeCount:
+                    type: integer
+        "404":
+          description: Reviewer not found
+        "503":
+          description: Lookup failure

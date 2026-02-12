@@ -1,0 +1,39 @@
+openapi: 3.0.3
+info:
+  title: Final Schedule Delivery API
+  version: 1.0.0
+paths:
+  /authors/{authorId}/schedule:
+    get:
+      summary: Get final schedule details for an author
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Schedule details returned
+        "401":
+          description: Unauthorized
+        "403":
+          description: Not associated with paper
+        "404":
+          description: Schedule not published
+  /authors/{authorId}/schedule/notifications:
+    post:
+      summary: Send schedule notifications for an author
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "202":
+          description: Notifications queued
+        "401":
+          description: Unauthorized
+        "500":
+          description: Notification failure

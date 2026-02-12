@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+  title: Conference Price List API
+  version: 1.0.0
+paths:
+  /price-list:
+    get:
+      summary: Get conference price list
+      responses:
+        '200':
+          description: Price list retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceListResponse'
+        '404':
+          description: Price list not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotAvailable'
+        '403':
+          description: Access restricted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessRestricted'
+        '500':
+          description: Rendering failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RenderFailure'
+        '504':
+          description: Timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timeout'
+components:
+  schemas:
+    PriceListResponse:
+      type: object
+      properties:
+        conferenceId:
+          type: string
+        status:
+          type: string
+          enum: [published]
+        accessLevel:
+          type: string
+          enum: [public, registered_only]
+        currency:
+          type: string
+          enum: [USD]
+        locale:
+          type: string
+          enum: [en-US]
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceItem'
+    PriceItem:
+      type: object
+      properties:
+        category:
+          type: string
+          enum: [student, professional, early-bird, workshop]
+        label:
+          type: string
+        amount:
+          type: number
+          nullable: true
+        status:
+          type: string
+          enum: [valid, tbd, invalid]
+    NotAvailable:
+      type: object
+      properties:
+        message:
+          type: string
+    AccessRestricted:
+      type: object
+      properties:
+        message:
+          type: string
+    RenderFailure:
+      type: object
+      properties:
+        message:
+          type: string
+    Timeout:
+      type: object
+      properties:
+        message:
+          type: string

@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info:
+  title: Schedule Edit API
+  version: 1.0.0
+paths:
+  /conferences/{conferenceId}/schedule/draft:
+    get:
+      summary: Get the draft schedule for editing
+      parameters:
+        - name: conferenceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Draft schedule retrieved
+        "401":
+          description: Unauthorized
+        "404":
+          description: No schedule available
+  /conferences/{conferenceId}/schedule/entries/{entryId}:
+    put:
+      summary: Update a schedule entry (draft only)
+      parameters:
+        - name: conferenceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomId:
+                  type: string
+                startTime:
+                  type: string
+                  format: date-time
+                endTime:
+                  type: string
+                  format: date-time
+                scheduleVersion:
+                  type: integer
+              required: [roomId, startTime, endTime, scheduleVersion]
+      responses:
+        "200":
+          description: Update saved
+        "400":
+          description: Validation failed (conflict or time-window)
+        "401":
+          description: Unauthorized
+        "404":
+          description: Entry not found or schedule missing
+        "409":
+          description: Version mismatch (concurrent edit)
+        "500":
+          description: Save failed
+  /conferences/{conferenceId}/schedule/notifications:
+    post:
+      summary: Trigger notifications after schedule updates
+      parameters:
+        - name: conferenceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "202":
+          description: Notification request accepted
+        "401":
+          description: Unauthorized
+        "500":
+          description: Notification failure

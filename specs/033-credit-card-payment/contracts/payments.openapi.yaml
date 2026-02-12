@@ -1,0 +1,199 @@
+openapi: 3.0.0
+info:
+  title: Credit Card Payments API
+  version: 1.0.0
+paths:
+  /payments:
+    post:
+      summary: Submit a credit card payment
+      responses:
+        '200':
+          description: Payment approved and captured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentReceipt'
+        '202':
+          description: Additional authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAuthRequired'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+        '402':
+          description: Payment declined
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+        '409':
+          description: Duplicate payment attempt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+        '503':
+          description: Payment gateway error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+        '504':
+          description: Payment gateway timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+  /payments/{paymentId}:
+    get:
+      summary: Get payment status
+      parameters:
+        - in: path
+          name: paymentId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatus'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+  /registrations/{registrationId}/payment-status:
+    get:
+      summary: Get registration payment status
+      parameters:
+        - in: path
+          name: registrationId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Registration payment status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationPaymentStatus'
+        '404':
+          description: Registration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+components:
+  schemas:
+    PaymentRequest:
+      type: object
+      properties:
+        registrationId:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        cardholderName:
+          type: string
+        cardNumber:
+          type: string
+        expiryMonth:
+          type: string
+        expiryYear:
+          type: string
+        cvv:
+          type: string
+        billingPostal:
+          type: string
+        idempotencyKey:
+          type: string
+      required:
+        - registrationId
+        - amount
+        - currency
+        - cardholderName
+        - cardNumber
+        - expiryMonth
+        - expiryYear
+        - cvv
+        - idempotencyKey
+    PaymentReceipt:
+      type: object
+      properties:
+        paymentId:
+          type: string
+        registrationId:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+          enum: [captured]
+        reference:
+          type: string
+        paidAt:
+          type: string
+    PaymentAuthRequired:
+      type: object
+      properties:
+        paymentId:
+          type: string
+        status:
+          type: string
+          enum: [requires_authentication]
+        nextAction:
+          type: string
+    PaymentStatus:
+      type: object
+      properties:
+        paymentId:
+          type: string
+        registrationId:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+          enum: [authorized, captured, declined, failed, pending_confirmation]
+        reference:
+          type: string
+        lastUpdatedAt:
+          type: string
+    RegistrationPaymentStatus:
+      type: object
+      properties:
+        registrationId:
+          type: string
+        amountDue:
+          type: number
+        amountPaid:
+          type: number
+        status:
+          type: string
+          enum: [unpaid, paid, confirmed]
+    PaymentError:
+      type: object
+      properties:
+        message:
+          type: string
