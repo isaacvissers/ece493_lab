@@ -2,6 +2,7 @@ import { jest } from '@jest/globals';
 import { createLoginView } from '../../src/views/login-view.js';
 import { createRegistrationView } from '../../src/views/registration-view.js';
 import { createDashboardView } from '../../src/views/dashboard-view.js';
+import { createAccountSettingsView } from '../../src/views/account-settings-view.js';
 
 test('login view exposes fields and status helpers', () => {
   const view = createLoginView();
@@ -54,10 +55,47 @@ test('registration view exposes fields and helpers', () => {
 
 test('dashboard view includes email when provided', () => {
   const view = createDashboardView({ email: 'user@example.com' });
-  expect(view.querySelector('.helper').textContent).toContain('user@example.com');
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('.helper').textContent).toContain('user@example.com');
+  const changeButton = view.element.querySelector('#change-password-button');
+  expect(changeButton).toBeTruthy();
+  const onChange = jest.fn();
+  view.onChangePassword(onChange);
+  changeButton.click();
+  expect(onChange).toHaveBeenCalled();
 });
 
 test('dashboard view handles missing user', () => {
   const view = createDashboardView(null);
-  expect(view.querySelector('.helper').textContent).toContain('Signed in.');
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('.helper').textContent).toContain('Signed in.');
+});
+
+test('account settings view exposes fields and helpers', () => {
+  const view = createAccountSettingsView();
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('#current-password')).toBeTruthy();
+  expect(view.element.querySelector('#new-password')).toBeTruthy();
+  expect(view.element.querySelector('#confirm-password')).toBeTruthy();
+
+  view.setStatus('updated', false);
+  const status = view.element.querySelector('.status');
+  expect(status.textContent).toBe('updated');
+
+  view.setFieldError('currentPassword', 'Current error', 'Try again.');
+  expect(view.element.querySelector('#current-password-error').textContent).toContain('Current error');
+
+  view.focusField('newPassword');
+  expect(document.activeElement).toBe(view.element.querySelector('#new-password'));
+  view.focusField('confirmPassword');
+  expect(document.activeElement).toBe(view.element.querySelector('#confirm-password'));
+  view.focusField('currentPassword');
+  expect(document.activeElement).toBe(view.element.querySelector('#current-password'));
+
+  const backButton = view.element.querySelector('#dashboard-button');
+  expect(backButton).toBeTruthy();
+  const onBack = jest.fn();
+  view.onBack(onBack);
+  backButton.click();
+  expect(onBack).toHaveBeenCalled();
 });

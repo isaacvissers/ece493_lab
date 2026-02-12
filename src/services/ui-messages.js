@@ -7,6 +7,10 @@ export const UI_MESSAGES = {
     title: 'Registration complete',
     body: 'Signing you in and taking you to your dashboard.',
   },
+  changePasswordSuccess: {
+    title: 'Password updated',
+    body: 'Your password has been changed.',
+  },
   errors: {
     required: (field) => ({
       code: 'required',
@@ -49,6 +53,24 @@ export const UI_MESSAGES = {
       field: 'password',
       message: 'Password validation is unavailable. Try again later.',
       recovery: 'Try again after a moment.',
+    },
+    currentPasswordIncorrect: {
+      code: 'current_password_incorrect',
+      field: 'currentPassword',
+      message: 'Current password is incorrect.',
+      recovery: 'Check your password and try again.',
+    },
+    passwordMismatch: {
+      code: 'password_mismatch',
+      field: 'confirmPassword',
+      message: 'Passwords do not match.',
+      recovery: 'Make sure the passwords match.',
+    },
+    passwordChangeUnavailable: {
+      code: 'password_change_unavailable',
+      field: null,
+      message: 'Password change is temporarily unavailable. Try again later.',
+      recovery: 'Please wait a moment and retry.',
     },
     storageFailure: {
       code: 'storage_failure',

@@ -59,6 +59,15 @@ test('app can navigate back to login from registration', async () => {
   expect(appRoot.querySelector('#login-email')).toBeTruthy();
 });
 
+test('app blocks account settings when unauthenticated', async () => {
+  await setupApp();
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowAccountSettings();
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
+  expect(appRoot.querySelector('.status').textContent).toContain('log in');
+});
+
 test('app keeps user on login when unauthenticated', async () => {
   await setupApp();
   const module = await import('../../src/app.js');
@@ -66,4 +75,23 @@ test('app keeps user on login when unauthenticated', async () => {
   module.__testShowDashboard();
   const appRoot = document.getElementById('app');
   expect(appRoot.querySelector('#login-email')).toBeTruthy();
+});
+
+test('app routes to change password from dashboard', async () => {
+  await setupApp();
+  const { storageService } = await import('../../src/services/storage-service.js');
+  storageService.saveAccount({
+    id: 'acct_10',
+    email: 'user10@example.com',
+    normalizedEmail: 'user10@example.com',
+    password: 'validPass1!',
+    createdAt: new Date().toISOString(),
+  });
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_10', email: 'user10@example.com', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowDashboard();
+  appRoot.querySelector('#change-password-button').click();
+  expect(appRoot.querySelector('#current-password')).toBeTruthy();
 });

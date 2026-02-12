@@ -34,3 +34,15 @@ export function findAccountByCredentials({ email, password }, storage) {
   }
   return account;
 }
+
+export function updateAccountPassword({ accountId, newPassword }, storage) {
+  const account = storage.findById(accountId);
+  if (!account) {
+    return null;
+  }
+  const updated = {
+    ...account,
+    password: newPassword,
+  };
+  return storage.updateAccount(updated);
+}

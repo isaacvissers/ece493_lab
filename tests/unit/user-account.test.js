@@ -1,4 +1,4 @@
-import { createUserAccount, findAccountByCredentials } from '../../src/models/user-account.js';
+import { createUserAccount, findAccountByCredentials, updateAccountPassword } from '../../src/models/user-account.js';
 import { storageService } from '../../src/services/storage-service.js';
 
 test('creates account with normalized email', () => {
@@ -69,4 +69,30 @@ test('propagates lookup errors', () => {
   };
   expect(() => findAccountByCredentials({ email: 'x', password: 'y' }, storage))
     .toThrow('lookup_failed');
+});
+
+test('updates account password by id', () => {
+  storageService.reset();
+  storageService.saveAccount({
+    id: 'acct_change',
+    email: 'change@example.com',
+    normalizedEmail: 'change@example.com',
+    password: 'validPass1!',
+    createdAt: new Date().toISOString(),
+  });
+  const updated = updateAccountPassword({
+    accountId: 'acct_change',
+    newPassword: 'newPass1!',
+  }, storageService);
+  expect(updated.password).toBe('newPass1!');
+  expect(storageService.findById('acct_change').password).toBe('newPass1!');
+});
+
+test('returns null when updating missing account', () => {
+  storageService.reset();
+  const updated = updateAccountPassword({
+    accountId: 'missing',
+    newPassword: 'newPass1!',
+  }, storageService);
+  expect(updated).toBe(null);
 });

@@ -6,6 +6,7 @@ Validate password change for authenticated users with policy enforcement and saf
 ## Scenarios to Verify
 
 1) **Happy path**
+- From the dashboard, select Change password.
 - Enter correct current password + compliant new password + matching confirmation.
 - Confirm success message and password updated.
 

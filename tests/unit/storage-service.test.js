@@ -20,6 +20,28 @@ test('saves and finds accounts case-insensitively', () => {
   expect(storageService.getAccounts().length).toBe(1);
 });
 
+test('finds and updates accounts by id', () => {
+  storageService.reset();
+  storageService.saveAccount({
+    id: 'acct_update',
+    email: 'update@example.com',
+    normalizedEmail: 'update@example.com',
+    password: 'validPass1!',
+    createdAt: new Date().toISOString(),
+  });
+  const found = storageService.findById('acct_update');
+  expect(found.email).toBe('update@example.com');
+  const updated = storageService.updateAccount({ ...found, password: 'newPass1!' });
+  expect(updated.password).toBe('newPass1!');
+  expect(storageService.findById('acct_update').password).toBe('newPass1!');
+});
+
+test('updateAccount returns null when missing', () => {
+  storageService.reset();
+  const result = storageService.updateAccount({ id: 'missing', email: 'x' });
+  expect(result).toBe(null);
+});
+
 test('persists and clears session', () => {
   storageService.reset();
   storageService.setCurrentUser({

@@ -19,4 +19,11 @@ test('success copy present', () => {
   expect(UI_MESSAGES.loginSuccess.body).toContain('home');
   expect(UI_MESSAGES.registrationSuccess.title).toContain('Registration');
   expect(UI_MESSAGES.registrationSuccess.body).toContain('Signing you in');
+  expect(UI_MESSAGES.changePasswordSuccess.title).toContain('Password');
+});
+
+test('change-password errors included', () => {
+  expect(UI_MESSAGES.errors.currentPasswordIncorrect.message).toContain('Current password');
+  expect(UI_MESSAGES.errors.passwordMismatch.message).toContain('match');
+  expect(UI_MESSAGES.errors.passwordChangeUnavailable.message).toContain('unavailable');
 });

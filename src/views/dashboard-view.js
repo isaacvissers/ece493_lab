@@ -21,6 +21,19 @@ export function createDashboardView(user) {
   const message = createElement('div', 'status');
   message.textContent = 'Welcome to your CMS dashboard.';
 
-  container.append(title, status, message);
-  return container;
+  const actions = createElement('div', 'form-row');
+  const changePasswordButton = document.createElement('button');
+  changePasswordButton.type = 'button';
+  changePasswordButton.className = 'button secondary';
+  changePasswordButton.id = 'change-password-button';
+  changePasswordButton.textContent = 'Change password';
+  actions.append(changePasswordButton);
+
+  container.append(title, status, message, actions);
+  return {
+    element: container,
+    onChangePassword(handler) {
+      changePasswordButton.addEventListener('click', handler);
+    },
+  };
 }

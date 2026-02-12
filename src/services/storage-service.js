@@ -76,10 +76,25 @@ export const storageService = {
     return loadAccounts().find((account) => account.normalizedEmail === normalized) || null;
   },
 
+  findById(accountId) {
+    return loadAccounts().find((account) => account.id === accountId) || null;
+  },
+
   saveAccount(account) {
     const accounts = loadAccounts().slice();
     accounts.push(account);
     persistAccounts(accounts);
+  },
+
+  updateAccount(updatedAccount) {
+    const accounts = loadAccounts().slice();
+    const index = accounts.findIndex((account) => account.id === updatedAccount.id);
+    if (index === -1) {
+      return null;
+    }
+    accounts[index] = updatedAccount;
+    persistAccounts(accounts);
+    return updatedAccount;
   },
 
   logValidationFailure(details) {

@@ -28,9 +28,9 @@ integration/acceptance tests mapped to AT-07.md cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure per implementation plan (src/, styles/, tests/)
-- [ ] T002 Initialize base HTML/CSS/JS entry files in src/index.html, src/app.js, styles/main.css
-- [ ] T003 [P] Create test directory scaffolding in tests/unit/, tests/integration/, tests/acceptance/
+- [X] T001 Create project structure per implementation plan (src/, styles/, tests/)
+- [X] T002 Initialize base HTML/CSS/JS entry files in src/index.html, src/app.js, styles/main.css
+- [X] T003 [P] Create test directory scaffolding in tests/unit/, tests/integration/, tests/acceptance/
 
 ---
 
@@ -40,9 +40,9 @@ integration/acceptance tests mapped to AT-07.md cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Define shared UI copy/constants for change-password errors in src/services/ui-messages.js
-- [ ] T005 Implement MVC wiring bootstrap in src/app.js
-- [ ] T006 Create traceability map UC-07 → S-07 → AT-07 → tests in /home/ivissers/ece_493/labs/lab2/lab2/specs/007-change-password/traceability.md
+- [X] T004 [P] Define shared UI copy/constants for change-password errors in src/services/ui-messages.js
+- [X] T005 Implement MVC wiring bootstrap in src/app.js
+- [X] T006 Create traceability map UC-07 → S-07 → AT-07 → tests in /home/ivissers/ece_493/labs/lab2/lab2/specs/007-change-password/traceability.md
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -58,21 +58,21 @@ integration/acceptance tests mapped to AT-07.md cases.
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T007 [P] [US1] Acceptance tests mapped to AT-07 in tests/acceptance/at-uc07.test.js
-- [ ] T008 [P] [US1] Integration test for change-password flow in tests/integration/change-password-flow.test.js
-- [ ] T009 [P] [US1] Unit tests for account controller validation in tests/unit/account-controller.test.js
-- [ ] T010 [P] [US1] Unit tests for session state behavior in tests/unit/session-state.test.js
+- [X] T007 [P] [US1] Acceptance tests mapped to AT-07 in tests/acceptance/at-uc07.test.js
+- [X] T008 [P] [US1] Integration test for change-password flow in tests/integration/change-password-flow.test.js
+- [X] T009 [P] [US1] Unit tests for account controller validation in tests/unit/account-controller.test.js
+- [X] T010 [P] [US1] Unit tests for session state behavior in tests/unit/session-state.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] Implement change-password form + error UI in src/views/account-settings-view.js
-- [ ] T012 [US1] Implement current-password verification and new-password validation in src/controllers/account-controller.js
-- [ ] T013 [US1] Implement password update and confirmation logic in src/controllers/account-controller.js
-- [ ] T014 [US1] Implement credential update in src/models/user-account.js
-- [ ] T015 [US1] Implement transient error logging in src/services/password-error-logging.js
-- [ ] T016 [US1] Ensure session remains authenticated after successful change in src/models/session-state.js
-- [ ] T017 [US1] Enforce session-required access to change-password flow in src/controllers/account-controller.js
-- [ ] T018 [US1] Wire change-password flow into app bootstrap in src/app.js
+- [X] T011 [US1] Implement change-password form + error UI in src/views/account-settings-view.js
+- [X] T012 [US1] Implement current-password verification and new-password validation in src/controllers/account-controller.js
+- [X] T013 [US1] Implement password update and confirmation logic in src/controllers/account-controller.js
+- [X] T014 [US1] Implement credential update in src/models/user-account.js
+- [X] T015 [US1] Implement transient error logging in src/services/password-error-logging.js
+- [X] T016 [US1] Ensure session remains authenticated after successful change in src/models/session-state.js
+- [X] T017 [US1] Enforce session-required access to change-password flow in src/controllers/account-controller.js
+- [X] T018 [US1] Wire change-password flow into app bootstrap in src/app.js
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -82,9 +82,9 @@ integration/acceptance tests mapped to AT-07.md cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T019 [P] Documentation updates in /home/ivissers/ece_493/labs/lab2/lab2/specs/007-change-password/quickstart.md
-- [ ] T020 [P] Code cleanup and refactoring for MVC boundaries in src/
-- [ ] T021 [P] Performance pass to ensure <=2s password change in src/ and styles/
+- [X] T019 [P] Documentation updates in /home/ivissers/ece_493/labs/lab2/lab2/specs/007-change-password/quickstart.md
+- [X] T020 [P] Code cleanup and refactoring for MVC boundaries in src/
+- [X] T021 [P] Performance pass to ensure <=2s password change in src/ and styles/
 
 ---
 
