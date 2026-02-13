@@ -95,3 +95,35 @@ test('app routes to change password from dashboard', async () => {
   appRoot.querySelector('#change-password-button').click();
   expect(appRoot.querySelector('#current-password')).toBeTruthy();
 });
+
+test('app routes to submit manuscript from dashboard', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_11', email: 'author@example.com', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowDashboard();
+  appRoot.querySelector('#submit-paper-button').click();
+  expect(appRoot.querySelector('#title')).toBeTruthy();
+});
+
+test('unauthenticated submit routes to login then back to submission', async () => {
+  await setupApp();
+  const { storageService } = await import('../../src/services/storage-service.js');
+  storageService.saveAccount({
+    id: 'acct_12',
+    email: 'author2@example.com',
+    normalizedEmail: 'author2@example.com',
+    password: 'validPass1!',
+    createdAt: new Date().toISOString(),
+  });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowSubmitManuscript();
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
+  appRoot.querySelector('#login-email').value = 'author2@example.com';
+  appRoot.querySelector('#login-password').value = 'validPass1!';
+  const event = new Event('submit', { bubbles: true, cancelable: true });
+  appRoot.querySelector('form').dispatchEvent(event);
+  expect(appRoot.querySelector('#title')).toBeTruthy();
+});

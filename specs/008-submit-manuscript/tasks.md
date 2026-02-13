@@ -18,9 +18,9 @@ integration/acceptance tests mapped to AT-08.md cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create MVC folders and baseline files for manuscript submission in src/
-- [ ] T002 [P] Add submit-manuscript view entry point in src/app.js
-- [ ] T003 [P] Ensure base styles exist in styles/main.css for form layout and errors
+- [X] T001 Create MVC folders and baseline files for manuscript submission in src/
+- [X] T002 [P] Add submit-manuscript view entry point in src/app.js
+- [X] T003 [P] Ensure base styles exist in styles/main.css for form layout and errors
 
 ---
 
@@ -30,10 +30,10 @@ integration/acceptance tests mapped to AT-08.md cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Create storage helpers in src/services/submission-storage.js
-- [ ] T005 [P] Create transient error logger in src/services/submission-error-log.js
-- [ ] T006 [P] Define manuscript model in src/models/manuscript.js
-- [ ] T007 [P] Define draft model in src/models/submission-draft.js
+- [X] T004 [P] Create storage helpers in src/services/submission-storage.js
+- [X] T005 [P] Create transient error logger in src/services/submission-error-log.js
+- [X] T006 [P] Define manuscript model in src/models/manuscript.js
+- [X] T007 [P] Define draft model in src/models/submission-draft.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -49,23 +49,23 @@ integration/acceptance tests mapped to AT-08.md cases.
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T008 [P] [US1] Acceptance tests mapped to AT-08 scenarios in tests/acceptance/at-uc08.test.js (include unauthenticated redirect + storage failure)
-- [ ] T009 [P] [US1] Integration test for submit flow in tests/integration/submit-manuscript-flow.test.js
-- [ ] T010 [P] [US1] Unit tests for manuscript validation in tests/unit/manuscript.test.js
-- [ ] T011 [P] [US1] Unit tests for draft save/reopen in tests/unit/submission-draft.test.js
-- [ ] T012 [P] [US1] Integration test for draft reopen flow in tests/integration/submit-manuscript-flow.test.js
-- [ ] T013 [P] [US1] Unit test for whitespace-only required fields in tests/unit/manuscript.test.js
+- [X] T008 [P] [US1] Acceptance tests mapped to AT-08 scenarios in tests/acceptance/at-uc08.test.js (include unauthenticated redirect + storage failure)
+- [X] T009 [P] [US1] Integration test for submit flow in tests/integration/submit-manuscript-flow.test.js
+- [X] T010 [P] [US1] Unit tests for manuscript validation in tests/unit/manuscript.test.js
+- [X] T011 [P] [US1] Unit tests for draft save/reopen in tests/unit/submission-draft.test.js
+- [X] T012 [P] [US1] Integration test for draft reopen flow in tests/integration/submit-manuscript-flow.test.js
+- [X] T013 [P] [US1] Unit test for whitespace-only required fields in tests/unit/manuscript.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T014 [P] [US1] Implement submit-manuscript view in src/views/submit-manuscript-view.js
-- [ ] T015 [P] [US1] Implement controller in src/controllers/manuscript-submission-controller.js
-- [ ] T016 [US1] Wire view/controller to models and services in src/app.js
-- [ ] T017 [US1] Add validation rules for required fields, email, author names, keywords in src/models/manuscript.js
-- [ ] T018 [US1] Add file validation (type/size) and upload retry logic in src/controllers/manuscript-submission-controller.js
-- [ ] T019 [US1] Implement draft save + reopen using src/models/submission-draft.js and src/services/submission-storage.js
-- [ ] T020 [US1] Implement submission-unavailable error handling + transient logging in src/services/submission-error-log.js
-- [ ] T021 [US1] Add Author Dashboard redirect on success in src/controllers/manuscript-submission-controller.js
+- [X] T014 [P] [US1] Implement submit-manuscript view in src/views/submit-manuscript-view.js
+- [X] T015 [P] [US1] Implement controller in src/controllers/manuscript-submission-controller.js
+- [X] T016 [US1] Wire view/controller to models and services in src/app.js
+- [X] T017 [US1] Add validation rules for required fields, email, author names, keywords in src/models/manuscript.js
+- [X] T018 [US1] Add file validation (type/size) and upload retry logic in src/controllers/manuscript-submission-controller.js
+- [X] T019 [US1] Implement draft save + reopen using src/models/submission-draft.js and src/services/submission-storage.js
+- [X] T020 [US1] Implement submission-unavailable error handling + transient logging in src/services/submission-error-log.js
+- [X] T021 [US1] Add Author Dashboard redirect on success in src/controllers/manuscript-submission-controller.js
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently
 
@@ -75,9 +75,9 @@ integration/acceptance tests mapped to AT-08.md cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T022 [P] Accessibility pass for form errors and focus states in src/views/submit-manuscript-view.js
-- [ ] T023 [P] Update quickstart verification notes in specs/008-submit-manuscript/quickstart.md
-- [ ] T024 [P] Add quick performance check for interactive actions in tests/integration/submit-manuscript-flow.test.js
+- [X] T022 [P] Accessibility pass for form errors and focus states in src/views/submit-manuscript-view.js
+- [X] T023 [P] Update quickstart verification notes in specs/008-submit-manuscript/quickstart.md
+- [X] T024 [P] Add quick performance check for interactive actions in tests/integration/submit-manuscript-flow.test.js
 - [ ] T025 Run quickstart.md validation steps
 
 ---

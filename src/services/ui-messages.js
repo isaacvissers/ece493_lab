@@ -11,6 +11,28 @@ export const UI_MESSAGES = {
     title: 'Password updated',
     body: 'Your password has been changed.',
   },
+  submissionSuccess: {
+    title: 'Submission received',
+    body: 'Your manuscript has been submitted.',
+  },
+  draftSaved: {
+    title: 'Draft saved',
+    body: 'Your draft has been saved.',
+  },
+  draftLoaded: {
+    title: 'Draft loaded',
+    body: 'We loaded your saved draft.',
+  },
+  labels: {
+    title: 'title',
+    authorNames: 'author names',
+    affiliations: 'affiliations',
+    contactEmail: 'contact email',
+    abstract: 'abstract',
+    keywords: 'keywords',
+    mainSource: 'main source',
+    manuscriptFile: 'manuscript file',
+  },
   errors: {
     required: (field) => ({
       code: 'required',
@@ -70,6 +92,48 @@ export const UI_MESSAGES = {
       code: 'password_change_unavailable',
       field: null,
       message: 'Password change is temporarily unavailable. Try again later.',
+      recovery: 'Please wait a moment and retry.',
+    },
+    authorNamesInvalid: {
+      code: 'author_names_invalid',
+      field: 'authorNames',
+      message: 'Author names must include at least one name.',
+      recovery: 'Enter at least one author name.',
+    },
+    keywordsInvalid: {
+      code: 'keywords_invalid',
+      field: 'keywords',
+      message: 'Keywords must be a comma-separated list.',
+      recovery: 'Add at least one keyword separated by commas.',
+    },
+    fileRequired: {
+      code: 'file_required',
+      field: 'manuscriptFile',
+      message: 'A manuscript file is required.',
+      recovery: 'Upload a PDF, DOCX, or TEX file.',
+    },
+    fileTypeInvalid: {
+      code: 'file_type_invalid',
+      field: 'manuscriptFile',
+      message: 'File type must be PDF, DOCX, or TEX.',
+      recovery: 'Upload a file in one of the accepted formats.',
+    },
+    fileTooLarge: {
+      code: 'file_too_large',
+      field: 'manuscriptFile',
+      message: 'File exceeds the 7MB size limit.',
+      recovery: 'Upload a smaller file.',
+    },
+    uploadFailed: {
+      code: 'upload_failed',
+      field: 'manuscriptFile',
+      message: 'Upload failed. Please try again.',
+      recovery: 'Retry the upload.',
+    },
+    submissionUnavailable: {
+      code: 'submission_unavailable',
+      field: null,
+      message: 'Submission is temporarily unavailable. Try again later.',
       recovery: 'Please wait a moment and retry.',
     },
     storageFailure: {

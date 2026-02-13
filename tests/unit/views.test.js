@@ -3,6 +3,7 @@ import { createLoginView } from '../../src/views/login-view.js';
 import { createRegistrationView } from '../../src/views/registration-view.js';
 import { createDashboardView } from '../../src/views/dashboard-view.js';
 import { createAccountSettingsView } from '../../src/views/account-settings-view.js';
+import { createSubmitManuscriptView } from '../../src/views/submit-manuscript-view.js';
 
 test('login view exposes fields and status helpers', () => {
   const view = createLoginView();
@@ -63,6 +64,12 @@ test('dashboard view includes email when provided', () => {
   view.onChangePassword(onChange);
   changeButton.click();
   expect(onChange).toHaveBeenCalled();
+  const submitButton = view.element.querySelector('#submit-paper-button');
+  expect(submitButton).toBeTruthy();
+  const onSubmit = jest.fn();
+  view.onSubmitPaper(onSubmit);
+  submitButton.click();
+  expect(onSubmit).toHaveBeenCalled();
 });
 
 test('dashboard view handles missing user', () => {
@@ -98,4 +105,25 @@ test('account settings view exposes fields and helpers', () => {
   view.onBack(onBack);
   backButton.click();
   expect(onBack).toHaveBeenCalled();
+});
+
+test('submit manuscript view exposes fields and helpers', () => {
+  const view = createSubmitManuscriptView();
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('#title')).toBeTruthy();
+  expect(view.element.querySelector('#authorNames')).toBeTruthy();
+  expect(view.element.querySelector('#contactEmail')).toBeTruthy();
+  expect(view.element.querySelector('#manuscriptFile')).toBeTruthy();
+  const onSave = jest.fn();
+  view.onSaveDraft(onSave);
+  view.element.querySelector('#save-draft').click();
+  expect(onSave).toHaveBeenCalled();
+  view.setFieldError('unknown', 'Oops', 'Recover');
+  expect(view.element.querySelector('#title-error').textContent).toBe('');
+  view.focusField('title');
+  expect(document.activeElement).toBe(view.element.querySelector('#title'));
+  view.focusField('unknown');
+  expect(view.getFile()).toBe(null);
+  view.setValues({});
+  expect(view.element.querySelector('#title').value).toBe('');
 });

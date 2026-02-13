@@ -55,7 +55,22 @@ input {
   font-size: 1rem;
 }
 
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #c9c3b8;
+  font-size: 1rem;
+  min-height: 120px;
+  resize: vertical;
+}
+
 input:focus {
+  outline: 3px solid var(--focus);
+  border-color: var(--focus);
+}
+
+textarea:focus {
   outline: 3px solid var(--focus);
   border-color: var(--focus);
 }

@@ -8,47 +8,46 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are required metadata fields explicitly listed? [Completeness, Spec §Assumptions]
-- [ ] CHK002 Are file type and size limits fully specified? [Completeness, Spec §FR-005/FR-006]
-- [ ] CHK003 Are draft save prerequisites defined? [Completeness, Spec §FR-009]
-- [ ] CHK004 Are post-submit edit/replace rules defined? [Completeness, Spec §FR-013]
-- [ ] CHK005 Are storage failure handling requirements defined? [Completeness, Spec §FR-011]
+- [x] CHK001 Are required metadata fields explicitly listed? [Completeness, Spec §Assumptions]
+- [x] CHK002 Are file type and size limits fully specified? [Completeness, Spec §FR-005/FR-006]
+- [x] CHK003 Are draft save prerequisites defined? [Completeness, Spec §FR-009]
+- [x] CHK004 Are post-submit edit/replace rules defined? [Completeness, Spec §FR-013]
+- [x] CHK005 Are storage failure handling requirements defined? [Completeness, Spec §FR-011]
 
 ## Requirement Clarity
 
-- [ ] CHK006 Is the "submission-unavailable" error condition and message criteria clearly defined? [Clarity, Ambiguity, Spec §FR-011]
-- [ ] CHK007 Is "author home page" destination defined or referenced? [Clarity, Ambiguity, Spec §FR-008]
-- [ ] CHK008 Are invalid field format rules specified beyond email (e.g., keywords, author names)? [Clarity, Gap]
+- [x] CHK006 Is the "submission-unavailable" error condition and message criteria clearly defined? [Clarity, Ambiguity, Spec §FR-011]
+- [x] CHK007 Is "author home page" destination defined or referenced? [Clarity, Ambiguity, Spec §FR-008]
+- [x] CHK008 Are invalid field format rules specified beyond email (e.g., keywords, author names)? [Clarity, Gap]
 
 ## Requirement Consistency
 
-- [ ] CHK009 Do draft requirements align with success criteria about reopening drafts? [Consistency, Spec §FR-009/SC-006]
-- [ ] CHK010 Are logging requirements consistent with the transient logging assumption? [Consistency, Spec §FR-011/Assumptions]
-- [ ] CHK011 Are scenario statements consistent with functional requirements for unauthenticated redirect? [Consistency, Spec §FR-012/S-08]
+- [x] CHK009 Do draft requirements align with success criteria about reopening drafts? [Consistency, Spec §FR-009/SC-006]
+- [x] CHK010 Are logging requirements consistent with the transient logging assumption? [Consistency, Spec §FR-011/Assumptions]
+- [x] CHK011 Are scenario statements consistent with functional requirements for unauthenticated redirect? [Consistency, Spec §FR-012/S-08]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK012 Are success criteria measurable and verifiable without implementation details? [Measurability, Spec §SC-001..SC-006]
-- [ ] CHK013 Do success criteria cover all primary outcomes (submit, draft, failure cases)? [Coverage, Spec §SC-001..SC-006]
+- [x] CHK012 Are success criteria measurable and verifiable without implementation details? [Measurability, Spec §SC-001..SC-006]
+- [x] CHK013 Do success criteria cover all primary outcomes (submit, draft, failure cases)? [Coverage, Spec §SC-001..SC-006]
 
 ## Scenario Coverage
 
-- [ ] CHK014 Are primary, exception, and recovery scenarios all addressed in requirements? [Coverage, Spec §S-08/FR-001..FR-012]
+- [x] CHK014 Are primary, exception, and recovery scenarios all addressed in requirements? [Coverage, Spec §S-08/FR-001..FR-012]
 
 ## Edge Case Coverage
 
-- [ ] CHK015 Are listed edge cases explicitly tied to requirements or acceptance criteria? [Coverage, Gap]
+- [x] CHK015 Are listed edge cases explicitly tied to requirements or acceptance criteria? [Coverage, Gap]
 
 ## Non-Functional Requirements
 
-- [ ] CHK016 Are performance targets consistent with constitution requirements (<=200 ms interactions)? [Conflict, Spec §NFR-001]
-- [ ] CHK017 Are accessibility requirements specified for error feedback and keyboard navigation? [Coverage, Spec §NFR-002]
+- [x] CHK016 Are performance targets consistent with constitution requirements (<=200 ms interactions)? [Conflict, Spec §NFR-001]
+- [x] CHK017 Are accessibility requirements specified for error feedback and keyboard navigation? [Coverage, Spec §NFR-002]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK018 Are assumptions (metadata list, accepted file types, size limit) clearly stated and non-conflicting? [Assumption, Spec §Assumptions]
+- [x] CHK018 Are assumptions (metadata list, accepted file types, size limit) clearly stated and non-conflicting? [Assumption, Spec §Assumptions]
 
 ## Traceability
 
-- [ ] CHK019 Is traceability to UC-08, S-08, and AT-08 explicitly documented? [Traceability, Spec §Traceability]
-
+- [x] CHK019 Is traceability to UC-08, S-08, and AT-08 explicitly documented? [Traceability, Spec §Traceability]
