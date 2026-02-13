@@ -107,6 +107,17 @@ test('app routes to submit manuscript from dashboard', async () => {
   expect(appRoot.querySelector('#title')).toBeTruthy();
 });
 
+test('app routes to upload manuscript from dashboard', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_13', email: 'uploader@example.com', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowDashboard();
+  appRoot.querySelector('#upload-manuscript-button').click();
+  expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
+});
+
 test('unauthenticated submit routes to login then back to submission', async () => {
   await setupApp();
   const { storageService } = await import('../../src/services/storage-service.js');
@@ -126,4 +137,25 @@ test('unauthenticated submit routes to login then back to submission', async () 
   const event = new Event('submit', { bubbles: true, cancelable: true });
   appRoot.querySelector('form').dispatchEvent(event);
   expect(appRoot.querySelector('#title')).toBeTruthy();
+});
+
+test('unauthenticated upload routes to login then back to upload view', async () => {
+  await setupApp();
+  const { storageService } = await import('../../src/services/storage-service.js');
+  storageService.saveAccount({
+    id: 'acct_14',
+    email: 'upload2@example.com',
+    normalizedEmail: 'upload2@example.com',
+    password: 'validPass1!',
+    createdAt: new Date().toISOString(),
+  });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowUploadManuscript();
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
+  appRoot.querySelector('#login-email').value = 'upload2@example.com';
+  appRoot.querySelector('#login-password').value = 'validPass1!';
+  const event = new Event('submit', { bubbles: true, cancelable: true });
+  appRoot.querySelector('form').dispatchEvent(event);
+  expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
 });

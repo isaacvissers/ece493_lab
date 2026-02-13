@@ -4,6 +4,7 @@ import { createRegistrationView } from '../../src/views/registration-view.js';
 import { createDashboardView } from '../../src/views/dashboard-view.js';
 import { createAccountSettingsView } from '../../src/views/account-settings-view.js';
 import { createSubmitManuscriptView } from '../../src/views/submit-manuscript-view.js';
+import { createFileUploadView } from '../../src/views/file-upload-view.js';
 
 test('login view exposes fields and status helpers', () => {
   const view = createLoginView();
@@ -70,6 +71,12 @@ test('dashboard view includes email when provided', () => {
   view.onSubmitPaper(onSubmit);
   submitButton.click();
   expect(onSubmit).toHaveBeenCalled();
+  const uploadButton = view.element.querySelector('#upload-manuscript-button');
+  expect(uploadButton).toBeTruthy();
+  const onUpload = jest.fn();
+  view.onUploadManuscript(onUpload);
+  uploadButton.click();
+  expect(onUpload).toHaveBeenCalled();
 });
 
 test('dashboard view handles missing user', () => {
@@ -126,4 +133,31 @@ test('submit manuscript view exposes fields and helpers', () => {
   expect(view.getFile()).toBe(null);
   view.setValues({});
   expect(view.element.querySelector('#title').value).toBe('');
+});
+
+test('file upload view exposes fields and helpers', () => {
+  const view = createFileUploadView();
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('#manuscriptFile')).toBeTruthy();
+  view.setFieldError('unknown', 'Oops', 'Recover');
+  expect(view.element.querySelector('#manuscriptFile-error').textContent).toBe('');
+  view.focusField('manuscriptFile');
+  expect(document.activeElement).toBe(view.element.querySelector('#manuscriptFile'));
+  view.setAttachment(null);
+  expect(view.element.querySelector('#attachment-status').textContent).toContain('No file attached');
+  const file = new File(['content'], 'paper.pdf', { type: 'application/pdf', size: 100 });
+  view.setAttachment({ originalName: file.name, fileType: 'pdf', fileSizeBytes: file.size });
+  expect(view.element.querySelector('#attachment-status').textContent).toContain('paper.pdf');
+  const onSubmit = jest.fn();
+  view.onSubmit(onSubmit);
+  view.element.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  expect(onSubmit).toHaveBeenCalled();
+  const onChange = jest.fn();
+  view.onFileChange(onChange);
+  view.element.querySelector('#manuscriptFile').dispatchEvent(new Event('change'));
+  expect(onChange).toHaveBeenCalled();
+  view.focusField('unknown');
+  const input = view.element.querySelector('#manuscriptFile');
+  Object.defineProperty(input, 'files', { value: null, configurable: true });
+  expect(view.getFiles()).toEqual([]);
 });

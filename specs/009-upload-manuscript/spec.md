@@ -43,6 +43,7 @@ invalid types/sizes are rejected with clear errors and retry is allowed for fail
 
 - Accepted file types are PDF, Word (.docx), and LaTeX (.tex as a single source file only).
 - Accepted extensions are `.pdf`, `.docx`, and `.tex` only.
+- AT-09 notes possible extension variants (e.g., `.zip`), but UC-09 enforces only the extensions listed here.
 - File size limit is 7MB.
 - Virus/malware scanning is not required.
 - If a new file is uploaded before final submission, it replaces the previous attachment.

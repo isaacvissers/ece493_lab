@@ -21,6 +21,7 @@ test('success copy present', () => {
   expect(UI_MESSAGES.registrationSuccess.body).toContain('Signing you in');
   expect(UI_MESSAGES.changePasswordSuccess.title).toContain('Password');
   expect(UI_MESSAGES.submissionSuccess.title).toContain('Submission');
+  expect(UI_MESSAGES.uploadSuccess.title).toContain('File');
   expect(UI_MESSAGES.draftSaved.body).toContain('draft');
 });
 
@@ -31,7 +32,9 @@ test('change-password errors included', () => {
 });
 
 test('submission errors included', () => {
-  expect(UI_MESSAGES.errors.fileTypeInvalid.message).toContain('PDF');
+  expect(UI_MESSAGES.errors.fileTypeInvalid.message).toContain('Accepted formats');
   expect(UI_MESSAGES.errors.fileTooLarge.message).toContain('7MB');
   expect(UI_MESSAGES.errors.submissionUnavailable.message).toContain('Submission');
+  expect(UI_MESSAGES.errors.multipleFiles.message).toContain('single');
+  expect(UI_MESSAGES.errors.uploadStorageFailure.message).toContain('unavailable');
 });

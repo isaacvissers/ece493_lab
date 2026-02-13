@@ -7,12 +7,15 @@ import { createAccountSettingsView } from './views/account-settings-view.js';
 import { createAccountController } from './controllers/account-controller.js';
 import { createSubmitManuscriptView } from './views/submit-manuscript-view.js';
 import { createManuscriptSubmissionController } from './controllers/manuscript-submission-controller.js';
+import { createFileUploadView } from './views/file-upload-view.js';
+import { createFileUploadController } from './controllers/file-upload-controller.js';
 import { storageService } from './services/storage-service.js';
 import { sessionState } from './models/session-state.js';
 import { loginLogging } from './services/login-logging.js';
 import { passwordErrorLogging } from './services/password-error-logging.js';
 import { submissionStorage } from './services/submission-storage.js';
 import { submissionErrorLog } from './services/submission-error-log.js';
+import { uploadErrorLog } from './services/upload-error-log.js';
 import { UI_MESSAGES } from './services/ui-messages.js';
 
 const appRoot = document.getElementById('app');
@@ -37,6 +40,10 @@ function showLogin(accessDeniedMessage = null) {
       pendingRoute = null;
       if (nextRoute === 'submit') {
         showSubmitManuscript();
+        return;
+      }
+      if (nextRoute === 'upload') {
+        showUploadManuscript();
         return;
       }
       showDashboard();
@@ -100,6 +107,23 @@ function showSubmitManuscript() {
   render(submitView.element);
 }
 
+function showUploadManuscript() {
+  if (!sessionState.isAuthenticated()) {
+    pendingRoute = 'upload';
+    showLogin(UI_MESSAGES.errors.accessDenied.message);
+    return;
+  }
+  const uploadView = createFileUploadView();
+  const uploadController = createFileUploadController({
+    view: uploadView,
+    storage: submissionStorage,
+    sessionState,
+    errorLogger: uploadErrorLog,
+  });
+  uploadController.init();
+  render(uploadView.element);
+}
+
 function showDashboard() {
   if (!sessionState.isAuthenticated()) {
     showLogin(UI_MESSAGES.errors.accessDenied.message);
@@ -108,6 +132,7 @@ function showDashboard() {
   const dashboardView = createDashboardView(sessionState.getCurrentUser());
   dashboardView.onChangePassword(showAccountSettings);
   dashboardView.onSubmitPaper(showSubmitManuscript);
+  dashboardView.onUploadManuscript(showUploadManuscript);
   render(dashboardView.element);
 }
 
@@ -123,4 +148,5 @@ export {
   showRegistration as __testShowRegistration,
   showAccountSettings as __testShowAccountSettings,
   showSubmitManuscript as __testShowSubmitManuscript,
+  showUploadManuscript as __testShowUploadManuscript,
 };

@@ -30,6 +30,15 @@ test('throws when failure mode enabled', () => {
     .toThrow('storage_failure');
   expect(() => submissionStorage.saveDraft('user@example.com', { id: 'draft_fail' }))
     .toThrow('storage_failure');
+  expect(() => submissionStorage.saveManuscriptFile({
+    id: 'file_fail',
+    originalName: 'bad.pdf',
+    fileType: 'pdf',
+    fileSizeBytes: 10,
+    uploadedAt: new Date().toISOString(),
+  })).toThrow('storage_failure');
+  expect(() => submissionStorage.attachFile('user@example.com', 'file_fail'))
+    .toThrow('storage_failure');
   submissionStorage.setFailureMode(false);
 });
 
@@ -56,4 +65,81 @@ test('loads drafts from persisted storage when cache is empty', () => {
   const draft = submissionStorage.loadDraft('user@example.com');
   expect(draft).not.toBeNull();
   expect(draft.id).toBe('draft_2');
+});
+
+test('stores and retrieves manuscript files and attachments', () => {
+  submissionStorage.reset();
+  const fileRecord = {
+    id: 'file_1',
+    originalName: 'paper.pdf',
+    fileType: 'pdf',
+    fileSizeBytes: 1000,
+    uploadedAt: new Date().toISOString(),
+  };
+  submissionStorage.saveManuscriptFile(fileRecord);
+  submissionStorage.attachFile('user@example.com', fileRecord.id);
+  const attachment = submissionStorage.getAttachment('user@example.com');
+  expect(attachment).toBeTruthy();
+  expect(attachment.manuscriptFileId).toBe('file_1');
+  expect(attachment.file.originalName).toBe('paper.pdf');
+});
+
+test('removes manuscript files and clears attachments', () => {
+  submissionStorage.reset();
+  const fileRecord = {
+    id: 'file_2',
+    originalName: 'paper2.pdf',
+    fileType: 'pdf',
+    fileSizeBytes: 1200,
+    uploadedAt: new Date().toISOString(),
+  };
+  submissionStorage.saveManuscriptFile(fileRecord);
+  submissionStorage.attachFile('user2@example.com', fileRecord.id);
+  submissionStorage.removeManuscriptFile(fileRecord.id);
+  expect(submissionStorage.getManuscriptFile(fileRecord.id)).toBeNull();
+  submissionStorage.clearAttachment('user2@example.com');
+  expect(submissionStorage.getAttachment('user2@example.com')).toBeNull();
+});
+
+test('loads attachments and files from persisted storage when cache is empty', () => {
+  submissionStorage.reset();
+  localStorage.setItem('cms.manuscript_files', JSON.stringify({
+    file_3: {
+      id: 'file_3',
+      originalName: 'stored.pdf',
+      fileType: 'pdf',
+      fileSizeBytes: 2048,
+      uploadedAt: new Date().toISOString(),
+    },
+  }));
+  localStorage.setItem('cms.submission_attachments', JSON.stringify({
+    'user3@example.com': {
+      manuscriptFileId: 'file_3',
+      attachedAt: new Date().toISOString(),
+    },
+  }));
+  const attachment = submissionStorage.getAttachment('user3@example.com');
+  expect(attachment).toBeTruthy();
+  expect(attachment.file.originalName).toBe('stored.pdf');
+});
+
+test('handles missing attachments and files gracefully', () => {
+  submissionStorage.reset();
+  expect(submissionStorage.getAttachment('missing@example.com')).toBeNull();
+  submissionStorage.clearAttachment('missing@example.com');
+  submissionStorage.removeManuscriptFile('missing_file');
+  expect(Object.keys(submissionStorage.getAllFiles())).toHaveLength(0);
+});
+
+test('returns attachment with null file when file record missing', () => {
+  submissionStorage.reset();
+  localStorage.setItem('cms.submission_attachments', JSON.stringify({
+    'ghost@example.com': {
+      manuscriptFileId: 'file_missing',
+      attachedAt: new Date().toISOString(),
+    },
+  }));
+  const attachment = submissionStorage.getAttachment('ghost@example.com');
+  expect(attachment).toBeTruthy();
+  expect(attachment.file).toBeNull();
 });

@@ -27,12 +27,17 @@ export function createDashboardView(user) {
   submitButton.className = 'button';
   submitButton.id = 'submit-paper-button';
   submitButton.textContent = 'Submit paper';
+  const uploadButton = document.createElement('button');
+  uploadButton.type = 'button';
+  uploadButton.className = 'button secondary';
+  uploadButton.id = 'upload-manuscript-button';
+  uploadButton.textContent = 'Upload manuscript';
   const changePasswordButton = document.createElement('button');
   changePasswordButton.type = 'button';
   changePasswordButton.className = 'button secondary';
   changePasswordButton.id = 'change-password-button';
   changePasswordButton.textContent = 'Change password';
-  actions.append(submitButton, changePasswordButton);
+  actions.append(submitButton, uploadButton, changePasswordButton);
 
   container.append(title, status, message, actions);
   return {
@@ -42,6 +47,9 @@ export function createDashboardView(user) {
     },
     onSubmitPaper(handler) {
       submitButton.addEventListener('click', handler);
+    },
+    onUploadManuscript(handler) {
+      uploadButton.addEventListener('click', handler);
     },
   };
 }

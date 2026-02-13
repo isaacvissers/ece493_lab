@@ -5,6 +5,7 @@ import { validationService } from '../src/services/validation-service.js';
 import { passwordErrorLogging } from '../src/services/password-error-logging.js';
 import { submissionStorage } from '../src/services/submission-storage.js';
 import { submissionErrorLog } from '../src/services/submission-error-log.js';
+import { uploadErrorLog } from '../src/services/upload-error-log.js';
 
 beforeEach(() => {
   document.body.innerHTML = '';
@@ -17,5 +18,6 @@ beforeEach(() => {
   passwordErrorLogging.clear();
   submissionStorage.reset();
   submissionErrorLog.clear();
+  uploadErrorLog.clear();
   validationService.setPolicyAvailable(true);
 });

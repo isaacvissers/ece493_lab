@@ -18,9 +18,9 @@ integration/acceptance tests mapped to AT-09.md cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create MVC folders and baseline files for file upload in src/
-- [ ] T002 [P] Add file-upload view entry point in src/app.js
-- [ ] T003 [P] Ensure base styles exist in styles/main.css for upload form and errors
+- [X] T001 Create MVC folders and baseline files for file upload in src/
+- [X] T002 [P] Add file-upload view entry point in src/app.js
+- [X] T003 [P] Ensure base styles exist in styles/main.css for upload form and errors
 
 ---
 
@@ -30,9 +30,9 @@ integration/acceptance tests mapped to AT-09.md cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Create storage helpers in src/services/submission-storage.js
-- [ ] T005 [P] Create transient error logger in src/services/upload-error-log.js
-- [ ] T006 [P] Define manuscript file model in src/models/manuscript-file.js
+- [X] T004 [P] Create storage helpers in src/services/submission-storage.js
+- [X] T005 [P] Create transient error logger in src/services/upload-error-log.js
+- [X] T006 [P] Define manuscript file model in src/models/manuscript-file.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -48,22 +48,22 @@ integration/acceptance tests mapped to AT-09.md cases.
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T007 [P] [US1] Acceptance tests mapped to AT-09 in tests/acceptance/at-uc09.test.js
-- [ ] T008 [P] [US1] Integration test for upload flow in tests/integration/upload-manuscript-flow.test.js
-- [ ] T009 [P] [US1] Unit tests for file validation in tests/unit/manuscript-file.test.js (include case-insensitive extensions)
-- [ ] T010 [P] [US1] Integration test for replacement behavior in tests/integration/upload-manuscript-flow.test.js
-- [ ] T011 [P] [US1] Acceptance test for multi-file selection rejection in tests/acceptance/at-uc09.test.js
+- [X] T007 [P] [US1] Acceptance tests mapped to AT-09 in tests/acceptance/at-uc09.test.js
+- [X] T008 [P] [US1] Integration test for upload flow in tests/integration/upload-manuscript-flow.test.js
+- [X] T009 [P] [US1] Unit tests for file validation in tests/unit/manuscript-file.test.js (include case-insensitive extensions)
+- [X] T010 [P] [US1] Integration test for replacement behavior in tests/integration/upload-manuscript-flow.test.js
+- [X] T011 [P] [US1] Acceptance test for multi-file selection rejection in tests/acceptance/at-uc09.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Implement file-upload view in src/views/file-upload-view.js
-- [ ] T013 [P] [US1] Implement file upload controller in src/controllers/file-upload-controller.js
-- [ ] T014 [US1] Wire view/controller to models and services in src/app.js
-- [ ] T015 [US1] Add validation for extensions (.pdf/.docx/.tex) and size in src/models/manuscript-file.js
-- [ ] T016 [US1] Implement upload retry + no-duplicate attachment logic in src/controllers/file-upload-controller.js
-- [ ] T017 [US1] Implement storage failure handling + transient logging in src/services/upload-error-log.js
-- [ ] T018 [US1] Implement cancel-selection handling and unchanged state in src/controllers/file-upload-controller.js
-- [ ] T019 [US1] Implement replacement behavior for new valid upload in src/controllers/file-upload-controller.js
+- [X] T012 [P] [US1] Implement file-upload view in src/views/file-upload-view.js
+- [X] T013 [P] [US1] Implement file upload controller in src/controllers/file-upload-controller.js
+- [X] T014 [US1] Wire view/controller to models and services in src/app.js
+- [X] T015 [US1] Add validation for extensions (.pdf/.docx/.tex) and size in src/models/manuscript-file.js
+- [X] T016 [US1] Implement upload retry + no-duplicate attachment logic in src/controllers/file-upload-controller.js
+- [X] T017 [US1] Implement storage failure handling + transient logging in src/services/upload-error-log.js
+- [X] T018 [US1] Implement cancel-selection handling and unchanged state in src/controllers/file-upload-controller.js
+- [X] T019 [US1] Implement replacement behavior for new valid upload in src/controllers/file-upload-controller.js
 
 **Checkpoint**: User Story 1 should be fully functional and testable independently
 
@@ -73,9 +73,9 @@ integration/acceptance tests mapped to AT-09.md cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T020 [P] Accessibility pass for upload errors and focus states in src/views/file-upload-view.js
-- [ ] T021 [P] Update quickstart verification notes in specs/009-upload-manuscript/quickstart.md
-- [ ] T022 [P] Add quick performance check for validation response in tests/integration/upload-manuscript-flow.test.js
+- [X] T020 [P] Accessibility pass for upload errors and focus states in src/views/file-upload-view.js
+- [X] T021 [P] Update quickstart verification notes in specs/009-upload-manuscript/quickstart.md
+- [X] T022 [P] Add quick performance check for validation response in tests/integration/upload-manuscript-flow.test.js
 - [ ] T023 Run quickstart.md validation steps
 
 ---

@@ -17,4 +17,4 @@ Verify UC-09 upload behavior for valid files, invalid files, failures, and cance
 7. **Storage failure**: Simulate storage write failure, verify error, no attachment, and log entry.
 8. **Cancel selection**: Cancel file chooser and verify no attachment.
 9. **Replace upload**: Upload a different valid file and verify attachment is replaced.
-
+10. **Performance check**: Upload a valid file and confirm validation responds within ~200 ms (excluding upload time).

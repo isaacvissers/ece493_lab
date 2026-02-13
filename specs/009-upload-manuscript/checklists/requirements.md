@@ -8,45 +8,44 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are accepted file types and extensions explicitly listed? [Completeness, Spec §Assumptions/FR-002]
-- [ ] CHK002 Is the file size limit specified? [Completeness, Spec §FR-003]
-- [ ] CHK003 Is replacement behavior defined before final submission? [Completeness, Spec §FR-010]
-- [ ] CHK004 Are cancel-selection outcomes defined? [Completeness, Spec §FR-009]
-- [ ] CHK005 Are upload failure and storage failure requirements defined? [Completeness, Spec §FR-007/FR-008]
+- [x] CHK001 Are accepted file types and extensions explicitly listed? [Completeness, Spec §Assumptions/FR-002]
+- [x] CHK002 Is the file size limit specified? [Completeness, Spec §FR-003]
+- [x] CHK003 Is replacement behavior defined before final submission? [Completeness, Spec §FR-010]
+- [x] CHK004 Are cancel-selection outcomes defined? [Completeness, Spec §FR-009]
+- [x] CHK005 Are upload failure and storage failure requirements defined? [Completeness, Spec §FR-007/FR-008]
 
 ## Requirement Clarity
 
-- [ ] CHK006 Are "accepted formats" errors specified with concrete examples? [Clarity, Spec §FR-005]
-- [ ] CHK007 Is the definition of "duplicate attachments" clear for retry behavior? [Clarity, Ambiguity, Spec §FR-007]
+- [x] CHK006 Are "accepted formats" errors specified with concrete examples? [Clarity, Spec §FR-005]
+- [x] CHK007 Is the definition of "duplicate attachments" clear for retry behavior? [Clarity, Ambiguity, Spec §FR-007]
 
 ## Requirement Consistency
 
-- [ ] CHK008 Do edge cases align with requirements for replacement and multi-file upload? [Consistency, Spec §Edge Cases/FR-010]
-- [ ] CHK009 Are assumptions about extensions consistent with acceptance tests? [Consistency, Spec §Assumptions/AT-09]
+- [x] CHK008 Do edge cases align with requirements for replacement and multi-file upload? [Consistency, Spec §Edge Cases/FR-010]
+- [x] CHK009 Are assumptions about extensions consistent with acceptance tests? [Consistency, Spec §Assumptions/AT-09]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK010 Are success criteria measurable and verifiable without implementation details? [Measurability, Spec §SC-001..SC-005]
-- [ ] CHK011 Do success criteria cover all primary outcomes (valid upload, invalid type, oversize, failure, storage error)? [Coverage, Spec §SC-001..SC-005]
+- [x] CHK010 Are success criteria measurable and verifiable without implementation details? [Measurability, Spec §SC-001..SC-005]
+- [x] CHK011 Do success criteria cover all primary outcomes (valid upload, invalid type, oversize, failure, storage error)? [Coverage, Spec §SC-001..SC-005]
 
 ## Scenario Coverage
 
-- [ ] CHK012 Are primary and exception scenarios (type, size, upload fail, storage fail, cancel) covered? [Coverage, Spec §S-09/FR-001..FR-009]
+- [x] CHK012 Are primary and exception scenarios (type, size, upload fail, storage fail, cancel) covered? [Coverage, Spec §S-09/FR-001..FR-009]
 
 ## Edge Case Coverage
 
-- [ ] CHK013 Are edge cases mapped to requirements or explicitly excluded? [Coverage, Gap]
+- [x] CHK013 Are edge cases mapped to requirements or explicitly excluded? [Coverage, Gap]
 
 ## Non-Functional Requirements
 
-- [ ] CHK014 Are performance targets consistent with constitution (<=200 ms interactions)? [Consistency, Spec §NFR-001]
-- [ ] CHK015 Are accessibility requirements defined for file upload errors? [Coverage, Spec §NFR-002]
+- [x] CHK014 Are performance targets consistent with constitution (<=200 ms interactions)? [Consistency, Spec §NFR-001]
+- [x] CHK015 Are accessibility requirements defined for file upload errors? [Coverage, Spec §NFR-002]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK016 Are assumptions (extensions, size limit, no malware scan) clearly stated and non-conflicting? [Assumption, Spec §Assumptions]
+- [x] CHK016 Are assumptions (extensions, size limit, no malware scan) clearly stated and non-conflicting? [Assumption, Spec §Assumptions]
 
 ## Traceability
 
-- [ ] CHK017 Is traceability to UC-09, S-09, and AT-09 explicitly documented? [Traceability, Spec §Traceability]
-
+- [x] CHK017 Is traceability to UC-09, S-09, and AT-09 explicitly documented? [Traceability, Spec §Traceability]
