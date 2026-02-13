@@ -6,6 +6,8 @@ import { passwordErrorLogging } from '../src/services/password-error-logging.js'
 import { submissionStorage } from '../src/services/submission-storage.js';
 import { submissionErrorLog } from '../src/services/submission-error-log.js';
 import { uploadErrorLog } from '../src/services/upload-error-log.js';
+import { metadataStorage } from '../src/services/metadata-storage.js';
+import { metadataErrorLog } from '../src/services/metadata-error-log.js';
 
 beforeEach(() => {
   document.body.innerHTML = '';
@@ -19,5 +21,7 @@ beforeEach(() => {
   submissionStorage.reset();
   submissionErrorLog.clear();
   uploadErrorLog.clear();
+  metadataStorage.reset();
+  metadataErrorLog.clear();
   validationService.setPolicyAvailable(true);
 });

@@ -3,11 +3,27 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CMS Login</title>
+    <title>CMS</title>
     <link rel="stylesheet" href="../styles/main.css">
   </head>
   <body>
     <main class="app" id="app" aria-live="polite"></main>
+    <template id="metadata-form-template">
+      <form aria-label="Manuscript metadata form">
+        <label for="authorNames">Author names</label>
+        <input id="authorNames" name="authorNames" type="text">
+        <label for="affiliations">Affiliations</label>
+        <input id="affiliations" name="affiliations" type="text">
+        <label for="contactEmail">Contact email</label>
+        <input id="contactEmail" name="contactEmail" type="email">
+        <label for="abstract">Abstract</label>
+        <textarea id="abstract" name="abstract"></textarea>
+        <label for="keywords">Keywords</label>
+        <input id="keywords" name="keywords" type="text">
+        <label for="mainSource">Main source</label>
+        <select id="mainSource" name="mainSource"></select>
+      </form>
+    </template>
     <script type="module" src="./app.js"></script>
   </body>
 </html>

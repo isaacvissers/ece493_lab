@@ -15,6 +15,18 @@ export const UI_MESSAGES = {
     title: 'Submission received',
     body: 'Your manuscript has been submitted.',
   },
+  metadataSaved: {
+    title: 'Metadata saved',
+    body: 'Your manuscript metadata has been saved.',
+  },
+  metadataDraftSaved: {
+    title: 'Metadata draft saved',
+    body: 'Your draft metadata has been saved.',
+  },
+  metadataDraftLoaded: {
+    title: 'Draft loaded',
+    body: 'We loaded your saved metadata draft.',
+  },
   uploadSuccess: {
     title: 'File attached',
     body: 'Your manuscript file is attached.',
@@ -107,8 +119,20 @@ export const UI_MESSAGES = {
     keywordsInvalid: {
       code: 'keywords_invalid',
       field: 'keywords',
-      message: 'Keywords must be a comma-separated list.',
-      recovery: 'Add at least one keyword separated by commas.',
+      message: 'Keywords must be a comma-separated list with 1–10 items.',
+      recovery: 'Add between one and ten keywords separated by commas.',
+    },
+    mainSourceInvalid: {
+      code: 'main_source_invalid',
+      field: 'mainSource',
+      message: 'Main source must be file upload or external repository link.',
+      recovery: 'Select one of the listed main source options.',
+    },
+    abstractTooLong: {
+      code: 'abstract_too_long',
+      field: 'abstract',
+      message: 'Abstract exceeds the 5000 character limit.',
+      recovery: 'Shorten the abstract to 5000 characters or less.',
     },
     fileRequired: {
       code: 'file_required',
@@ -150,6 +174,12 @@ export const UI_MESSAGES = {
       code: 'submission_unavailable',
       field: null,
       message: 'Submission is temporarily unavailable. Try again later.',
+      recovery: 'Please wait a moment and retry.',
+    },
+    metadataUnavailable: {
+      code: 'metadata_unavailable',
+      field: null,
+      message: 'Metadata save is temporarily unavailable. Try again later.',
       recovery: 'Please wait a moment and retry.',
     },
     storageFailure: {

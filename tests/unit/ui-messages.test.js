@@ -22,6 +22,7 @@ test('success copy present', () => {
   expect(UI_MESSAGES.changePasswordSuccess.title).toContain('Password');
   expect(UI_MESSAGES.submissionSuccess.title).toContain('Submission');
   expect(UI_MESSAGES.uploadSuccess.title).toContain('File');
+  expect(UI_MESSAGES.metadataSaved.title).toContain('Metadata');
   expect(UI_MESSAGES.draftSaved.body).toContain('draft');
 });
 
@@ -37,4 +38,7 @@ test('submission errors included', () => {
   expect(UI_MESSAGES.errors.submissionUnavailable.message).toContain('Submission');
   expect(UI_MESSAGES.errors.multipleFiles.message).toContain('single');
   expect(UI_MESSAGES.errors.uploadStorageFailure.message).toContain('unavailable');
+  expect(UI_MESSAGES.errors.mainSourceInvalid.message).toContain('Main source');
+  expect(UI_MESSAGES.errors.abstractTooLong.message).toContain('Abstract');
+  expect(UI_MESSAGES.errors.metadataUnavailable.message).toContain('Metadata');
 });

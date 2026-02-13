@@ -4,6 +4,7 @@ import { createRegistrationView } from '../../src/views/registration-view.js';
 import { createDashboardView } from '../../src/views/dashboard-view.js';
 import { createAccountSettingsView } from '../../src/views/account-settings-view.js';
 import { createSubmitManuscriptView } from '../../src/views/submit-manuscript-view.js';
+import { createMetadataFormView } from '../../src/views/metadata-form-view.js';
 import { createFileUploadView } from '../../src/views/file-upload-view.js';
 
 test('login view exposes fields and status helpers', () => {
@@ -77,6 +78,12 @@ test('dashboard view includes email when provided', () => {
   view.onUploadManuscript(onUpload);
   uploadButton.click();
   expect(onUpload).toHaveBeenCalled();
+  const metadataButton = view.element.querySelector('#enter-metadata-button');
+  expect(metadataButton).toBeTruthy();
+  const onMetadata = jest.fn();
+  view.onEnterMetadata(onMetadata);
+  metadataButton.click();
+  expect(onMetadata).toHaveBeenCalled();
 });
 
 test('dashboard view handles missing user', () => {
@@ -160,4 +167,25 @@ test('file upload view exposes fields and helpers', () => {
   const input = view.element.querySelector('#manuscriptFile');
   Object.defineProperty(input, 'files', { value: null, configurable: true });
   expect(view.getFiles()).toEqual([]);
+});
+
+test('metadata form view exposes fields and helpers', () => {
+  const view = createMetadataFormView();
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('#authorNames')).toBeTruthy();
+  expect(view.element.querySelector('#affiliations')).toBeTruthy();
+  expect(view.element.querySelector('#contactEmail')).toBeTruthy();
+  expect(view.element.querySelector('#abstract')).toBeTruthy();
+  expect(view.element.querySelector('#keywords')).toBeTruthy();
+  expect(view.element.querySelector('#mainSource')).toBeTruthy();
+  view.setFieldError('unknown', 'Oops', 'Recover');
+  expect(view.element.querySelector('#authorNames-error').textContent).toBe('');
+  view.focusField('authorNames');
+  expect(document.activeElement).toBe(view.element.querySelector('#authorNames'));
+  view.setEditable(false);
+  expect(view.element.querySelector('#authorNames').disabled).toBe(true);
+  view.setEditable(true);
+  view.setValues({ authorNames: 'Author One' });
+  expect(view.element.querySelector('#authorNames').value).toBe('Author One');
+  view.focusField('unknown');
 });

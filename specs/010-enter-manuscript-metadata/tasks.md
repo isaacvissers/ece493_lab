@@ -11,9 +11,9 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create metadata feature scaffolding directories in `src/` and `tests/` per plan.md
-- [ ] T002 [P] Add test harness utilities in `tests/test-helpers.js`
-- [ ] T003 [P] Create base stylesheet stub in `styles/main.css`
+- [X] T001 Create metadata feature scaffolding directories in `src/` and `tests/` per plan.md
+- [X] T002 [P] Add test harness utilities in `tests/test-helpers.js`
+- [X] T003 [P] Create base stylesheet stub in `styles/main.css`
 
 ---
 
@@ -21,9 +21,9 @@
 
 **Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
 
-- [ ] T004 Create metadata validation service stub in `src/services/metadata-validation.js`
-- [ ] T005 Create metadata storage service stub in `src/services/metadata-storage.js`
-- [ ] T006 Create transient error log service stub in `src/services/metadata-error-log.js`
+- [X] T004 Create metadata validation service stub in `src/services/metadata-validation.js`
+- [X] T005 Create metadata storage service stub in `src/services/metadata-storage.js`
+- [X] T006 Create transient error log service stub in `src/services/metadata-error-log.js`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -37,26 +37,26 @@
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T007 [P] [US1] Acceptance test mapped to AT-10 in `tests/acceptance/at-uc10.test.js`
-- [ ] T008 [P] [US1] Integration test for full metadata flow in `tests/integration/metadata-flow.test.js`
-- [ ] T009 [P] [US1] Unit tests for manuscript metadata model in `tests/unit/manuscript-metadata.test.js`
-- [ ] T010 [P] [US1] Unit tests for metadata draft lifecycle in `tests/unit/metadata-draft.test.js`
-- [ ] T011 [P] [US1] Unit tests for validation rules in `tests/unit/metadata-validation.test.js`
-- [ ] T012 [P] [US1] Unit tests for transient error log in `tests/unit/metadata-error-log.test.js`
-- [ ] T013 [P] [US1] Performance check for <=200 ms validation feedback in `tests/integration/metadata-performance.test.js`
+- [X] T007 [P] [US1] Acceptance test mapped to AT-10 in `tests/acceptance/at-uc10.test.js`
+- [X] T008 [P] [US1] Integration test for full metadata flow in `tests/integration/metadata-flow.test.js`
+- [X] T009 [P] [US1] Unit tests for manuscript metadata model in `tests/unit/manuscript-metadata.test.js`
+- [X] T010 [P] [US1] Unit tests for metadata draft lifecycle in `tests/unit/metadata-draft.test.js`
+- [X] T011 [P] [US1] Unit tests for validation rules in `tests/unit/metadata-validation.test.js`
+- [X] T012 [P] [US1] Unit tests for transient error log in `tests/unit/metadata-error-log.test.js`
+- [X] T013 [P] [US1] Performance check for <=200 ms validation feedback in `tests/integration/metadata-performance.test.js`
 
 ### Implementation for User Story 1
 
-- [ ] T014 [P] [US1] Implement `ManuscriptMetadata` model in `src/models/manuscript-metadata.js`
-- [ ] T015 [P] [US1] Implement `MetadataDraft` model and lifecycle in `src/models/metadata-draft.js`
-- [ ] T016 [US1] Implement validation rules in `src/services/metadata-validation.js` (required fields, email format, keyword list 1–10, main source allowed values, abstract length limit, separator normalization)
-- [ ] T017 [US1] Implement persistence in `src/services/metadata-storage.js` (draft save, final save, load, failure handling)
-- [ ] T018 [US1] Implement transient error logging in `src/services/metadata-error-log.js`
-- [ ] T019 [US1] Render metadata form and error states in `src/views/metadata-form-view.js`
-- [ ] T020 [US1] Implement controller logic in `src/controllers/metadata-controller.js` (draft vs final save, validation, error messaging, editability rule)
-- [ ] T021 [US1] Wire controller/view in `src/app.js`
-- [ ] T022 [US1] Update `src/index.html` with metadata form fields and accessibility hooks
-- [ ] T023 [US1] Update styling in `styles/main.css` for form layout and error visibility
+- [X] T014 [P] [US1] Implement `ManuscriptMetadata` model in `src/models/manuscript-metadata.js`
+- [X] T015 [P] [US1] Implement `MetadataDraft` model and lifecycle in `src/models/metadata-draft.js`
+- [X] T016 [US1] Implement validation rules in `src/services/metadata-validation.js` (required fields, email format, keyword list 1–10, main source allowed values, abstract length limit, separator normalization)
+- [X] T017 [US1] Implement persistence in `src/services/metadata-storage.js` (draft save, final save, load, failure handling)
+- [X] T018 [US1] Implement transient error logging in `src/services/metadata-error-log.js`
+- [X] T019 [US1] Render metadata form and error states in `src/views/metadata-form-view.js`
+- [X] T020 [US1] Implement controller logic in `src/controllers/metadata-controller.js` (draft vs final save, validation, error messaging, editability rule)
+- [X] T021 [US1] Wire controller/view in `src/app.js`
+- [X] T022 [US1] Update `src/index.html` with metadata form fields and accessibility hooks
+- [X] T023 [US1] Update styling in `styles/main.css` for form layout and error visibility
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -67,7 +67,7 @@
 **Purpose**: Improvements that affect multiple areas
 
 - [ ] T024 [P] Run quickstart validation steps from `specs/010-enter-manuscript-metadata/quickstart.md`
-- [ ] T025 [P] Update documentation comments in `src/controllers/metadata-controller.js`
+- [X] T025 [P] Update documentation comments in `src/controllers/metadata-controller.js`
 
 ---
 

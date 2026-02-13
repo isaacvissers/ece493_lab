@@ -118,6 +118,17 @@ test('app routes to upload manuscript from dashboard', async () => {
   expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
 });
 
+test('app routes to metadata form from dashboard', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_15', email: 'meta@example.com', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowDashboard();
+  appRoot.querySelector('#enter-metadata-button').click();
+  expect(appRoot.querySelector('#authorNames')).toBeTruthy();
+});
+
 test('unauthenticated submit routes to login then back to submission', async () => {
   await setupApp();
   const { storageService } = await import('../../src/services/storage-service.js');
@@ -158,4 +169,25 @@ test('unauthenticated upload routes to login then back to upload view', async ()
   const event = new Event('submit', { bubbles: true, cancelable: true });
   appRoot.querySelector('form').dispatchEvent(event);
   expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
+});
+
+test('unauthenticated metadata routes to login then back to metadata view', async () => {
+  await setupApp();
+  const { storageService } = await import('../../src/services/storage-service.js');
+  storageService.saveAccount({
+    id: 'acct_16',
+    email: 'meta2@example.com',
+    normalizedEmail: 'meta2@example.com',
+    password: 'validPass1!',
+    createdAt: new Date().toISOString(),
+  });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowMetadata();
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
+  appRoot.querySelector('#login-email').value = 'meta2@example.com';
+  appRoot.querySelector('#login-password').value = 'validPass1!';
+  const event = new Event('submit', { bubbles: true, cancelable: true });
+  appRoot.querySelector('form').dispatchEvent(event);
+  expect(appRoot.querySelector('#authorNames')).toBeTruthy();
 });
