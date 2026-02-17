@@ -54,7 +54,27 @@ export function createSubmitManuscriptView() {
   const emailRow = createInputRow({ id: 'contactEmail', label: 'Contact email', type: 'email', placeholder: 'author@example.com' });
   const abstractRow = createInputRow({ id: 'abstract', label: 'Abstract', type: 'textarea' });
   const keywordsRow = createInputRow({ id: 'keywords', label: 'Keywords', placeholder: 'keyword1, keyword2' });
-  const sourceRow = createInputRow({ id: 'mainSource', label: 'Main source', placeholder: 'Primary contribution' });
+  const sourceRow = createElement('div', 'form-row');
+  const sourceLabel = document.createElement('label');
+  sourceLabel.setAttribute('for', 'mainSource');
+  sourceLabel.textContent = 'Main source';
+  const sourceSelect = document.createElement('select');
+  sourceSelect.id = 'mainSource';
+  sourceSelect.name = 'mainSource';
+  const optionPlaceholder = document.createElement('option');
+  optionPlaceholder.value = '';
+  optionPlaceholder.textContent = 'Select a source';
+  const optionFile = document.createElement('option');
+  optionFile.value = 'file upload';
+  optionFile.textContent = 'File upload';
+  const optionExternal = document.createElement('option');
+  optionExternal.value = 'external repository link';
+  optionExternal.textContent = 'External repository link';
+  sourceSelect.append(optionPlaceholder, optionFile, optionExternal);
+  const sourceError = createElement('div', 'error');
+  sourceError.id = 'mainSource-error';
+  sourceSelect.setAttribute('aria-describedby', 'mainSource-error');
+  sourceRow.append(sourceLabel, sourceSelect, sourceError);
 
   const metadataSection = document.createElement('fieldset');
   const metadataLegend = document.createElement('legend');
@@ -67,7 +87,7 @@ export function createSubmitManuscriptView() {
     emailRow.row,
     abstractRow.row,
     keywordsRow.row,
-    sourceRow.row,
+    sourceRow,
   );
 
   const fileRow = createElement('div', 'form-row');
@@ -136,7 +156,7 @@ export function createSubmitManuscriptView() {
     contactEmail: emailRow,
     abstract: abstractRow,
     keywords: keywordsRow,
-    mainSource: sourceRow,
+    mainSource: { input: sourceSelect, error: sourceError },
     manuscriptFile: { input: fileInput, error: fileError },
   };
 
@@ -188,7 +208,7 @@ export function createSubmitManuscriptView() {
         contactEmail: emailRow.input.value,
         abstract: abstractRow.input.value,
         keywords: keywordsRow.input.value,
-        mainSource: sourceRow.input.value,
+      mainSource: sourceSelect.value,
       };
     },
     getFile() {
@@ -201,7 +221,7 @@ export function createSubmitManuscriptView() {
       emailRow.input.value = values.contactEmail || '';
       abstractRow.input.value = values.abstract || '';
       keywordsRow.input.value = values.keywords || '';
-      sourceRow.input.value = values.mainSource || '';
+      sourceSelect.value = values.mainSource || '';
     },
     clearErrors,
     setFieldError,

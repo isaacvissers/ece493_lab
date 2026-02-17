@@ -43,11 +43,11 @@ export function createDashboardView(user, manuscripts = []) {
 
   const submissionsSection = createElement('div', 'submission-list');
   const submissionsTitle = createElement('h2');
-  submissionsTitle.textContent = 'Your submissions';
+  submissionsTitle.textContent = 'Your uploaded papers';
   const submissionsBody = createElement('div');
   if (!manuscripts.length) {
     const empty = createElement('p', 'helper');
-    empty.textContent = 'No submissions yet.';
+    empty.textContent = 'No uploaded papers yet.';
     submissionsBody.append(empty);
   } else {
     const list = document.createElement('ul');

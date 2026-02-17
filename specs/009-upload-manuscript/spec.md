@@ -47,7 +47,8 @@ invalid types/sizes are rejected with clear errors and retry is allowed for fail
 - File size limit is 7MB.
 - Virus/malware scanning is not required.
 - If a new file is uploaded before final submission, it replaces the previous attachment.
-- The upload option is presented within the submit paper form (no separate upload page required).
+- The upload option is presented within the submit paper form alongside metadata and validation controls
+  (no separate upload page required).
 - Logging for upload/storage failures is available (transient; no persistence required).
 
 ### Out of Scope

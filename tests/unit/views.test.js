@@ -95,13 +95,13 @@ test('dashboard view handles missing user', () => {
   const view = createDashboardView(null, []);
   document.body.appendChild(view.element);
   expect(view.element.querySelector('.helper').textContent).toContain('Signed in.');
-  expect(view.element.querySelector('.submission-list').textContent).toContain('No submissions yet');
+  expect(view.element.querySelector('.submission-list').textContent).toContain('No uploaded papers yet');
 });
 
 test('dashboard view defaults submissions list when omitted', () => {
   const view = createDashboardView({ email: 'default@example.com' });
   document.body.appendChild(view.element);
-  expect(view.element.querySelector('.submission-list').textContent).toContain('No submissions yet');
+  expect(view.element.querySelector('.submission-list').textContent).toContain('No uploaded papers yet');
 });
 
 test('account settings view exposes fields and helpers', () => {

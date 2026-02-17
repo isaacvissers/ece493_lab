@@ -23,7 +23,7 @@ entries.
 
 1. **Given** an authenticated author on the submit paper form, **When** they view the metadata
    section, **Then** all required fields (authors, affiliations, contact info, abstract,
-   keywords, main source) are visible and editable.
+   keywords, main source) are visible and editable within the same form as upload and validation.
 2. **Given** all required metadata is valid, **When** the author saves/submits, **Then** the
    system validates required fields and formats, stores metadata, confirms success, and
    reloading shows saved values.
@@ -54,7 +54,8 @@ entries.
 - Draft and final metadata persistence are available via the submission storage service.
 - Logging for database failures is available (transient; no persistence required).
 - Keyword validation enforces 1–10 keywords and standard comma-separated list format.
-- Metadata entry is presented within the submit paper form (no separate metadata page required).
+- Metadata entry is presented within the submit paper form alongside upload and validation controls
+  (no separate metadata page required).
 
 ### Out of Scope
 

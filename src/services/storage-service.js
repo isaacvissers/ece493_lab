@@ -115,6 +115,7 @@ export const storageService = {
       id: account.id,
       email: account.email,
       createdAt: account.createdAt,
+      role: account.role || null,
     };
     persistSession(session);
   },

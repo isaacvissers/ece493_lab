@@ -21,11 +21,12 @@ confirmation; invalid metadata or file issues block submission with clear errors
 **Acceptance Scenarios** (derived from `lab1_files/S-08.md` and `lab1_files/AT-08.md`):
 
 1. **Given** an authenticated author, **When** they open **Submit Paper**, **Then** the
-   submission form is displayed with a back option to return to the Author Dashboard.
+   submission form is displayed with metadata, upload, and validation controls in the same form
+   plus a back option to return to the Author Dashboard.
 2. **Given** valid metadata and a valid file, **When** the author submits, **Then**
    the system validates fields and file, stores metadata + file, shows success, and
    redirects to the author home page (Author Dashboard) where the new submission
-   appears in the submissions list with its current status.
+   appears in the list of uploaded papers with its current status.
 3. **Given** the author is not logged in, **When** they attempt to submit, **Then**
    they are redirected to login and returned to the submission page after login.
 4. **Given** the author clicks **Save Draft**, **When** required data is sufficient for
@@ -117,6 +118,8 @@ confirmation; invalid metadata or file issues block submission with clear errors
   Author Dashboard after successful submission.
 - **FR-017**: The submit paper form MUST provide a back control that returns the author
   to the Author Dashboard without submitting.
+- **FR-018**: The submit paper form MUST present metadata, upload, and validation controls
+  within the same form (no separate pages required).
 
 ### Key Entities *(include if feature involves data)*
 

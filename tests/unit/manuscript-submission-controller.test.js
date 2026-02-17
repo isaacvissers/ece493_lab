@@ -57,7 +57,7 @@ function setValues(view, overrides = {}) {
     contactEmail: 'author@example.com',
     abstract: 'Abstract',
     keywords: 'paper, test',
-    mainSource: 'Main source',
+    mainSource: 'file upload',
     ...overrides,
   });
 }
@@ -298,7 +298,7 @@ test('loads draft on init', () => {
       contactEmail: 'author@example.com',
       abstract: 'Abstract',
       keywords: 'one, two',
-      mainSource: 'Source',
+      mainSource: 'file upload',
     },
     draftFileMetadata: { originalName: 'draft.pdf', fileType: 'pdf', fileSizeBytes: 100 },
     savedAt: '2026-02-02T10:00:00.000Z',

@@ -7,6 +7,8 @@ import { createAccountSettingsView } from './views/account-settings-view.js';
 import { createAccountController } from './controllers/account-controller.js';
 import { createSubmitManuscriptView } from './views/submit-manuscript-view.js';
 import { createManuscriptSubmissionController } from './controllers/manuscript-submission-controller.js';
+import { createRefereeAssignmentView } from './views/referee-assignment-view.js';
+import { createRefereeAssignmentController } from './controllers/referee-assignment-controller.js';
 import { storageService } from './services/storage-service.js';
 import { sessionState } from './models/session-state.js';
 import { loginLogging } from './services/login-logging.js';
@@ -15,12 +17,16 @@ import { submissionStorage } from './services/submission-storage.js';
 import { submissionErrorLog } from './services/submission-error-log.js';
 import { draftStorage } from './services/draft-storage.js';
 import { draftErrorLog } from './services/draft-error-log.js';
+import { assignmentStorage } from './services/assignment-storage.js';
+import { assignmentErrorLog } from './services/assignment-error-log.js';
+import { notificationService } from './services/notification-service.js';
 import { UI_MESSAGES } from './services/ui-messages.js';
 
 const appRoot = document.getElementById('app');
 let loginController = null;
 let loginView = null;
 let pendingRoute = null;
+let pendingPaperId = null;
 
 function render(view) {
   appRoot.innerHTML = '';
@@ -36,9 +42,15 @@ function showLogin(accessDeniedMessage = null) {
     loginLogger: loginLogging,
     onLoginSuccess: () => {
       const nextRoute = pendingRoute;
+      const nextPaperId = pendingPaperId;
       pendingRoute = null;
+      pendingPaperId = null;
       if (['submit', 'upload', 'metadata', 'submission-validation'].includes(nextRoute)) {
         showSubmitManuscript();
+        return;
+      }
+      if (nextRoute === 'assign-referees') {
+        showRefereeAssignment(nextPaperId);
         return;
       }
       showDashboard();
@@ -140,6 +152,31 @@ function showDashboard() {
   render(dashboardView.element);
 }
 
+function showRefereeAssignment(paperId) {
+  if (!sessionState.isAuthenticated()) {
+    pendingRoute = 'assign-referees';
+    pendingPaperId = paperId;
+    showLogin(UI_MESSAGES.errors.accessDenied.message);
+    return;
+  }
+  const assignmentView = createRefereeAssignmentView();
+  const assignmentController = createRefereeAssignmentController({
+    view: assignmentView,
+    assignmentStorage,
+    notificationService,
+    assignmentErrorLog,
+    sessionState,
+    paperId,
+    onAuthRequired: () => {
+      pendingRoute = 'assign-referees';
+      pendingPaperId = paperId;
+      showLogin(UI_MESSAGES.errors.accessDenied.message);
+    },
+  });
+  assignmentController.init();
+  render(assignmentView.element);
+}
+
 function bootstrap() {
   showLogin();
 }
@@ -155,4 +192,5 @@ export {
   showUploadManuscript as __testShowUploadManuscript,
   showMetadata as __testShowMetadata,
   showSubmissionValidation as __testShowSubmissionValidation,
+  showRefereeAssignment as __testShowRefereeAssignment,
 };

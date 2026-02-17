@@ -31,7 +31,7 @@ function setValues(view, overrides = {}) {
     contactEmail: 'author@example.com',
     abstract: 'Abstract',
     keywords: 'paper, test',
-    mainSource: 'Main source',
+    mainSource: 'file upload',
     ...overrides,
   };
   view.setValues(values);

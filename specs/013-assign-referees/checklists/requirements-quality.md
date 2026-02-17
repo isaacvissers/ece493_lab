@@ -8,86 +8,86 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are role/permission requirements explicitly stated for assignment? [Completeness, Spec §FR-002]
-- [ ] CHK002 Is paper eligibility for assignment explicitly specified? [Completeness, Spec §FR-003]
-- [ ] CHK003 Is the required referee count explicitly stated? [Completeness, Spec §FR-001]
-- [ ] CHK004 Are email validation requirements specified? [Completeness, Spec §FR-004]
-- [ ] CHK005 Are duplicate handling requirements specified? [Completeness, Spec §FR-006]
-- [ ] CHK006 Is atomic save behavior specified for persistence failures? [Completeness, Spec §FR-007]
-- [ ] CHK007 Is success confirmation specified for successful assignments? [Completeness, Spec §FR-008]
-- [ ] CHK008 Are notification requirements explicitly specified? [Completeness, Spec §FR-009]
-- [ ] CHK009 Are notification failure behaviors specified? [Completeness, Spec §FR-010]
-- [ ] CHK010 Are out-of-scope items documented (e.g., unassign/replace)? [Completeness, Spec §Assumptions]
+- [x] CHK001 Are role/permission requirements explicitly stated for assignment? [Completeness, Spec §FR-002]
+- [x] CHK002 Is paper eligibility for assignment explicitly specified? [Completeness, Spec §FR-003]
+- [x] CHK003 Is the required referee count explicitly stated? [Completeness, Spec §FR-001]
+- [x] CHK004 Are email validation requirements specified? [Completeness, Spec §FR-004]
+- [x] CHK005 Are duplicate handling requirements specified? [Completeness, Spec §FR-006]
+- [x] CHK006 Is atomic save behavior specified for persistence failures? [Completeness, Spec §FR-007]
+- [x] CHK007 Is success confirmation specified for successful assignments? [Completeness, Spec §FR-008]
+- [x] CHK008 Are notification requirements explicitly specified? [Completeness, Spec §FR-009]
+- [x] CHK009 Are notification failure behaviors specified? [Completeness, Spec §FR-010]
+- [x] CHK010 Are out-of-scope items documented (e.g., unassign/replace)? [Completeness, Spec §Assumptions]
 
 ## Requirement Clarity
 
-- [ ] CHK011 Is “eligible” status defined with specific paper states? [Ambiguity, Spec §FR-003]
-- [ ] CHK012 Is “valid email format” defined or referenced with explicit criteria? [Ambiguity, Spec §FR-004]
-- [ ] CHK013 Is uniqueness defined for referee emails (case sensitivity, trimming)? [Gap]
-- [ ] CHK014 Is “notification sent” clarified with channel/timing expectations? [Gap]
-- [ ] CHK015 Is “authorization message” defined with expected content or placement? [Gap]
-- [ ] CHK016 Is the “block assignment” behavior clarified with a specific user-facing outcome? [Gap]
-- [ ] CHK017 Is the success confirmation defined (message content or UI indicator)? [Ambiguity, Spec §FR-008]
-- [ ] CHK018 Are “ineligible” statuses enumerated or referenced? [Gap]
+- [x] CHK011 Is “eligible” status defined with specific paper states? [Ambiguity, Spec §FR-003]
+- [x] CHK012 Is “valid email format” defined or referenced with explicit criteria? [Ambiguity, Spec §FR-004]
+- [x] CHK013 Is uniqueness defined for referee emails (case sensitivity, trimming)? [Gap]
+- [x] CHK014 Is “notification sent” clarified with channel/timing expectations? [Gap]
+- [x] CHK015 Is “authorization message” defined with expected content or placement? [Gap]
+- [x] CHK016 Is the “block assignment” behavior clarified with a specific user-facing outcome? [Gap]
+- [x] CHK017 Is the success confirmation defined (message content or UI indicator)? [Ambiguity, Spec §FR-008]
+- [x] CHK018 Are “ineligible” statuses enumerated or referenced? [Gap]
 
 ## Requirement Consistency
 
-- [ ] CHK019 Do User Story 1 and FR-001 consistently state “exactly three referees”? [Consistency, Spec §User Story 1, Spec §FR-001]
-- [ ] CHK020 Do FR-005 and FR-006 consistently define behavior when duplicates reduce count below three? [Ambiguity, Spec §FR-005, Spec §FR-006]
-- [ ] CHK021 Do Edge Cases align with the exact-three rule? [Consistency, Spec §Edge Cases, Spec §FR-005]
-- [ ] CHK022 Do acceptance scenarios reflect required notifications after assignment? [Consistency, Spec §User Story 1, Spec §FR-009]
-- [ ] CHK023 Do assumptions avoid contradicting functional requirements? [Consistency, Spec §Assumptions]
+- [x] CHK019 Do User Story 1 and FR-001 consistently state “exactly three referees”? [Consistency, Spec §User Story 1, Spec §FR-001]
+- [x] CHK020 Do FR-005 and FR-006 consistently define behavior when duplicates reduce count below three? [Ambiguity, Spec §FR-005, Spec §FR-006]
+- [x] CHK021 Do Edge Cases align with the exact-three rule? [Consistency, Spec §Edge Cases, Spec §FR-005]
+- [x] CHK022 Do acceptance scenarios reflect required notifications after assignment? [Consistency, Spec §User Story 1, Spec §FR-009]
+- [x] CHK023 Do assumptions avoid contradicting functional requirements? [Consistency, Spec §Assumptions]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK024 Are acceptance scenarios provided for each user story? [Completeness, Spec §User Story 1, Spec §User Story 2, Spec §User Story 3]
-- [ ] CHK025 Are acceptance scenarios written with measurable outcomes? [Measurability, Spec §User Story 1]
-- [ ] CHK026 Are invalid/blank email scenarios measurable and unambiguous? [Clarity, Spec §User Story 3, Spec §FR-004]
-- [ ] CHK027 Is duplicate handling acceptance described with measurable outcomes? [Clarity, Spec §User Story 3, Spec §FR-006]
-- [ ] CHK028 Is notification failure acceptance covered with a measurable outcome? [Completeness, Spec §Edge Cases, Spec §FR-010]
-- [ ] CHK029 Is atomic save failure acceptance described with measurable outcomes? [Completeness, Spec §Edge Cases, Spec §FR-007]
-- [ ] CHK030 Are success criteria metrics objectively measurable? [Measurability, Spec §SC-001, Spec §SC-002, Spec §SC-003, Spec §SC-004]
+- [x] CHK024 Are acceptance scenarios provided for each user story? [Completeness, Spec §User Story 1, Spec §User Story 2, Spec §User Story 3]
+- [x] CHK025 Are acceptance scenarios written with measurable outcomes? [Measurability, Spec §User Story 1]
+- [x] CHK026 Are invalid/blank email scenarios measurable and unambiguous? [Clarity, Spec §User Story 3, Spec §FR-004]
+- [x] CHK027 Is duplicate handling acceptance described with measurable outcomes? [Clarity, Spec §User Story 3, Spec §FR-006]
+- [x] CHK028 Is notification failure acceptance covered with a measurable outcome? [Completeness, Spec §Edge Cases, Spec §FR-010]
+- [x] CHK029 Is atomic save failure acceptance described with measurable outcomes? [Completeness, Spec §Edge Cases, Spec §FR-007]
+- [x] CHK030 Are success criteria metrics objectively measurable? [Measurability, Spec §SC-001, Spec §SC-002, Spec §SC-003, Spec §SC-004]
 
 ## Scenario Coverage
 
-- [ ] CHK031 Are primary flow requirements complete end-to-end? [Coverage, Spec §User Story 1]
-- [ ] CHK032 Are authentication/authorization alternate flows specified? [Coverage, Spec §User Story 2]
-- [ ] CHK033 Are ineligible paper flows specified? [Coverage, Spec §User Story 2]
-- [ ] CHK034 Are invalid and blank input flows specified? [Coverage, Spec §User Story 3]
-- [ ] CHK035 Are duplicate and already-assigned flows specified? [Coverage, Spec §User Story 3]
-- [ ] CHK036 Are notification failure flows specified? [Coverage, Spec §Edge Cases, Spec §FR-010]
-- [ ] CHK037 Are recovery expectations after save failure specified? [Gap]
-- [ ] CHK038 Are concurrent assignment conflicts addressed? [Gap]
+- [x] CHK031 Are primary flow requirements complete end-to-end? [Coverage, Spec §User Story 1]
+- [x] CHK032 Are authentication/authorization alternate flows specified? [Coverage, Spec §User Story 2]
+- [x] CHK033 Are ineligible paper flows specified? [Coverage, Spec §User Story 2]
+- [x] CHK034 Are invalid and blank input flows specified? [Coverage, Spec §User Story 3]
+- [x] CHK035 Are duplicate and already-assigned flows specified? [Coverage, Spec §User Story 3]
+- [x] CHK036 Are notification failure flows specified? [Coverage, Spec §Edge Cases, Spec §FR-010]
+- [x] CHK037 Are recovery expectations after save failure specified? [Gap]
+- [x] CHK038 Are concurrent assignment conflicts addressed? [Gap]
 
 ## Edge Case Coverage
 
-- [ ] CHK039 Are persistence failures defined as all-or-nothing? [Coverage, Spec §FR-007]
-- [ ] CHK040 Are notification failures defined to preserve assignments? [Coverage, Spec §FR-010]
-- [ ] CHK041 Are duplicate emails with case variation addressed? [Gap]
-- [ ] CHK042 Are multiple simultaneous validation errors handled explicitly? [Gap]
-- [ ] CHK043 Are session-expiry behaviors specified for assignment? [Gap]
-- [ ] CHK044 Are role changes mid-flow addressed? [Gap]
+- [x] CHK039 Are persistence failures defined as all-or-nothing? [Coverage, Spec §FR-007]
+- [x] CHK040 Are notification failures defined to preserve assignments? [Coverage, Spec §FR-010]
+- [x] CHK041 Are duplicate emails with case variation addressed? [Gap]
+- [x] CHK042 Are multiple simultaneous validation errors handled explicitly? [Gap]
+- [x] CHK043 Are session-expiry behaviors specified for assignment? [Gap]
+- [x] CHK044 Are role changes mid-flow addressed? [Gap]
 
 ## Non-Functional Requirements
 
-- [ ] CHK045 Are interaction performance targets explicitly stated for assignment flows? [Completeness, Spec §SC-002]
-- [ ] CHK046 Are responsiveness constraints (<200 ms interaction) stated as requirements? [Gap]
-- [ ] CHK047 Are accessibility requirements specified for the assignment form and messages? [Gap]
-- [ ] CHK048 Are privacy requirements defined for handling referee emails? [Gap]
-- [ ] CHK049 Are notification reliability expectations (retry/timeout) specified? [Gap]
+- [x] CHK045 Are interaction performance targets explicitly stated for assignment flows? [Completeness, Spec §SC-002]
+- [x] CHK046 Are responsiveness constraints (<200 ms interaction) stated as requirements? [Gap]
+- [x] CHK047 Are accessibility requirements specified for the assignment form and messages? [Gap]
+- [x] CHK048 Are privacy requirements defined for handling referee emails? [Gap]
+- [x] CHK049 Are notification reliability expectations (retry/timeout) specified? [Gap]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK050 Are assumptions about referee accounts documented? [Assumption, Spec §Assumptions]
-- [ ] CHK051 Are notification dependencies documented as required services? [Dependency, Spec §FR-009]
-- [ ] CHK052 Are storage/persistence assumptions documented? [Gap]
-- [ ] CHK053 Are eligibility status sources documented? [Gap]
+- [x] CHK050 Are assumptions about referee accounts documented? [Assumption, Spec §Assumptions]
+- [x] CHK051 Are notification dependencies documented as required services? [Dependency, Spec §FR-009]
+- [x] CHK052 Are storage/persistence assumptions documented? [Gap]
+- [x] CHK053 Are eligibility status sources documented? [Gap]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK054 Is the relationship between duplicate handling and exact count unambiguous? [Ambiguity, Spec §FR-005, Spec §FR-006]
-- [ ] CHK055 Are “submitted” vs “eligible” terms consistently defined? [Ambiguity, Spec §User Story 1, Spec §User Story 2]
-- [ ] CHK056 Are “referee assignment” and “referee list” terms defined consistently? [Ambiguity, Spec §Key Entities]
+- [x] CHK054 Is the relationship between duplicate handling and exact count unambiguous? [Ambiguity, Spec §FR-005, Spec §FR-006]
+- [x] CHK055 Are “submitted” vs “eligible” terms consistently defined? [Ambiguity, Spec §User Story 1, Spec §User Story 2]
+- [x] CHK056 Are “referee assignment” and “referee list” terms defined consistently? [Ambiguity, Spec §Key Entities]
 
 ## Notes
 

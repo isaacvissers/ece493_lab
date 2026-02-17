@@ -159,7 +159,7 @@ test('dashboard shows no submissions when user email missing', async () => {
   const module = await import('../../src/app.js');
   const appRoot = document.getElementById('app');
   module.__testShowDashboard();
-  expect(appRoot.querySelector('.submission-list').textContent).toContain('No submissions yet.');
+  expect(appRoot.querySelector('.submission-list').textContent).toContain('No uploaded papers yet.');
 });
 
 test('unauthenticated submit routes to login then back to submission', async () => {
@@ -265,4 +265,44 @@ test('unauthenticated validation routes to login then back to validation view', 
   const event = new Event('submit', { bubbles: true, cancelable: true });
   appRoot.querySelector('form').dispatchEvent(event);
   expect(appRoot.querySelector('#title')).toBeTruthy();
+});
+
+test('unauthenticated assign-referees routes to login then back to assignment view', async () => {
+  await setupApp();
+  const { storageService } = await import('../../src/services/storage-service.js');
+  storageService.saveAccount({
+    id: 'acct_21',
+    email: 'editor@example.com',
+    normalizedEmail: 'editor@example.com',
+    password: 'validPass1!',
+    role: 'Editor',
+    createdAt: new Date().toISOString(),
+  });
+  const { assignmentStorage } = await import('../../src/services/assignment-storage.js');
+  assignmentStorage.reset();
+  assignmentStorage.seedPaper({ id: 'paper_1', title: 'Paper', status: 'Submitted' });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowRefereeAssignment('paper_1');
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
+  appRoot.querySelector('#login-email').value = 'editor@example.com';
+  appRoot.querySelector('#login-password').value = 'validPass1!';
+  const event = new Event('submit', { bubbles: true, cancelable: true });
+  appRoot.querySelector('form').dispatchEvent(event);
+  expect(appRoot.querySelector('#referee-email-1')).toBeTruthy();
+});
+
+test('assign-referees submit with expired session routes to login', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_22', email: 'editor2@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const { assignmentStorage } = await import('../../src/services/assignment-storage.js');
+  assignmentStorage.reset();
+  assignmentStorage.seedPaper({ id: 'paper_2', title: 'Paper', status: 'Submitted' });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowRefereeAssignment('paper_2');
+  sessionState.clear();
+  appRoot.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
 });
