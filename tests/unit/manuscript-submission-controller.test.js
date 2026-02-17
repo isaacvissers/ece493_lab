@@ -6,9 +6,11 @@ import { UI_MESSAGES } from '../../src/services/ui-messages.js';
 function createMocks() {
   return {
     storage: {
+      saveSubmission: jest.fn(),
+    },
+    draftStorage: {
       loadDraft: jest.fn(() => null),
       saveDraft: jest.fn(),
-      saveSubmission: jest.fn(),
       clearDraft: jest.fn(),
     },
     sessionState: {
@@ -16,6 +18,9 @@ function createMocks() {
       getCurrentUser: jest.fn(() => ({ id: 'acct_1', email: 'author@example.com' })),
     },
     errorLogger: {
+      logFailure: jest.fn(),
+    },
+    draftErrorLogger: {
       logFailure: jest.fn(),
     },
   };
@@ -31,9 +36,14 @@ function setupController(overrides = {}) {
   const controller = createManuscriptSubmissionController({
     view,
     storage: overrides.storage || mocks.storage,
+    draftStorage: overrides.draftStorage || mocks.draftStorage,
     sessionState: overrides.sessionState || mocks.sessionState,
     errorLogger: overrides.errorLogger || mocks.errorLogger,
+    draftErrorLogger: Object.prototype.hasOwnProperty.call(overrides, 'draftErrorLogger')
+      ? overrides.draftErrorLogger
+      : mocks.draftErrorLogger,
     onSubmitSuccess,
+    onAuthRequired: overrides.onAuthRequired,
   });
   controller.init();
   return { view, mocks, controller, onSubmitSuccess };
@@ -195,57 +205,92 @@ test('skips draft clearing when user key missing', () => {
     isAuthenticated: jest.fn(() => true),
     getCurrentUser: jest.fn(() => null),
   };
-  const storage = createMocks().storage;
-  const { view } = setupController({ storage, sessionState });
+  const draftStorage = createMocks().draftStorage;
+  const { view } = setupController({ draftStorage, sessionState });
   setValues(view);
   setFile(view, makeFile('paper.pdf', 1000, 'application/pdf'));
   submit(view);
-  expect(storage.clearDraft).not.toHaveBeenCalled();
+  expect(draftStorage.clearDraft).not.toHaveBeenCalled();
   expect(view.element.querySelector('.status').textContent).toContain('Submission');
 });
 
-test('saves draft when minimal fields provided', () => {
+test('saves draft even when fields are incomplete', () => {
   const { view, mocks } = setupController();
-  setValues(view, { title: 'Draft title', contactEmail: 'author@example.com' });
-  view.element.querySelector('#save-draft').click();
-  expect(mocks.storage.saveDraft).toHaveBeenCalled();
-  expect(view.element.querySelector('.status').textContent).toContain('draft');
-});
-
-test('draft save shows errors when missing fields', () => {
-  const { view } = setupController();
   setValues(view, { title: '', contactEmail: '' });
   view.element.querySelector('#save-draft').click();
-  expect(view.element.querySelector('#title-error').textContent).toContain('required');
+  expect(mocks.draftStorage.saveDraft).toHaveBeenCalled();
+  expect(view.element.querySelector('.status').textContent).toContain('Draft saved');
+  expect(view.element.querySelector('#draft-warning').textContent).toContain('incomplete');
 });
 
-test('draft save blocks unauthenticated users', () => {
+test('draft warning uses fallback label when missing', () => {
+  const originalLabel = UI_MESSAGES.labels.title;
+  delete UI_MESSAGES.labels.title;
+  const { view } = setupController();
+  setValues(view, { title: '' });
+  view.element.querySelector('#save-draft').click();
+  expect(view.element.querySelector('#draft-warning').textContent).toContain('title');
+  UI_MESSAGES.labels.title = originalLabel;
+});
+
+test('draft save clears warning when fields are complete', () => {
+  const { view } = setupController();
+  setValues(view);
+  view.element.querySelector('#save-draft').click();
+  expect(view.element.querySelector('#draft-warning').textContent).toBe('');
+});
+
+test('draft save blocks unauthenticated users and triggers auth callback', () => {
   const sessionState = {
     isAuthenticated: jest.fn(() => true),
     getCurrentUser: jest.fn(() => null),
   };
-  const { view } = setupController({ sessionState });
+  const onAuthRequired = jest.fn();
+  const { view } = setupController({ sessionState, onAuthRequired });
+  setValues(view, { title: 'Draft title', contactEmail: 'author@example.com' });
+  view.element.querySelector('#save-draft').click();
+  expect(view.element.querySelector('.status').textContent).toContain('log in');
+  expect(onAuthRequired).toHaveBeenCalled();
+});
+
+test('draft save blocks unauthenticated users without auth callback', () => {
+  const sessionState = {
+    isAuthenticated: jest.fn(() => true),
+    getCurrentUser: jest.fn(() => null),
+  };
+  const { view } = setupController({ sessionState, onAuthRequired: null });
   setValues(view, { title: 'Draft title', contactEmail: 'author@example.com' });
   view.element.querySelector('#save-draft').click();
   expect(view.element.querySelector('.status').textContent).toContain('log in');
 });
 
 test('draft save logs storage failure', () => {
-  const storage = createMocks().storage;
-  storage.saveDraft = jest.fn(() => {
-    throw new Error('storage_failure');
+  const draftStorage = createMocks().draftStorage;
+  draftStorage.saveDraft = jest.fn(() => {
+    throw new Error('draft_save_failure');
   });
-  const errorLogger = { logFailure: jest.fn() };
-  const { view } = setupController({ storage, errorLogger });
+  const draftErrorLogger = { logFailure: jest.fn() };
+  const { view } = setupController({ draftStorage, draftErrorLogger });
   setValues(view, { title: 'Draft title', contactEmail: 'author@example.com' });
   view.element.querySelector('#save-draft').click();
   expect(view.element.querySelector('.status').textContent).toContain('unavailable');
-  expect(errorLogger.logFailure).toHaveBeenCalled();
+  expect(draftErrorLogger.logFailure).toHaveBeenCalled();
+});
+
+test('draft save failure without logger still shows error', () => {
+  const draftStorage = createMocks().draftStorage;
+  draftStorage.saveDraft = jest.fn(() => {
+    throw new Error('draft_save_failure');
+  });
+  const { view } = setupController({ draftStorage, draftErrorLogger: null });
+  setValues(view);
+  view.element.querySelector('#save-draft').click();
+  expect(view.element.querySelector('.status').textContent).toContain('unavailable');
 });
 
 test('loads draft on init', () => {
-  const storage = createMocks().storage;
-  storage.loadDraft = jest.fn(() => ({
+  const draftStorage = createMocks().draftStorage;
+  draftStorage.loadDraft = jest.fn(() => ({
     draftData: {
       title: 'Loaded draft',
       authorNames: 'Author',
@@ -255,17 +300,52 @@ test('loads draft on init', () => {
       keywords: 'one, two',
       mainSource: 'Source',
     },
-    draftFileMetadata: null,
+    draftFileMetadata: { originalName: 'draft.pdf', fileType: 'pdf', fileSizeBytes: 100 },
+    savedAt: '2026-02-02T10:00:00.000Z',
   }));
-  const { view } = setupController({ storage });
+  const { view } = setupController({ draftStorage });
   expect(view.element.querySelector('#title').value).toBe('Loaded draft');
+  expect(view.element.querySelector('#draft-attachment-status').textContent).toContain('draft.pdf');
 });
 
-test('ignores draft when data missing', () => {
-  const storage = createMocks().storage;
-  storage.loadDraft = jest.fn(() => ({ draftData: null, draftFileMetadata: null }));
-  const { view } = setupController({ storage });
+test('loads draft without saved timestamp', () => {
+  const draftStorage = createMocks().draftStorage;
+  draftStorage.loadDraft = jest.fn(() => ({
+    draftData: { title: 'Loaded draft', contactEmail: 'author@example.com' },
+    draftFileMetadata: null,
+    savedAt: null,
+  }));
+  const { view } = setupController({ draftStorage });
+  expect(view.element.querySelector('#draft-indicator').textContent).toBe('');
+});
+
+test('ignores draft when restored data is missing', () => {
+  const draftStorage = createMocks().draftStorage;
+  draftStorage.loadDraft = jest.fn(() => ({ draftData: null, draftFileMetadata: null }));
+  const { view } = setupController({ draftStorage });
   expect(view.element.querySelector('#title').value).toBe('');
+});
+
+test('load failure sets form to read-only', () => {
+  const draftStorage = createMocks().draftStorage;
+  draftStorage.loadDraft = jest.fn(() => {
+    throw new Error('draft_load_failure');
+  });
+  const draftErrorLogger = { logFailure: jest.fn() };
+  const { view } = setupController({ draftStorage, draftErrorLogger });
+  expect(view.element.querySelector('.status').textContent).toContain('unavailable');
+  expect(view.element.querySelector('#title').disabled).toBe(true);
+  expect(draftErrorLogger.logFailure).toHaveBeenCalled();
+});
+
+test('load failure without logger still blocks editing', () => {
+  const draftStorage = createMocks().draftStorage;
+  draftStorage.loadDraft = jest.fn(() => {
+    throw new Error('draft_load_failure');
+  });
+  const { view } = setupController({ draftStorage, draftErrorLogger: null });
+  expect(view.element.querySelector('.status').textContent).toContain('unavailable');
+  expect(view.element.querySelector('#title').disabled).toBe(true);
 });
 
 test('submit succeeds without onSubmitSuccess callback', () => {

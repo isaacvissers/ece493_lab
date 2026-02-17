@@ -183,6 +183,27 @@ test('unauthenticated submit routes to login then back to submission', async () 
   expect(appRoot.querySelector('#title')).toBeTruthy();
 });
 
+test('session-expired draft save routes to login', async () => {
+  await setupApp();
+  const { storageService } = await import('../../src/services/storage-service.js');
+  storageService.saveAccount({
+    id: 'acct_19',
+    email: 'draftlogin@example.com',
+    normalizedEmail: 'draftlogin@example.com',
+    password: 'validPass1!',
+    createdAt: new Date().toISOString(),
+  });
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_19', email: 'draftlogin@example.com', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowSubmitManuscript();
+  sessionState.clear();
+  appRoot.querySelector('#save-draft').click();
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
+  expect(appRoot.querySelector('.status').textContent).toContain('log in');
+});
+
 test('unauthenticated upload routes to login then back to upload view', async () => {
   await setupApp();
   const { storageService } = await import('../../src/services/storage-service.js');

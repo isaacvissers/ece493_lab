@@ -1,6 +1,7 @@
 import { UI_MESSAGES } from '../services/ui-messages.js';
 import { validateManuscript, createManuscript } from '../models/manuscript.js';
-import { validateDraft, createDraft, restoreDraft } from '../models/submission-draft.js';
+import { createDraft, getDraftWarnings, restoreDraft } from '../models/draft-submission.js';
+import { createDraftSaveState } from '../models/draft-save-state.js';
 
 const MAX_FILE_SIZE = 7 * 1024 * 1024;
 const ALLOWED_EXTENSIONS = ['pdf', 'docx', 'tex'];
@@ -21,9 +22,12 @@ function buildFileMeta(file) {
 export function createManuscriptSubmissionController({
   view,
   storage,
+  draftStorage,
   sessionState,
   errorLogger,
+  draftErrorLogger,
   onSubmitSuccess,
+  onAuthRequired,
 }) {
   function getUserKey() {
     const user = sessionState.getCurrentUser();
@@ -82,29 +86,41 @@ export function createManuscriptSubmissionController({
   function handleSaveDraft() {
     view.clearErrors();
     const values = view.getValues();
-    const draftValidation = validateDraft(values);
-    if (!draftValidation.ok) {
-      setValidationErrors(draftValidation.errors);
-      return;
-    }
     const userKey = getUserKey();
     if (!userKey) {
       view.setStatus(UI_MESSAGES.errors.accessDenied.message, true);
+      if (onAuthRequired) {
+        onAuthRequired();
+      }
       return;
     }
-    const draft = createDraft(draftValidation.values, null);
+    const warnings = getDraftWarnings(values);
+    const file = view.getFile();
+    const fileMeta = file ? buildFileMeta(file) : null;
+    const draft = createDraft(values, fileMeta);
     try {
-      storage.saveDraft(userKey, draft);
+      draftStorage.saveDraft(userKey, draft);
     } catch (error) {
-      errorLogger.logFailure({
-        errorType: 'storage',
-        message: 'draft_save_failed',
-        context: userKey,
-      });
+      if (draftErrorLogger) {
+        draftErrorLogger.logFailure({
+          errorType: 'save',
+          message: 'draft_save_failed',
+          context: userKey,
+        });
+      }
       view.setStatus(UI_MESSAGES.errors.submissionUnavailable.message, true);
       return;
     }
-    view.setStatus(UI_MESSAGES.draftSaved.body, false);
+    const saveState = createDraftSaveState(userKey, draft.savedAt);
+    view.setDraftIndicator(`Last saved at ${new Date(saveState.lastSavedAt).toLocaleString()}`);
+    view.setDraftAttachment(fileMeta || null);
+    if (warnings.length) {
+      const labels = warnings.map((field) => UI_MESSAGES.labels[field] || field).join(', ');
+      view.setDraftWarning(`Draft saved with incomplete fields: ${labels}.`);
+    } else {
+      view.setDraftWarning('');
+    }
+    view.setStatus(`${UI_MESSAGES.draftSaved.title}. ${UI_MESSAGES.draftSaved.body}`, false);
   }
 
   function handleSubmit(event) {
@@ -130,8 +146,8 @@ export function createManuscriptSubmissionController({
     const manuscript = createManuscript(validation.values, fileMeta, userKey);
     try {
       storage.saveSubmission(manuscript);
-      if (userKey) {
-        storage.clearDraft(userKey);
+      if (userKey && draftStorage) {
+        draftStorage.clearDraft(userKey);
       }
     } catch (error) {
       errorLogger.logFailure({
@@ -153,13 +169,30 @@ export function createManuscriptSubmissionController({
     init() {
       const userKey = getUserKey();
       if (userKey) {
-        const draft = storage.loadDraft(userKey);
-        if (draft) {
-          const restored = restoreDraft(draft);
-          if (restored) {
-            view.setValues(restored);
-            view.setStatus(UI_MESSAGES.draftLoaded.body, false);
+        try {
+          const draft = draftStorage.loadDraft(userKey);
+          if (draft) {
+            const restored = restoreDraft(draft);
+            if (restored) {
+              view.setValues(restored);
+              view.setDraftAttachment(restored.fileMeta || null);
+              if (restored.savedAt) {
+                view.setDraftIndicator(`Last saved at ${new Date(restored.savedAt).toLocaleString()}`);
+              }
+              view.setStatus(UI_MESSAGES.draftLoaded.body, false);
+            }
           }
+        } catch (error) {
+          if (draftErrorLogger) {
+            draftErrorLogger.logFailure({
+              errorType: 'load',
+              message: 'draft_load_failed',
+              context: userKey,
+            });
+          }
+          view.setStatus(UI_MESSAGES.errors.submissionUnavailable.message, true);
+          view.setEditable(false);
+          return;
         }
       }
       view.onSubmit(handleSubmit);

@@ -21,6 +21,8 @@ test('saves, loads, and clears drafts', () => {
   expect(submissionStorage.loadDraft('user@example.com').id).toBe('draft_1');
   submissionStorage.clearDraft('user@example.com');
   expect(submissionStorage.loadDraft('user@example.com')).toBe(null);
+  submissionStorage.clearDraft('missing@example.com');
+  expect(submissionStorage.loadDraft('missing@example.com')).toBe(null);
 });
 
 test('throws when failure mode enabled', () => {

@@ -156,6 +156,20 @@ test('submit manuscript view exposes fields and helpers', () => {
   expect(view.getFile()).toBe(null);
   view.setValues({});
   expect(view.element.querySelector('#title').value).toBe('');
+  view.setDraftIndicator('Last saved at 10:00');
+  expect(view.element.querySelector('#draft-indicator').textContent).toContain('Last saved at');
+  view.setDraftIndicator('');
+  expect(view.element.querySelector('#draft-indicator').textContent).toBe('');
+  view.setDraftWarning('Draft saved with incomplete fields.');
+  expect(view.element.querySelector('#draft-warning').textContent).toContain('incomplete');
+  view.setDraftAttachment({ originalName: 'draft.pdf', fileType: 'pdf', fileSizeBytes: 100 });
+  expect(view.element.querySelector('#draft-attachment-status').textContent).toContain('draft.pdf');
+  view.setDraftAttachment(null);
+  expect(view.element.querySelector('#draft-attachment-status').textContent).toContain('No file attached');
+  view.setEditable(false);
+  expect(view.element.querySelector('#title').disabled).toBe(true);
+  view.setEditable(true);
+  expect(view.element.querySelector('#title').disabled).toBe(false);
 });
 
 test('file upload view exposes fields and helpers', () => {

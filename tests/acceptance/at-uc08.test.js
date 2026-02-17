@@ -2,6 +2,8 @@ import { createSubmitManuscriptView } from '../../src/views/submit-manuscript-vi
 import { createManuscriptSubmissionController } from '../../src/controllers/manuscript-submission-controller.js';
 import { submissionStorage } from '../../src/services/submission-storage.js';
 import { submissionErrorLog } from '../../src/services/submission-error-log.js';
+import { draftStorage } from '../../src/services/draft-storage.js';
+import { draftErrorLog } from '../../src/services/draft-error-log.js';
 import { sessionState } from '../../src/models/session-state.js';
 
 function setupAcceptance() {
@@ -10,8 +12,10 @@ function setupAcceptance() {
   const controller = createManuscriptSubmissionController({
     view,
     storage: submissionStorage,
+    draftStorage,
     sessionState,
     errorLogger: submissionErrorLog,
+    draftErrorLogger: draftErrorLog,
     onSubmitSuccess: () => {},
   });
   controller.init();
@@ -49,6 +53,8 @@ function makeFile(name, size, type) {
 function resetEnvironment() {
   submissionStorage.reset();
   submissionErrorLog.clear();
+  draftStorage.reset();
+  draftErrorLog.clear();
   sessionState.clear();
   document.body.innerHTML = '';
 }
@@ -135,9 +141,9 @@ test('save draft stores data and shows confirmation', () => {
   const { view } = setupAcceptance();
   setValues(view, { title: 'Draft title', contactEmail: 'draft@example.com' });
   view.element.querySelector('#save-draft').click();
-  const storedDraft = submissionStorage.loadDraft('draft@example.com');
+  const storedDraft = draftStorage.loadDraft('draft@example.com');
   expect(storedDraft).toBeTruthy();
-  expect(view.element.querySelector('.status').textContent).toContain('Your draft has been saved.');
+  expect(view.element.querySelector('.status').textContent).toContain('Draft saved');
 });
 
 test('saved draft loads on init', () => {
@@ -152,8 +158,10 @@ test('saved draft loads on init', () => {
   const controller = createManuscriptSubmissionController({
     view: secondView,
     storage: submissionStorage,
+    draftStorage,
     sessionState,
     errorLogger: submissionErrorLog,
+    draftErrorLogger: draftErrorLog,
     onSubmitSuccess: () => {},
   });
   controller.init();

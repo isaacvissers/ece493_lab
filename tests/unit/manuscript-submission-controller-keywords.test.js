@@ -14,9 +14,11 @@ test('keywords validation path sets field error', () => {
   document.body.appendChild(view.element);
   const controller = createManuscriptSubmissionController({
     view,
-    storage: { loadDraft: () => null, saveDraft: () => {}, saveSubmission: () => {}, clearDraft: () => {} },
+    storage: { saveSubmission: () => {} },
+    draftStorage: { loadDraft: () => null, saveDraft: () => {}, clearDraft: () => {} },
     sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'author@example.com' }) },
     errorLogger: { logFailure: () => {} },
+    draftErrorLogger: { logFailure: () => {} },
     onSubmitSuccess: null,
   });
   controller.init();

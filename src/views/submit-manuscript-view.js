@@ -82,7 +82,10 @@ export function createSubmitManuscriptView() {
   const fileError = createElement('div', 'error');
   fileError.id = 'manuscriptFile-error';
   fileInput.setAttribute('aria-describedby', 'manuscriptFile-error');
-  fileRow.append(fileLabel, fileInput, fileError);
+  const draftAttachmentStatus = createElement('p', 'helper');
+  draftAttachmentStatus.id = 'draft-attachment-status';
+  draftAttachmentStatus.textContent = 'No file attached.';
+  fileRow.append(fileLabel, fileInput, fileError, draftAttachmentStatus);
 
   const uploadSection = document.createElement('fieldset');
   const uploadLegend = document.createElement('legend');
@@ -108,6 +111,10 @@ export function createSubmitManuscriptView() {
 
   const status = createElement('div', 'status');
   status.setAttribute('aria-live', 'polite');
+  const draftIndicator = createElement('div', 'helper');
+  draftIndicator.id = 'draft-indicator';
+  const draftWarning = createElement('div', 'helper warning');
+  draftWarning.id = 'draft-warning';
 
   form.append(
     steps,
@@ -116,6 +123,8 @@ export function createSubmitManuscriptView() {
     submitButton,
     draftButton,
     backButton,
+    draftIndicator,
+    draftWarning,
     status,
   );
   container.append(title, helper, form);
@@ -135,6 +144,7 @@ export function createSubmitManuscriptView() {
     Object.values(fieldMap).forEach((field) => {
       field.error.textContent = '';
     });
+    draftWarning.textContent = '';
     status.textContent = '';
     status.className = 'status';
   }
@@ -157,6 +167,15 @@ export function createSubmitManuscriptView() {
     if (target && target.input) {
       target.input.focus();
     }
+  }
+
+  function setEditable(enabled) {
+    const isDisabled = !enabled;
+    Object.values(fieldMap).forEach((field) => {
+      field.input.disabled = isDisabled;
+    });
+    submitButton.disabled = isDisabled;
+    draftButton.disabled = isDisabled;
   }
 
   return {
@@ -188,6 +207,20 @@ export function createSubmitManuscriptView() {
     setFieldError,
     setStatus,
     focusField,
+    setEditable,
+    setDraftIndicator(message) {
+      draftIndicator.textContent = message || '';
+    },
+    setDraftWarning(message) {
+      draftWarning.textContent = message || '';
+    },
+    setDraftAttachment(fileMeta) {
+      if (fileMeta && fileMeta.originalName) {
+        draftAttachmentStatus.textContent = `Attached file: ${fileMeta.originalName}`;
+        return;
+      }
+      draftAttachmentStatus.textContent = 'No file attached.';
+    },
     onSubmit(handler) {
       form.addEventListener('submit', handler);
     },

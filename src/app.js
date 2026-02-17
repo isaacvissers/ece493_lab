@@ -13,6 +13,8 @@ import { loginLogging } from './services/login-logging.js';
 import { passwordErrorLogging } from './services/password-error-logging.js';
 import { submissionStorage } from './services/submission-storage.js';
 import { submissionErrorLog } from './services/submission-error-log.js';
+import { draftStorage } from './services/draft-storage.js';
+import { draftErrorLog } from './services/draft-error-log.js';
 import { UI_MESSAGES } from './services/ui-messages.js';
 
 const appRoot = document.getElementById('app');
@@ -92,9 +94,15 @@ function showSubmitManuscript() {
   const submitController = createManuscriptSubmissionController({
     view: submitView,
     storage: submissionStorage,
+    draftStorage,
     sessionState,
     errorLogger: submissionErrorLog,
+    draftErrorLogger: draftErrorLog,
     onSubmitSuccess: showDashboard,
+    onAuthRequired: () => {
+      pendingRoute = 'submit';
+      showLogin(UI_MESSAGES.errors.accessDenied.message);
+    },
   });
   submitController.init();
   submitView.onBack(showDashboard);

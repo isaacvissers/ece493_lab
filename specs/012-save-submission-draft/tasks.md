@@ -17,10 +17,10 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure per plan in `src/`, `tests/`, and `styles/`
-- [ ] T002 Create base HTML shell and mount points in `index.html`
-- [ ] T003 [P] Create base styles and accessibility defaults in `styles/main.css`
-- [ ] T004 [P] Add app bootstrap and MVC wiring stub in `src/app.js`
+- [X] T001 Create project structure per plan in `src/`, `tests/`, and `styles/`
+- [X] T002 Create base HTML shell and mount points in `index.html`
+- [X] T003 [P] Create base styles and accessibility defaults in `styles/main.css`
+- [X] T004 [P] Add app bootstrap and MVC wiring stub in `src/app.js`
 
 ---
 
@@ -28,12 +28,12 @@
 
 **Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
 
-- [ ] T005 [P] Implement draft storage abstraction (save/load/overwrite) in `src/services/draft-storage.js`
-- [ ] T006 [P] Implement transient error logging service in `src/services/draft-error-log.js`
-- [ ] T007 [P] Implement DraftSubmission model in `src/models/draft-submission.js`
-- [ ] T008 [P] Implement DraftSaveState model in `src/models/draft-save-state.js`
-- [ ] T009 Implement controller skeleton and error/readonly state hooks in `src/controllers/draft-controller.js`
-- [ ] T010 Implement form view skeleton and indicator slots in `src/views/draft-form-view.js`
+- [X] T005 [P] Implement draft storage abstraction (save/load/overwrite) in `src/services/draft-storage.js`
+- [X] T006 [P] Implement transient error logging service in `src/services/draft-error-log.js`
+- [X] T007 [P] Implement DraftSubmission model in `src/models/draft-submission.js`
+- [X] T008 [P] Implement DraftSaveState model in `src/models/draft-save-state.js`
+- [X] T009 Implement controller skeleton and error/readonly state hooks in `src/controllers/manuscript-submission-controller.js`
+- [X] T010 Implement form view skeleton and indicator slots in `src/views/submit-manuscript-view.js`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -47,22 +47,22 @@
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T011 [P] [US1] Acceptance test mapped to AT-12 in `tests/acceptance/at-uc12.test.js`
-- [ ] T012 [P] [US1] Integration test for save/restore flow in `tests/integration/draft-flow.test.js`
-- [ ] T013 [P] [US1] Unit tests for draft models in `tests/unit/draft-submission.test.js`
-- [ ] T014 [P] [US1] Unit tests for save state model in `tests/unit/draft-save-state.test.js`
-- [ ] T015 [P] [US1] Unit tests for draft storage service in `tests/unit/draft-storage.test.js`
+- [X] T011 [P] [US1] Acceptance test mapped to AT-12 in `tests/acceptance/at-uc12.test.js`
+- [X] T012 [P] [US1] Integration test for save/restore flow in `tests/integration/draft-flow.test.js`
+- [X] T013 [P] [US1] Unit tests for draft models in `tests/unit/draft-submission.test.js`
+- [X] T014 [P] [US1] Unit tests for save state model in `tests/unit/draft-save-state.test.js`
+- [X] T015 [P] [US1] Unit tests for draft storage service in `tests/unit/draft-storage.test.js`
 
 ### Implementation for User Story 1
 
-- [ ] T016 [US1] Implement save draft controller flow (overwrite, warning for incomplete fields) in `src/controllers/draft-controller.js`
-- [ ] T017 [US1] Implement load draft controller flow with readonly state on failure in `src/controllers/draft-controller.js`
-- [ ] T018 [US1] Implement save confirmation and “Last saved at” indicator rendering in `src/views/draft-form-view.js`
-- [ ] T019 [US1] Persist attachment reference in draft state in `src/models/draft-submission.js`
-- [ ] T020 [US1] Wire save/load storage calls and error logging in `src/services/draft-storage.js` and `src/services/draft-error-log.js`
-- [ ] T021 [US1] Handle session-expired redirect and return flow in `src/controllers/draft-controller.js`
-- [ ] T022 [US1] Bind UI events and startup load in `src/app.js`
-- [ ] T023 [US1] Update `index.html` to include Save Draft UI, indicator region, and accessibility attributes
+- [X] T016 [US1] Implement save draft controller flow (overwrite, warning for incomplete fields) in `src/controllers/manuscript-submission-controller.js`
+- [X] T017 [US1] Implement load draft controller flow with readonly state on failure in `src/controllers/manuscript-submission-controller.js`
+- [X] T018 [US1] Implement save confirmation and “Last saved at” indicator rendering in `src/views/submit-manuscript-view.js`
+- [X] T019 [US1] Persist attachment reference in draft state in `src/models/draft-submission.js`
+- [X] T020 [US1] Wire save/load storage calls and error logging in `src/services/draft-storage.js` and `src/services/draft-error-log.js`
+- [X] T021 [US1] Handle session-expired redirect and return flow in `src/controllers/manuscript-submission-controller.js`
+- [X] T022 [US1] Bind UI events and startup load in `src/app.js`
+- [X] T023 [US1] Update submit form UI and indicator region in `src/views/submit-manuscript-view.js`
 
 **Checkpoint**: User Story 1 functional and independently testable
 
@@ -72,10 +72,10 @@
 
 **Purpose**: Improvements that affect multiple flows
 
-- [ ] T024 [P] Validate performance thresholds (<=200 ms feedback, <50 ms main-thread) for save/load in `tests/acceptance/at-uc12.test.js`
-- [ ] T025 [P] Verify accessibility of save/load feedback (semantic HTML + keyboard navigation) in `tests/acceptance/at-uc12.test.js`
-- [ ] T026 [P] Run quickstart validation steps and align docs in `specs/012-save-submission-draft/quickstart.md`
-- [ ] T027 [P] Update documentation references in `specs/012-save-submission-draft/plan.md` if paths change
+- [X] T024 [P] Validate performance thresholds (<=200 ms feedback, <50 ms main-thread) for save/load in `tests/acceptance/at-uc12.test.js`
+- [X] T025 [P] Verify accessibility of save/load feedback (semantic HTML + keyboard navigation) in `tests/acceptance/at-uc12.test.js`
+- [X] T026 [P] Run quickstart validation steps and align docs in `specs/012-save-submission-draft/quickstart.md`
+- [X] T027 [P] Update documentation references in `specs/012-save-submission-draft/plan.md` if paths change
 
 ---
 
