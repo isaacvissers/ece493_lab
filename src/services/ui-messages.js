@@ -31,6 +31,10 @@ export const UI_MESSAGES = {
     title: 'File attached',
     body: 'Your manuscript file is attached.',
   },
+  submissionValidated: {
+    title: 'Submission validated',
+    body: 'Your submission passed validation.',
+  },
   draftSaved: {
     title: 'Draft saved',
     body: 'Your draft has been saved.',
@@ -143,7 +147,7 @@ export const UI_MESSAGES = {
     fileTypeInvalid: {
       code: 'file_type_invalid',
       field: 'manuscriptFile',
-      message: 'File type must be PDF, DOCX, or TEX. Accepted formats: .pdf, .docx, .tex.',
+      message: 'File type must be PDF, DOC, DOCX, or TEX. Accepted formats: .pdf, .doc, .docx, .tex.',
       recovery: 'Upload a file in one of the accepted formats.',
     },
     fileTooLarge: {

@@ -1,5 +1,5 @@
 const MAX_FILE_SIZE = 7 * 1024 * 1024;
-const ALLOWED_EXTENSIONS = ['pdf', 'docx', 'tex'];
+const ALLOWED_EXTENSIONS = ['pdf', 'doc', 'docx', 'tex'];
 
 function getFileExtension(name) {
   const parts = name.toLowerCase().split('.');

@@ -37,12 +37,17 @@ export function createDashboardView(user) {
   metadataButton.className = 'button secondary';
   metadataButton.id = 'enter-metadata-button';
   metadataButton.textContent = 'Enter metadata';
+  const validateButton = document.createElement('button');
+  validateButton.type = 'button';
+  validateButton.className = 'button secondary';
+  validateButton.id = 'validate-submission-button';
+  validateButton.textContent = 'Validate submission';
   const changePasswordButton = document.createElement('button');
   changePasswordButton.type = 'button';
   changePasswordButton.className = 'button secondary';
   changePasswordButton.id = 'change-password-button';
   changePasswordButton.textContent = 'Change password';
-  actions.append(submitButton, uploadButton, metadataButton, changePasswordButton);
+  actions.append(submitButton, uploadButton, metadataButton, validateButton, changePasswordButton);
 
   container.append(title, status, message, actions);
   return {
@@ -58,6 +63,9 @@ export function createDashboardView(user) {
     },
     onEnterMetadata(handler) {
       metadataButton.addEventListener('click', handler);
+    },
+    onValidateSubmission(handler) {
+      validateButton.addEventListener('click', handler);
     },
   };
 }

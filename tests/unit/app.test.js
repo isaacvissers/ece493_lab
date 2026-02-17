@@ -129,6 +129,17 @@ test('app routes to metadata form from dashboard', async () => {
   expect(appRoot.querySelector('#authorNames')).toBeTruthy();
 });
 
+test('app routes to submission validation from dashboard', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_17', email: 'validate@example.com', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowDashboard();
+  appRoot.querySelector('#validate-submission-button').click();
+  expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
+});
+
 test('unauthenticated submit routes to login then back to submission', async () => {
   await setupApp();
   const { storageService } = await import('../../src/services/storage-service.js');
@@ -190,4 +201,25 @@ test('unauthenticated metadata routes to login then back to metadata view', asyn
   const event = new Event('submit', { bubbles: true, cancelable: true });
   appRoot.querySelector('form').dispatchEvent(event);
   expect(appRoot.querySelector('#authorNames')).toBeTruthy();
+});
+
+test('unauthenticated validation routes to login then back to validation view', async () => {
+  await setupApp();
+  const { storageService } = await import('../../src/services/storage-service.js');
+  storageService.saveAccount({
+    id: 'acct_18',
+    email: 'validate2@example.com',
+    normalizedEmail: 'validate2@example.com',
+    password: 'validPass1!',
+    createdAt: new Date().toISOString(),
+  });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowSubmissionValidation();
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
+  appRoot.querySelector('#login-email').value = 'validate2@example.com';
+  appRoot.querySelector('#login-password').value = 'validPass1!';
+  const event = new Event('submit', { bubbles: true, cancelable: true });
+  appRoot.querySelector('form').dispatchEvent(event);
+  expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
 });

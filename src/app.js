@@ -11,6 +11,8 @@ import { createFileUploadView } from './views/file-upload-view.js';
 import { createFileUploadController } from './controllers/file-upload-controller.js';
 import { createMetadataFormView } from './views/metadata-form-view.js';
 import { createMetadataController } from './controllers/metadata-controller.js';
+import { createSubmissionFormView } from './views/submission-form-view.js';
+import { createSubmissionValidationController } from './controllers/submission-validation-controller.js';
 import { storageService } from './services/storage-service.js';
 import { sessionState } from './models/session-state.js';
 import { loginLogging } from './services/login-logging.js';
@@ -52,6 +54,10 @@ function showLogin(accessDeniedMessage = null) {
       }
       if (nextRoute === 'metadata') {
         showMetadata();
+        return;
+      }
+      if (nextRoute === 'submission-validation') {
+        showSubmissionValidation();
         return;
       }
       showDashboard();
@@ -149,6 +155,21 @@ function showMetadata() {
   render(metadataView.element);
 }
 
+function showSubmissionValidation() {
+  if (!sessionState.isAuthenticated()) {
+    pendingRoute = 'submission-validation';
+    showLogin(UI_MESSAGES.errors.accessDenied.message);
+    return;
+  }
+  const submissionView = createSubmissionFormView();
+  const submissionController = createSubmissionValidationController({
+    view: submissionView,
+    sessionState,
+  });
+  submissionController.init();
+  render(submissionView.element);
+}
+
 function showDashboard() {
   if (!sessionState.isAuthenticated()) {
     showLogin(UI_MESSAGES.errors.accessDenied.message);
@@ -159,6 +180,7 @@ function showDashboard() {
   dashboardView.onSubmitPaper(showSubmitManuscript);
   dashboardView.onUploadManuscript(showUploadManuscript);
   dashboardView.onEnterMetadata(showMetadata);
+  dashboardView.onValidateSubmission(showSubmissionValidation);
   render(dashboardView.element);
 }
 
@@ -176,4 +198,5 @@ export {
   showSubmitManuscript as __testShowSubmitManuscript,
   showUploadManuscript as __testShowUploadManuscript,
   showMetadata as __testShowMetadata,
+  showSubmissionValidation as __testShowSubmissionValidation,
 };

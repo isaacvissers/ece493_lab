@@ -23,6 +23,7 @@ test('success copy present', () => {
   expect(UI_MESSAGES.submissionSuccess.title).toContain('Submission');
   expect(UI_MESSAGES.uploadSuccess.title).toContain('File');
   expect(UI_MESSAGES.metadataSaved.title).toContain('Metadata');
+  expect(UI_MESSAGES.submissionValidated.title).toContain('Submission');
   expect(UI_MESSAGES.draftSaved.body).toContain('draft');
 });
 

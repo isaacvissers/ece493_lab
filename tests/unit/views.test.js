@@ -5,6 +5,7 @@ import { createDashboardView } from '../../src/views/dashboard-view.js';
 import { createAccountSettingsView } from '../../src/views/account-settings-view.js';
 import { createSubmitManuscriptView } from '../../src/views/submit-manuscript-view.js';
 import { createMetadataFormView } from '../../src/views/metadata-form-view.js';
+import { createSubmissionFormView } from '../../src/views/submission-form-view.js';
 import { createFileUploadView } from '../../src/views/file-upload-view.js';
 
 test('login view exposes fields and status helpers', () => {
@@ -84,6 +85,12 @@ test('dashboard view includes email when provided', () => {
   view.onEnterMetadata(onMetadata);
   metadataButton.click();
   expect(onMetadata).toHaveBeenCalled();
+  const validateButton = view.element.querySelector('#validate-submission-button');
+  expect(validateButton).toBeTruthy();
+  const onValidate = jest.fn();
+  view.onValidateSubmission(onValidate);
+  validateButton.click();
+  expect(onValidate).toHaveBeenCalled();
 });
 
 test('dashboard view handles missing user', () => {
@@ -188,4 +195,47 @@ test('metadata form view exposes fields and helpers', () => {
   view.setValues({ authorNames: 'Author One' });
   expect(view.element.querySelector('#authorNames').value).toBe('Author One');
   view.focusField('unknown');
+});
+
+test('submission form view exposes fields and helpers', () => {
+  const view = createSubmissionFormView();
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('#authorNames')).toBeTruthy();
+  expect(view.element.querySelector('#affiliations')).toBeTruthy();
+  expect(view.element.querySelector('#contactEmail')).toBeTruthy();
+  expect(view.element.querySelector('#abstract')).toBeTruthy();
+  expect(view.element.querySelector('#keywords')).toBeTruthy();
+  expect(view.element.querySelector('#mainSource')).toBeTruthy();
+  expect(view.element.querySelector('#manuscriptFile')).toBeTruthy();
+  view.setFieldError('unknown', 'Oops', 'Recover');
+  expect(view.element.querySelector('#authorNames-error').textContent).toBe('');
+  view.focusField('authorNames');
+  expect(document.activeElement).toBe(view.element.querySelector('#authorNames'));
+  view.setValues({
+    authorNames: 'Author One',
+    affiliations: 'Institute',
+    contactEmail: 'author@example.com',
+    abstract: 'Abstract',
+    keywords: 'alpha, beta',
+    mainSource: 'file upload',
+  });
+  expect(view.element.querySelector('#authorNames').value).toBe('Author One');
+  expect(view.element.querySelector('#affiliations').value).toBe('Institute');
+  expect(view.element.querySelector('#contactEmail').value).toBe('author@example.com');
+  expect(view.element.querySelector('#abstract').value).toBe('Abstract');
+  expect(view.element.querySelector('#keywords').value).toBe('alpha, beta');
+  expect(view.element.querySelector('#mainSource').value).toBe('file upload');
+  view.setValues({});
+  expect(view.element.querySelector('#authorNames').value).toBe('');
+  expect(view.element.querySelector('#affiliations').value).toBe('');
+  expect(view.element.querySelector('#contactEmail').value).toBe('');
+  expect(view.element.querySelector('#abstract').value).toBe('');
+  expect(view.element.querySelector('#keywords').value).toBe('');
+  expect(view.element.querySelector('#mainSource').value).toBe('');
+  view.setStatus('ok', false);
+  expect(view.element.querySelector('.status').textContent).toBe('ok');
+  view.setStatus('bad', true);
+  expect(view.element.querySelector('.status').className).toContain('error');
+  view.focusField('unknown');
+  expect(view.getFile()).toBe(null);
 });

@@ -136,6 +136,10 @@ textarea:focus {
   font-weight: 600;
 }
 
+.required {
+  color: var(--danger);
+}
+
 .helper {
   font-size: 0.95rem;
   color: var(--muted);

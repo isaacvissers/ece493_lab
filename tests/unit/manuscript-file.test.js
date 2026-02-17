@@ -36,3 +36,8 @@ test('createManuscriptFile builds metadata', () => {
   expect(record.fileSizeBytes).toBe(2048);
   expect(record.id).toContain('file_');
 });
+
+test('accepts doc extension', () => {
+  const validation = validateManuscriptFile(makeFile('paper.doc', 1024));
+  expect(validation.ok).toBe(true);
+});
