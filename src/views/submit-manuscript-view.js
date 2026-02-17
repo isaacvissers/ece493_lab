@@ -33,10 +33,20 @@ export function createSubmitManuscriptView() {
   title.textContent = 'Submit paper';
 
   const helper = createElement('p', 'helper');
-  helper.textContent = 'Provide manuscript details and upload your file.';
+  helper.textContent = 'Complete metadata, upload your manuscript, and validate before submitting.';
 
   const form = document.createElement('form');
   form.noValidate = true;
+
+  const steps = document.createElement('ul');
+  steps.className = 'helper';
+  const stepMetadata = document.createElement('li');
+  stepMetadata.textContent = 'Enter metadata';
+  const stepUpload = document.createElement('li');
+  stepUpload.textContent = 'Upload manuscript';
+  const stepValidate = document.createElement('li');
+  stepValidate.textContent = 'Validate and submit';
+  steps.append(stepMetadata, stepUpload, stepValidate);
 
   const titleRow = createInputRow({ id: 'title', label: 'Title', placeholder: 'Manuscript title' });
   const authorRow = createInputRow({ id: 'authorNames', label: 'Author names', placeholder: 'Author One, Author Two' });
@@ -45,6 +55,20 @@ export function createSubmitManuscriptView() {
   const abstractRow = createInputRow({ id: 'abstract', label: 'Abstract', type: 'textarea' });
   const keywordsRow = createInputRow({ id: 'keywords', label: 'Keywords', placeholder: 'keyword1, keyword2' });
   const sourceRow = createInputRow({ id: 'mainSource', label: 'Main source', placeholder: 'Primary contribution' });
+
+  const metadataSection = document.createElement('fieldset');
+  const metadataLegend = document.createElement('legend');
+  metadataLegend.textContent = 'Enter metadata';
+  metadataSection.append(
+    metadataLegend,
+    titleRow.row,
+    authorRow.row,
+    affiliationRow.row,
+    emailRow.row,
+    abstractRow.row,
+    keywordsRow.row,
+    sourceRow.row,
+  );
 
   const fileRow = createElement('div', 'form-row');
   const fileLabel = document.createElement('label');
@@ -60,10 +84,15 @@ export function createSubmitManuscriptView() {
   fileInput.setAttribute('aria-describedby', 'manuscriptFile-error');
   fileRow.append(fileLabel, fileInput, fileError);
 
+  const uploadSection = document.createElement('fieldset');
+  const uploadLegend = document.createElement('legend');
+  uploadLegend.textContent = 'Upload manuscript';
+  uploadSection.append(uploadLegend, fileRow);
+
   const submitButton = document.createElement('button');
   submitButton.type = 'submit';
   submitButton.className = 'button';
-  submitButton.textContent = 'Submit manuscript';
+  submitButton.textContent = 'Validate and submit';
 
   const draftButton = document.createElement('button');
   draftButton.type = 'button';
@@ -71,20 +100,22 @@ export function createSubmitManuscriptView() {
   draftButton.id = 'save-draft';
   draftButton.textContent = 'Save draft';
 
+  const backButton = document.createElement('button');
+  backButton.type = 'button';
+  backButton.className = 'button secondary';
+  backButton.id = 'back-to-dashboard';
+  backButton.textContent = 'Back to dashboard';
+
   const status = createElement('div', 'status');
   status.setAttribute('aria-live', 'polite');
 
   form.append(
-    titleRow.row,
-    authorRow.row,
-    affiliationRow.row,
-    emailRow.row,
-    abstractRow.row,
-    keywordsRow.row,
-    sourceRow.row,
-    fileRow,
+    steps,
+    metadataSection,
+    uploadSection,
     submitButton,
     draftButton,
+    backButton,
     status,
   );
   container.append(title, helper, form);
@@ -162,6 +193,9 @@ export function createSubmitManuscriptView() {
     },
     onSaveDraft(handler) {
       draftButton.addEventListener('click', handler);
+    },
+    onBack(handler) {
+      backButton.addEventListener('click', handler);
     },
   };
 }

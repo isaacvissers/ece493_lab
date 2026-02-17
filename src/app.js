@@ -7,21 +7,12 @@ import { createAccountSettingsView } from './views/account-settings-view.js';
 import { createAccountController } from './controllers/account-controller.js';
 import { createSubmitManuscriptView } from './views/submit-manuscript-view.js';
 import { createManuscriptSubmissionController } from './controllers/manuscript-submission-controller.js';
-import { createFileUploadView } from './views/file-upload-view.js';
-import { createFileUploadController } from './controllers/file-upload-controller.js';
-import { createMetadataFormView } from './views/metadata-form-view.js';
-import { createMetadataController } from './controllers/metadata-controller.js';
-import { createSubmissionFormView } from './views/submission-form-view.js';
-import { createSubmissionValidationController } from './controllers/submission-validation-controller.js';
 import { storageService } from './services/storage-service.js';
 import { sessionState } from './models/session-state.js';
 import { loginLogging } from './services/login-logging.js';
 import { passwordErrorLogging } from './services/password-error-logging.js';
 import { submissionStorage } from './services/submission-storage.js';
 import { submissionErrorLog } from './services/submission-error-log.js';
-import { uploadErrorLog } from './services/upload-error-log.js';
-import { metadataStorage } from './services/metadata-storage.js';
-import { metadataErrorLog } from './services/metadata-error-log.js';
 import { UI_MESSAGES } from './services/ui-messages.js';
 
 const appRoot = document.getElementById('app');
@@ -44,20 +35,8 @@ function showLogin(accessDeniedMessage = null) {
     onLoginSuccess: () => {
       const nextRoute = pendingRoute;
       pendingRoute = null;
-      if (nextRoute === 'submit') {
+      if (['submit', 'upload', 'metadata', 'submission-validation'].includes(nextRoute)) {
         showSubmitManuscript();
-        return;
-      }
-      if (nextRoute === 'upload') {
-        showUploadManuscript();
-        return;
-      }
-      if (nextRoute === 'metadata') {
-        showMetadata();
-        return;
-      }
-      if (nextRoute === 'submission-validation') {
-        showSubmissionValidation();
         return;
       }
       showDashboard();
@@ -118,56 +97,20 @@ function showSubmitManuscript() {
     onSubmitSuccess: showDashboard,
   });
   submitController.init();
+  submitView.onBack(showDashboard);
   render(submitView.element);
 }
 
 function showUploadManuscript() {
-  if (!sessionState.isAuthenticated()) {
-    pendingRoute = 'upload';
-    showLogin(UI_MESSAGES.errors.accessDenied.message);
-    return;
-  }
-  const uploadView = createFileUploadView();
-  const uploadController = createFileUploadController({
-    view: uploadView,
-    storage: submissionStorage,
-    sessionState,
-    errorLogger: uploadErrorLog,
-  });
-  uploadController.init();
-  render(uploadView.element);
+  showSubmitManuscript();
 }
 
 function showMetadata() {
-  if (!sessionState.isAuthenticated()) {
-    pendingRoute = 'metadata';
-    showLogin(UI_MESSAGES.errors.accessDenied.message);
-    return;
-  }
-  const metadataView = createMetadataFormView();
-  const metadataController = createMetadataController({
-    view: metadataView,
-    storage: metadataStorage,
-    sessionState,
-    errorLogger: metadataErrorLog,
-  });
-  metadataController.init();
-  render(metadataView.element);
+  showSubmitManuscript();
 }
 
 function showSubmissionValidation() {
-  if (!sessionState.isAuthenticated()) {
-    pendingRoute = 'submission-validation';
-    showLogin(UI_MESSAGES.errors.accessDenied.message);
-    return;
-  }
-  const submissionView = createSubmissionFormView();
-  const submissionController = createSubmissionValidationController({
-    view: submissionView,
-    sessionState,
-  });
-  submissionController.init();
-  render(submissionView.element);
+  showSubmitManuscript();
 }
 
 function showDashboard() {
@@ -175,12 +118,17 @@ function showDashboard() {
     showLogin(UI_MESSAGES.errors.accessDenied.message);
     return;
   }
-  const dashboardView = createDashboardView(sessionState.getCurrentUser());
+  const currentUser = sessionState.getCurrentUser();
+  const userEmail = currentUser && currentUser.email ? currentUser.email : null;
+  const manuscripts = submissionStorage.getManuscripts()
+    .filter((manuscript) => (
+      userEmail
+        ? manuscript.submittedBy === userEmail || manuscript.contactEmail === userEmail
+        : false
+    ));
+  const dashboardView = createDashboardView(currentUser, manuscripts);
   dashboardView.onChangePassword(showAccountSettings);
   dashboardView.onSubmitPaper(showSubmitManuscript);
-  dashboardView.onUploadManuscript(showUploadManuscript);
-  dashboardView.onEnterMetadata(showMetadata);
-  dashboardView.onValidateSubmission(showSubmissionValidation);
   render(dashboardView.element);
 }
 

@@ -6,7 +6,27 @@ function createElement(tag, className) {
   return element;
 }
 
-export function createDashboardView(user) {
+function formatStatus(status) {
+  const normalized = (status || 'submitted').toString().trim().toLowerCase();
+  const map = {
+    submitted: 'Submitted',
+    in_review: 'Being reviewed',
+    under_review: 'Being reviewed',
+    being_reviewed: 'Being reviewed',
+    approved: 'Approved',
+    rejected: 'Rejected',
+  };
+  if (map[normalized]) {
+    return map[normalized];
+  }
+  return normalized
+    .split(/[\s_-]+/)
+    .filter(Boolean)
+    .map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
+    .join(' ');
+}
+
+export function createDashboardView(user, manuscripts = []) {
   const container = createElement('section', 'card');
   const title = createElement('h1');
   title.textContent = 'Dashboard';
@@ -21,35 +41,45 @@ export function createDashboardView(user) {
   const message = createElement('div', 'status');
   message.textContent = 'Welcome to your CMS dashboard.';
 
+  const submissionsSection = createElement('div', 'submission-list');
+  const submissionsTitle = createElement('h2');
+  submissionsTitle.textContent = 'Your submissions';
+  const submissionsBody = createElement('div');
+  if (!manuscripts.length) {
+    const empty = createElement('p', 'helper');
+    empty.textContent = 'No submissions yet.';
+    submissionsBody.append(empty);
+  } else {
+    const list = document.createElement('ul');
+    list.className = 'submission-items';
+    manuscripts.forEach((manuscript) => {
+      const item = document.createElement('li');
+      item.className = 'submission-item';
+      const itemTitle = createElement('span', 'submission-title');
+      itemTitle.textContent = manuscript.title || 'Untitled manuscript';
+      const itemStatus = createElement('span', 'submission-status');
+      itemStatus.textContent = `Status: ${formatStatus(manuscript.status)}`;
+      item.append(itemTitle, itemStatus);
+      list.append(item);
+    });
+    submissionsBody.append(list);
+  }
+  submissionsSection.append(submissionsTitle, submissionsBody);
+
   const actions = createElement('div', 'form-row');
   const submitButton = document.createElement('button');
   submitButton.type = 'button';
   submitButton.className = 'button';
   submitButton.id = 'submit-paper-button';
   submitButton.textContent = 'Submit paper';
-  const uploadButton = document.createElement('button');
-  uploadButton.type = 'button';
-  uploadButton.className = 'button secondary';
-  uploadButton.id = 'upload-manuscript-button';
-  uploadButton.textContent = 'Upload manuscript';
-  const metadataButton = document.createElement('button');
-  metadataButton.type = 'button';
-  metadataButton.className = 'button secondary';
-  metadataButton.id = 'enter-metadata-button';
-  metadataButton.textContent = 'Enter metadata';
-  const validateButton = document.createElement('button');
-  validateButton.type = 'button';
-  validateButton.className = 'button secondary';
-  validateButton.id = 'validate-submission-button';
-  validateButton.textContent = 'Validate submission';
   const changePasswordButton = document.createElement('button');
   changePasswordButton.type = 'button';
   changePasswordButton.className = 'button secondary';
   changePasswordButton.id = 'change-password-button';
   changePasswordButton.textContent = 'Change password';
-  actions.append(submitButton, uploadButton, metadataButton, validateButton, changePasswordButton);
+  actions.append(submitButton, changePasswordButton);
 
-  container.append(title, status, message, actions);
+  container.append(title, status, message, submissionsSection, actions);
   return {
     element: container,
     onChangePassword(handler) {
@@ -57,15 +87,6 @@ export function createDashboardView(user) {
     },
     onSubmitPaper(handler) {
       submitButton.addEventListener('click', handler);
-    },
-    onUploadManuscript(handler) {
-      uploadButton.addEventListener('click', handler);
-    },
-    onEnterMetadata(handler) {
-      metadataButton.addEventListener('click', handler);
-    },
-    onValidateSubmission(handler) {
-      validateButton.addEventListener('click', handler);
     },
   };
 }

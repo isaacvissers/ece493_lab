@@ -126,10 +126,10 @@ export function createManuscriptSubmissionController({
     }
 
     const fileMeta = buildFileMeta(file);
-    const manuscript = createManuscript(validation.values, fileMeta);
+    const userKey = getUserKey();
+    const manuscript = createManuscript(validation.values, fileMeta, userKey);
     try {
       storage.saveSubmission(manuscript);
-      const userKey = getUserKey();
       if (userKey) {
         storage.clearDraft(userKey);
       }

@@ -61,8 +61,18 @@ test('creates manuscript with metadata and status', () => {
     originalName: 'paper.pdf',
     fileType: 'pdf',
     fileSizeBytes: 1024,
-  });
+  }, 'author@example.com');
   expect(manuscript.id).toContain('ms_');
   expect(manuscript.status).toBe('submitted');
   expect(manuscript.file.originalName).toBe('paper.pdf');
+  expect(manuscript.submittedBy).toBe('author@example.com');
+});
+
+test('creates manuscript with null submittedBy when omitted', () => {
+  const manuscript = createManuscript(buildValues(), {
+    originalName: 'paper.pdf',
+    fileType: 'pdf',
+    fileSizeBytes: 1024,
+  });
+  expect(manuscript.submittedBy).toBe(null);
 });

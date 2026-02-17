@@ -58,9 +58,25 @@ test('registration view exposes fields and helpers', () => {
 });
 
 test('dashboard view includes email when provided', () => {
-  const view = createDashboardView({ email: 'user@example.com' });
+  const view = createDashboardView(
+    { email: 'user@example.com' },
+    [
+      { title: 'Paper A', status: 'submitted' },
+      { title: 'Paper B', status: 'approved' },
+      { title: 'Paper C', status: 'in progress' },
+      { title: '', status: null },
+    ],
+  );
   document.body.appendChild(view.element);
   expect(view.element.querySelector('.helper').textContent).toContain('user@example.com');
+  const items = view.element.querySelectorAll('.submission-item');
+  expect(items).toHaveLength(4);
+  expect(items[0].textContent).toContain('Paper A');
+  expect(items[0].textContent).toContain('Submitted');
+  expect(items[1].textContent).toContain('Approved');
+  expect(items[2].textContent).toContain('In Progress');
+  expect(items[3].textContent).toContain('Untitled manuscript');
+  expect(items[3].textContent).toContain('Submitted');
   const changeButton = view.element.querySelector('#change-password-button');
   expect(changeButton).toBeTruthy();
   const onChange = jest.fn();
@@ -73,30 +89,19 @@ test('dashboard view includes email when provided', () => {
   view.onSubmitPaper(onSubmit);
   submitButton.click();
   expect(onSubmit).toHaveBeenCalled();
-  const uploadButton = view.element.querySelector('#upload-manuscript-button');
-  expect(uploadButton).toBeTruthy();
-  const onUpload = jest.fn();
-  view.onUploadManuscript(onUpload);
-  uploadButton.click();
-  expect(onUpload).toHaveBeenCalled();
-  const metadataButton = view.element.querySelector('#enter-metadata-button');
-  expect(metadataButton).toBeTruthy();
-  const onMetadata = jest.fn();
-  view.onEnterMetadata(onMetadata);
-  metadataButton.click();
-  expect(onMetadata).toHaveBeenCalled();
-  const validateButton = view.element.querySelector('#validate-submission-button');
-  expect(validateButton).toBeTruthy();
-  const onValidate = jest.fn();
-  view.onValidateSubmission(onValidate);
-  validateButton.click();
-  expect(onValidate).toHaveBeenCalled();
 });
 
 test('dashboard view handles missing user', () => {
-  const view = createDashboardView(null);
+  const view = createDashboardView(null, []);
   document.body.appendChild(view.element);
   expect(view.element.querySelector('.helper').textContent).toContain('Signed in.');
+  expect(view.element.querySelector('.submission-list').textContent).toContain('No submissions yet');
+});
+
+test('dashboard view defaults submissions list when omitted', () => {
+  const view = createDashboardView({ email: 'default@example.com' });
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('.submission-list').textContent).toContain('No submissions yet');
 });
 
 test('account settings view exposes fields and helpers', () => {
@@ -139,6 +144,10 @@ test('submit manuscript view exposes fields and helpers', () => {
   view.onSaveDraft(onSave);
   view.element.querySelector('#save-draft').click();
   expect(onSave).toHaveBeenCalled();
+  const onBack = jest.fn();
+  view.onBack(onBack);
+  view.element.querySelector('#back-to-dashboard').click();
+  expect(onBack).toHaveBeenCalled();
   view.setFieldError('unknown', 'Oops', 'Recover');
   expect(view.element.querySelector('#title-error').textContent).toBe('');
   view.focusField('title');

@@ -17,7 +17,7 @@ A logged-in author submits a paper and the system validates required fields, con
 
 **Acceptance Scenarios** (derived from `lab1_files/S-11.md` and `lab1_files/AT-11.md`):
 
-1. **Given** an authenticated author with all required fields completed and a valid manuscript file, **When** they click **Submit**, **Then** all validations pass and submission proceeds to confirmation.
+1. **Given** an authenticated author with all required fields completed and a valid manuscript file on the submit paper form, **When** they click **Submit**, **Then** all validations pass and submission proceeds to confirmation.
 2. **Given** a required field is missing, **When** the author clicks **Submit**, **Then** the system blocks submission and shows missing-field errors.
 3. **Given** the contact email is invalid, **When** the author clicks **Submit**, **Then** the system blocks submission and shows an email format error.
 4. **Given** no manuscript file is provided, **When** the author clicks **Submit**, **Then** the system blocks submission and shows a file-required error.
@@ -40,6 +40,7 @@ A logged-in author submits a paper and the system validates required fields, con
 - Validation occurs on final submit and does not alter data unless validations pass.
 - Accepted file extensions are .pdf, .doc, .docx, and .tex.
 - Validation depends on the submission form state containing current metadata values and selected file metadata at the time of submit/draft.
+- Validation controls are presented within the submit paper form (no separate validation page required).
 
 ### Out of Scope
 

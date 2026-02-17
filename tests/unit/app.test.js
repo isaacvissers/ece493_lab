@@ -107,37 +107,59 @@ test('app routes to submit manuscript from dashboard', async () => {
   expect(appRoot.querySelector('#title')).toBeTruthy();
 });
 
-test('app routes to upload manuscript from dashboard', async () => {
+test('dashboard filters submissions by current user email', async () => {
   await setupApp();
+  const { submissionStorage } = await import('../../src/services/submission-storage.js');
+  submissionStorage.reset();
+  submissionStorage.saveSubmission({
+    id: 'ms_1',
+    title: 'By author',
+    contactEmail: 'other@example.com',
+    submittedBy: 'author@example.com',
+    status: 'submitted',
+  });
+  submissionStorage.saveSubmission({
+    id: 'ms_2',
+    title: 'By contact',
+    contactEmail: 'author@example.com',
+    submittedBy: 'someone@example.com',
+    status: 'approved',
+  });
+  submissionStorage.saveSubmission({
+    id: 'ms_3',
+    title: 'Other',
+    contactEmail: 'other@example.com',
+    submittedBy: 'other@example.com',
+    status: 'submitted',
+  });
   const { sessionState } = await import('../../src/models/session-state.js');
-  sessionState.authenticate({ id: 'acct_13', email: 'uploader@example.com', createdAt: new Date().toISOString() });
+  sessionState.authenticate({ id: 'acct_19', email: 'author@example.com', createdAt: new Date().toISOString() });
   const module = await import('../../src/app.js');
   const appRoot = document.getElementById('app');
   module.__testShowDashboard();
-  appRoot.querySelector('#upload-manuscript-button').click();
-  expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
+  const items = appRoot.querySelectorAll('.submission-item');
+  expect(items).toHaveLength(2);
+  expect(items[0].textContent).toContain('By author');
+  expect(items[1].textContent).toContain('By contact');
 });
 
-test('app routes to metadata form from dashboard', async () => {
+test('dashboard shows no submissions when user email missing', async () => {
   await setupApp();
+  const { submissionStorage } = await import('../../src/services/submission-storage.js');
+  submissionStorage.reset();
+  submissionStorage.saveSubmission({
+    id: 'ms_4',
+    title: 'Stored submission',
+    contactEmail: 'ghost@example.com',
+    submittedBy: 'ghost@example.com',
+    status: 'submitted',
+  });
   const { sessionState } = await import('../../src/models/session-state.js');
-  sessionState.authenticate({ id: 'acct_15', email: 'meta@example.com', createdAt: new Date().toISOString() });
+  sessionState.authenticate({ id: 'acct_20', createdAt: new Date().toISOString() });
   const module = await import('../../src/app.js');
   const appRoot = document.getElementById('app');
   module.__testShowDashboard();
-  appRoot.querySelector('#enter-metadata-button').click();
-  expect(appRoot.querySelector('#authorNames')).toBeTruthy();
-});
-
-test('app routes to submission validation from dashboard', async () => {
-  await setupApp();
-  const { sessionState } = await import('../../src/models/session-state.js');
-  sessionState.authenticate({ id: 'acct_17', email: 'validate@example.com', createdAt: new Date().toISOString() });
-  const module = await import('../../src/app.js');
-  const appRoot = document.getElementById('app');
-  module.__testShowDashboard();
-  appRoot.querySelector('#validate-submission-button').click();
-  expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
+  expect(appRoot.querySelector('.submission-list').textContent).toContain('No submissions yet.');
 });
 
 test('unauthenticated submit routes to login then back to submission', async () => {
@@ -179,7 +201,7 @@ test('unauthenticated upload routes to login then back to upload view', async ()
   appRoot.querySelector('#login-password').value = 'validPass1!';
   const event = new Event('submit', { bubbles: true, cancelable: true });
   appRoot.querySelector('form').dispatchEvent(event);
-  expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
+  expect(appRoot.querySelector('#title')).toBeTruthy();
 });
 
 test('unauthenticated metadata routes to login then back to metadata view', async () => {
@@ -200,7 +222,7 @@ test('unauthenticated metadata routes to login then back to metadata view', asyn
   appRoot.querySelector('#login-password').value = 'validPass1!';
   const event = new Event('submit', { bubbles: true, cancelable: true });
   appRoot.querySelector('form').dispatchEvent(event);
-  expect(appRoot.querySelector('#authorNames')).toBeTruthy();
+  expect(appRoot.querySelector('#title')).toBeTruthy();
 });
 
 test('unauthenticated validation routes to login then back to validation view', async () => {
@@ -221,5 +243,5 @@ test('unauthenticated validation routes to login then back to validation view', 
   appRoot.querySelector('#login-password').value = 'validPass1!';
   const event = new Event('submit', { bubbles: true, cancelable: true });
   appRoot.querySelector('form').dispatchEvent(event);
-  expect(appRoot.querySelector('#manuscriptFile')).toBeTruthy();
+  expect(appRoot.querySelector('#title')).toBeTruthy();
 });

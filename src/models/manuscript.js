@@ -51,10 +51,11 @@ export function validateManuscript(values) {
   };
 }
 
-export function createManuscript(values, fileMeta) {
+export function createManuscript(values, fileMeta, submittedBy = null) {
   const now = new Date().toISOString();
   return {
     id: generateId(),
+    submittedBy,
     title: values.title,
     authorNames: values.authorNames,
     affiliations: values.affiliations,

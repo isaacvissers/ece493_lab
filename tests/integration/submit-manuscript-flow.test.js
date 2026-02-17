@@ -58,6 +58,7 @@ test('successful submission persists manuscript', () => {
   const manuscripts = submissionStorage.getManuscripts();
   expect(manuscripts.length).toBe(1);
   expect(manuscripts[0].title).toBe('Paper title');
+  expect(manuscripts[0].submittedBy).toBe('author@example.com');
   expect(durationMs).toBeLessThan(200);
 });
 

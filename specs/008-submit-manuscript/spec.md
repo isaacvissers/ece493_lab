@@ -21,10 +21,11 @@ confirmation; invalid metadata or file issues block submission with clear errors
 **Acceptance Scenarios** (derived from `lab1_files/S-08.md` and `lab1_files/AT-08.md`):
 
 1. **Given** an authenticated author, **When** they open **Submit Paper**, **Then** the
-   submission form is displayed.
+   submission form is displayed with a back option to return to the Author Dashboard.
 2. **Given** valid metadata and a valid file, **When** the author submits, **Then**
    the system validates fields and file, stores metadata + file, shows success, and
-   redirects to the author home page (Author Dashboard).
+   redirects to the author home page (Author Dashboard) where the new submission
+   appears in the submissions list with its current status.
 3. **Given** the author is not logged in, **When** they attempt to submit, **Then**
    they are redirected to login and returned to the submission page after login.
 4. **Given** the author clicks **Save Draft**, **When** required data is sufficient for
@@ -60,6 +61,7 @@ confirmation; invalid metadata or file issues block submission with clear errors
 - Draft save requires a minimal set: title + contact email.
 - Logging for submission/storage failures is available (transient; no persistence required).
 - Author home page refers to the **Author Dashboard** view.
+- The Author Dashboard displays the current author's submissions with status.
 
 ### Out of Scope
 
@@ -111,6 +113,10 @@ confirmation; invalid metadata or file issues block submission with clear errors
   changes require a new submission.
 - **FR-014**: System MUST allow reopening a saved draft and restoring its saved metadata.
 - **FR-015**: System MUST treat whitespace-only required fields as missing.
+- **FR-016**: System MUST display the author's submissions and current status on the
+  Author Dashboard after successful submission.
+- **FR-017**: The submit paper form MUST provide a back control that returns the author
+  to the Author Dashboard without submitting.
 
 ### Key Entities *(include if feature involves data)*
 
