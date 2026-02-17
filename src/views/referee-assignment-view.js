@@ -38,6 +38,10 @@ export function createRefereeAssignmentView() {
   const authBanner = createElement('div', 'status error');
   authBanner.id = 'authorization-banner';
 
+  const summary = document.createElement('ul');
+  summary.id = 'assignment-summary';
+  summary.className = 'helper';
+
   const paperMeta = createElement('p', 'helper');
   paperMeta.id = 'paper-meta';
 
@@ -59,7 +63,7 @@ export function createRefereeAssignmentView() {
     submitButton,
   );
 
-  container.append(title, paperMeta, authBanner, warning, banner, form);
+  container.append(title, paperMeta, authBanner, warning, banner, summary, form);
 
   function clearErrors() {
     emailRows.forEach((row) => {
@@ -68,6 +72,7 @@ export function createRefereeAssignmentView() {
     countError.textContent = '';
     banner.textContent = '';
     banner.className = 'status';
+    summary.textContent = '';
   }
 
   function setEditable(enabled) {
@@ -106,6 +111,27 @@ export function createRefereeAssignmentView() {
     },
     setAuthorizationMessage(message) {
       authBanner.textContent = message || '';
+    },
+    setSummary(result) {
+      summary.textContent = '';
+      if (!result) {
+        return;
+      }
+      const { assigned = [], rejected = [] } = result;
+      const items = [];
+      assigned.forEach((email) => {
+        const item = document.createElement('li');
+        item.textContent = `Assigned: ${email}`;
+        items.push(item);
+      });
+      rejected.forEach((entry) => {
+        const item = document.createElement('li');
+        item.textContent = `Rejected: ${entry.email} (${entry.reason})`;
+        items.push(item);
+      });
+      if (items.length) {
+        summary.append(...items);
+      }
     },
     setEditable,
     showConfirmation(paperId, emails) {

@@ -1,6 +1,8 @@
 import { UI_MESSAGES } from '../services/ui-messages.js';
 import { validateRefereeEmails } from '../models/referee-assignment.js';
 import { isEligibleStatus } from '../models/paper.js';
+import { assignmentService as defaultAssignmentService } from '../services/assignment-service.js';
+import { assignmentStore as defaultAssignmentStore } from '../services/assignment-store.js';
 
 const AUTH_MESSAGE = 'You do not have permission to assign referees.';
 const COUNT_MESSAGE = 'Exactly 3 referees are required.';
@@ -8,6 +10,10 @@ const INELIGIBLE_MESSAGE = 'Paper is not eligible for assignment.';
 const CONCURRENT_MESSAGE = 'Assignment changed. Refresh this paper to continue.';
 const NOTIFICATION_WARNING = 'Notifications failed to send to all referees.';
 const ASSIGNMENT_UNAVAILABLE = 'Assignment is temporarily unavailable. Try again later.';
+const LIMIT_MESSAGE = 'Reviewer has reached the maximum of 5 active assignments.';
+const LOOKUP_MESSAGE = 'Reviewer assignment count could not be determined.';
+const SAVE_MESSAGE = 'Assignment could not be saved. Try again.';
+const DUPLICATE_MESSAGE = 'Reviewer is already assigned to this paper.';
 
 export function createRefereeAssignmentController({
   view,
@@ -17,6 +23,8 @@ export function createRefereeAssignmentController({
   sessionState,
   paperId,
   onAuthRequired,
+  assignmentService = defaultAssignmentService,
+  assignmentStore = defaultAssignmentStore,
 }) {
   let currentPaper = null;
 
@@ -61,6 +69,7 @@ export function createRefereeAssignmentController({
     view.clearErrors();
     view.setAuthorizationMessage('');
     view.setWarning('');
+    view.setSummary(null);
 
     if (!applyAuthGuard()) {
       return;
@@ -94,11 +103,39 @@ export function createRefereeAssignmentController({
       return;
     }
 
+    const assignmentResult = assignmentService.assignReviewers({
+      paperId: currentPaper.id,
+      reviewerEmails: validation.uniqueEmails,
+    });
+    const summary = {
+      assigned: assignmentResult.assigned,
+      rejected: assignmentResult.rejected.map((entry) => {
+        const reasonMap = {
+          limit_reached: LIMIT_MESSAGE,
+          lookup_failed: LOOKUP_MESSAGE,
+          save_failed: SAVE_MESSAGE,
+          already_assigned: DUPLICATE_MESSAGE,
+        };
+        return {
+          email: entry.email,
+          reason: reasonMap[entry.reason] || SAVE_MESSAGE,
+        };
+      }),
+    };
+    view.setSummary(summary);
+
+    if (assignmentResult.assigned.length === 0) {
+      if (summary.rejected.length) {
+        view.setStatus('No reviewers were assigned.', true);
+      }
+      return;
+    }
+
     let updatedPaper = null;
     try {
       updatedPaper = assignmentStorage.saveAssignments({
         paperId: currentPaper.id,
-        refereeEmails: validation.uniqueEmails,
+        refereeEmails: assignmentResult.assigned,
         expectedVersion: currentPaper.assignmentVersion || 0,
       });
     } catch (error) {
@@ -112,18 +149,30 @@ export function createRefereeAssignmentController({
       }
       if (errorType === 'concurrent_change') {
         view.setStatus(CONCURRENT_MESSAGE, true);
+        assignmentStore.removeAssignments({
+          paperId: currentPaper.id,
+          reviewerEmails: assignmentResult.assigned,
+        });
         return;
       }
       if (errorType === 'paper_ineligible') {
         view.setStatus(INELIGIBLE_MESSAGE, true);
+        assignmentStore.removeAssignments({
+          paperId: currentPaper.id,
+          reviewerEmails: assignmentResult.assigned,
+        });
         return;
       }
       view.setStatus(ASSIGNMENT_UNAVAILABLE, true);
+      assignmentStore.removeAssignments({
+        paperId: currentPaper.id,
+        reviewerEmails: assignmentResult.assigned,
+      });
       return;
     }
 
     currentPaper = updatedPaper;
-    const notificationResult = notificationService.sendNotifications(currentPaper.id, validation.uniqueEmails);
+    const notificationResult = notificationService.sendNotifications(currentPaper.id, assignmentResult.assigned);
     if (!notificationResult.ok) {
       view.setWarning(NOTIFICATION_WARNING);
       if (assignmentErrorLog) {
@@ -135,7 +184,11 @@ export function createRefereeAssignmentController({
       }
     }
 
-    view.showConfirmation(currentPaper.id, validation.uniqueEmails);
+    if (assignmentResult.rejected.length === 0) {
+      view.showConfirmation(currentPaper.id, assignmentResult.assigned);
+    } else {
+      view.setStatus('Assignments processed with some rejections.', false);
+    }
   }
 
   return {

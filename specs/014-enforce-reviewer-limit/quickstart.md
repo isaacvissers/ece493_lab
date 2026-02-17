@@ -16,3 +16,5 @@ npm test && npm run lint
 - Bulk assignment partially applies and reports per-reviewer outcomes.
 - Lookup or save failures block assignment and report errors.
 - Concurrent assignments do not allow exceeding 5 active assignments.
+- Assignment responses return within 200 ms under typical use.
+- Email inputs and assign button show visible focus states with keyboard navigation.

@@ -31,6 +31,19 @@ test('referee assignment view exposes fields and helpers', () => {
   view.setAuthorizationMessage('No permission');
   expect(view.element.querySelector('#authorization-banner').textContent).toContain('No permission');
 
+  view.setSummary({
+    assigned: ['a@example.com'],
+    rejected: [{ email: 'b@example.com', reason: 'limit reached' }],
+  });
+  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Assigned: a@example.com');
+  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Rejected: b@example.com');
+  view.setSummary({ assigned: [], rejected: [] });
+  expect(view.element.querySelector('#assignment-summary').textContent).toBe('');
+  view.setSummary({});
+  expect(view.element.querySelector('#assignment-summary').textContent).toBe('');
+  view.setSummary(null);
+  expect(view.element.querySelector('#assignment-summary').textContent).toBe('');
+
   view.showConfirmation('paper_1', ['a@example.com', 'b@example.com', 'c@example.com']);
   expect(view.element.querySelector('#assignment-banner').textContent).toContain('paper_1');
 

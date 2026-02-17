@@ -19,7 +19,8 @@ export function createPaper({
 }
 
 export function isEligibleStatus(status) {
-  return status === 'Submitted';
+  const normalized = (status || '').toString().trim().toLowerCase();
+  return normalized === 'submitted' || normalized === 'eligible';
 }
 
 export function assignReferees(paper, refereeEmails) {

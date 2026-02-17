@@ -10,6 +10,7 @@ function createViewStub() {
       setAuthorizationMessage: jest.fn(),
       setWarning: jest.fn(),
       setStatus: jest.fn(),
+      setSummary: jest.fn(),
       setFieldError: jest.fn(),
       setCountError: jest.fn(),
       setPaper: jest.fn(),
@@ -187,6 +188,54 @@ test('shows validation errors for duplicates and count', () => {
   submit();
   expect(view.setFieldError).toHaveBeenCalled();
   expect(view.setCountError).toHaveBeenCalledWith('Exactly 3 referees are required.');
+});
+
+test('handles unknown rejection reasons with save message', () => {
+  const { view, submit } = createViewStub();
+  const mocks = createMocks();
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    notificationService: mocks.notificationService,
+    assignmentErrorLog: mocks.assignmentErrorLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+    assignmentService: {
+      assignReviewers: () => ({
+        assigned: [],
+        rejected: [{ email: 'x@example.com', reason: 'other' }],
+        createdAssignments: [],
+      }),
+    },
+  });
+  controller.init();
+  submit();
+  const summary = view.setSummary.mock.calls[view.setSummary.mock.calls.length - 1][0];
+  expect(summary.rejected[0].reason).toContain('Assignment could not be saved');
+  expect(view.setStatus).toHaveBeenCalledWith('No reviewers were assigned.', true);
+});
+
+test('does not set no-reviewers message when result is empty', () => {
+  const { view, submit } = createViewStub();
+  const mocks = createMocks();
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    notificationService: mocks.notificationService,
+    assignmentErrorLog: mocks.assignmentErrorLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+    assignmentService: {
+      assignReviewers: () => ({
+        assigned: [],
+        rejected: [],
+        createdAssignments: [],
+      }),
+    },
+  });
+  controller.init();
+  submit();
+  expect(view.setStatus).not.toHaveBeenCalledWith('No reviewers were assigned.', true);
 });
 
 test('falls back to empty assigned referee list when missing', () => {

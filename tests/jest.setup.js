@@ -8,6 +8,7 @@ import { submissionErrorLog } from '../src/services/submission-error-log.js';
 import { uploadErrorLog } from '../src/services/upload-error-log.js';
 import { metadataStorage } from '../src/services/metadata-storage.js';
 import { metadataErrorLog } from '../src/services/metadata-error-log.js';
+import { assignmentStore } from '../src/services/assignment-store.js';
 
 beforeEach(() => {
   document.body.innerHTML = '';
@@ -23,5 +24,6 @@ beforeEach(() => {
   uploadErrorLog.clear();
   metadataStorage.reset();
   metadataErrorLog.clear();
+  assignmentStore.reset();
   validationService.setPolicyAvailable(true);
 });

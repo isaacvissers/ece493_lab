@@ -2,7 +2,9 @@ import { assignReferees, createPaper, isEligibleStatus } from '../../src/models/
 
 test('eligible status is submitted only', () => {
   expect(isEligibleStatus('Submitted')).toBe(true);
+  expect(isEligibleStatus('eligible')).toBe(true);
   expect(isEligibleStatus('Withdrawn')).toBe(false);
+  expect(isEligibleStatus(null)).toBe(false);
 });
 
 test('assignReferees updates emails and version', () => {

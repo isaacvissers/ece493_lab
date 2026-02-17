@@ -27,8 +27,8 @@ description: "Task list for UC-14 enforce reviewer assignment limit"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Verify MVC directory structure exists in src/models/, src/views/, src/controllers/, src/services/
-- [ ] T002 [P] Define localStorage keys and seed structures for reviewers, papers, assignments in src/services/storage.js
+- [X] T001 Verify MVC directory structure exists in src/models/, src/views/, src/controllers/, src/services/
+- [X] T002 [P] Define localStorage keys and seed structures for reviewers, papers, assignments in src/services/assignment-store.js and src/services/assignment-storage.js
 
 ---
 
@@ -38,12 +38,12 @@ description: "Task list for UC-14 enforce reviewer assignment limit"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 [P] Implement Reviewer model (id, email, active count helpers) in src/models/reviewer.js
-- [ ] T004 [P] Implement Paper model (id, status helpers) in src/models/paper.js
-- [ ] T005 [P] Implement Assignment model (status, uniqueness helpers) in src/models/assignment.js
-- [ ] T006 Implement assignment storage access layer in src/services/assignment-store.js
-- [ ] T007 Implement reviewer assignment count lookup in src/services/reviewer-assignment-count.js
-- [ ] T008 Implement assignment validation rules (limit, eligibility, no override) in src/services/assignment-validator.js
+- [X] T003 [P] Implement Reviewer model (id, email, active count helpers) in src/models/reviewer.js
+- [X] T004 [P] Implement Paper model (id, status helpers) in src/models/paper.js
+- [X] T005 [P] Implement Assignment model (status, uniqueness helpers) in src/models/assignment.js
+- [X] T006 Implement assignment storage access layer in src/services/assignment-store.js
+- [X] T007 Implement reviewer assignment count lookup in src/services/reviewer-assignment-count.js
+- [X] T008 Implement assignment validation rules (limit, eligibility, no override) in src/services/assignment-validator.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -59,18 +59,18 @@ description: "Task list for UC-14 enforce reviewer assignment limit"
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T009 [P] [US1] Acceptance test for under-limit assignment (AT-UC14-01) in tests/acceptance/at_uc14_01_under_limit.test.js
-- [ ] T010 [P] [US1] Acceptance test for at-limit block (AT-UC14-02) in tests/acceptance/at_uc14_02_at_limit.test.js
-- [ ] T011 [P] [US1] Acceptance test for boundary transition 4→5 then deny (AT-UC14-03) in tests/acceptance/at_uc14_03_boundary_transition.test.js
-- [ ] T012 [P] [US1] Integration test for single assignment flow in tests/integration/assign_single_reviewer.test.js
-- [ ] T013 [P] [US1] Unit tests for assignment validator rules in tests/unit/assignment_validator.test.js
+- [X] T009 [P] [US1] Acceptance test for under-limit assignment (AT-UC14-01) in tests/acceptance/at_uc14_01_under_limit.test.js
+- [X] T010 [P] [US1] Acceptance test for at-limit block (AT-UC14-02) in tests/acceptance/at_uc14_02_at_limit.test.js
+- [X] T011 [P] [US1] Acceptance test for boundary transition 4→5 then deny (AT-UC14-03) in tests/acceptance/at_uc14_03_boundary_transition.test.js
+- [X] T012 [P] [US1] Integration test for single assignment flow in tests/integration/assign_single_reviewer.test.js
+- [X] T013 [P] [US1] Unit tests for assignment validator rules in tests/unit/assignment-validator.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T014 [P] [US1] Add single-assignment service flow in src/services/assignment-service.js (lookup count, validate, create assignment)
-- [ ] T015 [P] [US1] Render limit and success messages in src/views/assign-referees-view.js
-- [ ] T016 [US1] Wire single-assignment submit handling in src/controllers/assign-referees-controller.js
-- [ ] T017 [US1] Update routing/view initialization for assign referees UI in src/controllers/router.js
+- [X] T014 [P] [US1] Add single-assignment service flow in src/services/assignment-service.js (lookup count, validate, create assignment)
+- [X] T015 [P] [US1] Render limit and success messages in src/views/referee-assignment-view.js
+- [X] T016 [US1] Wire single-assignment submit handling in src/controllers/referee-assignment-controller.js
+- [X] T017 [US1] Update routing/view initialization for assign referees UI in src/app.js (existing referee assignment route)
 
 **Checkpoint**: User Story 1 functional and independently testable
 
@@ -84,15 +84,15 @@ description: "Task list for UC-14 enforce reviewer assignment limit"
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T018 [P] [US2] Acceptance test for mixed-eligibility bulk assignment (AT-UC14-05) in tests/acceptance/at_uc14_05_bulk_mixed.test.js
-- [ ] T019 [P] [US2] Integration test for bulk assignment flow in tests/integration/assign_bulk_reviewers.test.js
-- [ ] T020 [P] [US2] Unit tests for bulk assignment summary logic in tests/unit/assignment_summary.test.js
+- [X] T018 [P] [US2] Acceptance test for mixed-eligibility bulk assignment (AT-UC14-05) in tests/acceptance/at_uc14_05_bulk_mixed.test.js
+- [X] T019 [P] [US2] Integration test for bulk assignment flow in tests/integration/assign_bulk_reviewers.test.js
+- [X] T020 [P] [US2] Unit tests for bulk assignment summary logic in tests/unit/referee-assignment-view.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T021 [P] [US2] Add bulk-assignment service flow (partial apply) in src/services/assignment-service.js
-- [ ] T022 [P] [US2] Render per-reviewer assignment summary in src/views/assign-referees-view.js
-- [ ] T023 [US2] Wire bulk input handling in src/controllers/assign-referees-controller.js
+- [X] T021 [P] [US2] Add bulk-assignment service flow (partial apply) in src/services/assignment-service.js
+- [X] T022 [P] [US2] Render per-reviewer assignment summary in src/views/referee-assignment-view.js
+- [X] T023 [US2] Wire bulk input handling in src/controllers/referee-assignment-controller.js
 
 **Checkpoint**: User Stories 1 and 2 both functional and independently testable
 
@@ -106,18 +106,18 @@ description: "Task list for UC-14 enforce reviewer assignment limit"
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T024 [P] [US3] Acceptance test for lookup failure block (AT-UC14-04) in tests/acceptance/at_uc14_04_lookup_fail.test.js
-- [ ] T025 [P] [US3] Acceptance test for save failure block (AT-UC14-06) in tests/acceptance/at_uc14_06_save_fail.test.js
-- [ ] T026 [P] [US3] Acceptance test for concurrency limit enforcement (AT-UC14-07) in tests/acceptance/at_uc14_07_concurrency_limit.test.js
-- [ ] T027 [P] [US3] Integration test for failure handling flow in tests/integration/assign_failure_paths.test.js
-- [ ] T028 [P] [US3] Unit tests for service error mapping in tests/unit/assignment_errors.test.js
+- [X] T024 [P] [US3] Acceptance test for lookup failure block (AT-UC14-04) in tests/acceptance/at_uc14_04_lookup_fail.test.js
+- [X] T025 [P] [US3] Acceptance test for save failure block (AT-UC14-06) in tests/acceptance/at_uc14_06_save_fail.test.js
+- [X] T026 [P] [US3] Acceptance test for concurrency limit enforcement (AT-UC14-07) in tests/acceptance/at_uc14_07_concurrency_limit.test.js
+- [X] T027 [P] [US3] Integration test for failure handling flow in tests/integration/assign_failure_paths.test.js
+- [X] T028 [P] [US3] Unit tests for service error mapping in tests/unit/assignment-service.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T029 [P] [US3] Add explicit error codes/messages for lookup/save failures in src/services/assignment-service.js
-- [ ] T030 [P] [US3] Add concurrency guard to prevent limit exceed in src/services/assignment-service.js
-- [ ] T031 [US3] Display lookup/save failure messages in src/views/assign-referees-view.js
-- [ ] T032 [US3] Ensure controller surfaces failure states without side effects in src/controllers/assign-referees-controller.js
+- [X] T029 [P] [US3] Add explicit error codes/messages for lookup/save failures in src/services/assignment-service.js
+- [X] T030 [P] [US3] Add concurrency guard to prevent limit exceed in src/services/assignment-store.js
+- [X] T031 [US3] Display lookup/save failure messages in src/views/referee-assignment-view.js
+- [X] T032 [US3] Ensure controller surfaces failure states without side effects in src/controllers/referee-assignment-controller.js
 
 **Checkpoint**: All user stories functional and independently testable
 
@@ -127,10 +127,10 @@ description: "Task list for UC-14 enforce reviewer assignment limit"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T033 [P] Add keyboard focus states for assignment UI elements in src/views/assign-referees-view.js
-- [ ] T034 [P] Verify keyboard operability (tab order/activation) for assignment UI in src/views/assign-referees-view.js
-- [ ] T035 [P] Add performance validation note for <=200 ms response in specs/014-enforce-reviewer-limit/quickstart.md
-- [ ] T036 [P] Update quickstart validation notes for UC-14 in specs/014-enforce-reviewer-limit/quickstart.md
+- [X] T033 [P] Add keyboard focus states for assignment UI elements in styles/main.css
+- [X] T034 [P] Verify keyboard operability (tab order/activation) for assignment UI in src/views/referee-assignment-view.js
+- [X] T035 [P] Add performance validation note for <=200 ms response in specs/014-enforce-reviewer-limit/quickstart.md
+- [X] T036 [P] Update quickstart validation notes for UC-14 in specs/014-enforce-reviewer-limit/quickstart.md
 - [ ] T037 Run quickstart validation steps in specs/014-enforce-reviewer-limit/quickstart.md
 
 ---
