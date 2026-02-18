@@ -12,6 +12,9 @@ import { assignmentStore } from '../src/services/assignment-store.js';
 import { reviewRequestStore } from '../src/services/review-request-store.js';
 import { violationLog } from '../src/services/violation-log.js';
 import { reviewRequestService } from '../src/services/review-request-service.js';
+import { invitationStore } from '../src/services/invitation-store.js';
+import { invitationLog } from '../src/services/invitation-log.js';
+import { invitationEmail } from '../src/services/invitation-email.js';
 
 beforeEach(() => {
   document.body.innerHTML = '';
@@ -31,5 +34,8 @@ beforeEach(() => {
   reviewRequestStore.reset();
   reviewRequestService.setDeliveryFailureMode(false);
   violationLog.clear();
+  invitationStore.reset();
+  invitationLog.clear();
+  invitationEmail.clear();
   validationService.setPolicyAvailable(true);
 });

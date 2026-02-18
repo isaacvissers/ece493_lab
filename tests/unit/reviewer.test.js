@@ -9,9 +9,10 @@ test('counts active assignments', () => {
   const assignments = [
     { status: 'active' },
     { status: 'completed' },
+    { status: 'accepted' },
     { status: 'active' },
   ];
-  expect(getActiveAssignmentCount(assignments)).toBe(2);
+  expect(getActiveAssignmentCount(assignments)).toBe(3);
   expect(getActiveAssignmentCount(null)).toBe(0);
 });
 

@@ -17,3 +17,5 @@ npm test && npm run lint
 - Invalid/expired links show error and do not record response.
 - Send/record failures are logged and leave assignment unchanged.
 - Invitation links expire after 7 days.
+- Reviewer response actions are keyboard accessible (Tab + Enter).
+- Performance note: Invitation delivery should complete within 2 minutes in the simulated environment.

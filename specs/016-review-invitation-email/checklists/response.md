@@ -8,57 +8,57 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are requirements defined for accepting an invitation and recording acceptance? [Completeness, Spec §FR-003]
-- [ ] CHK002 Are requirements defined for rejecting an invitation and recording rejection? [Completeness, Spec §FR-003]
-- [ ] CHK003 Are requirements defined for confirmation after response? [Completeness, Spec §FR-004]
-- [ ] CHK004 Are requirements defined for invalid or expired links (no response recorded)? [Completeness, Spec §FR-005]
-- [ ] CHK005 Are requirements defined for duplicate responses? [Completeness, Spec §FR-006]
-- [ ] CHK006 Are requirements defined for invitation resend after timeout? [Completeness, Spec §FR-009]
+- [x] CHK001 Are requirements defined for accepting an invitation and recording acceptance? [Completeness, Spec §FR-003]
+- [x] CHK002 Are requirements defined for rejecting an invitation and recording rejection? [Completeness, Spec §FR-003]
+- [x] CHK003 Are requirements defined for confirmation after response? [Completeness, Spec §FR-004]
+- [x] CHK004 Are requirements defined for invalid or expired links (no response recorded)? [Completeness, Spec §FR-005]
+- [x] CHK005 Are requirements defined for duplicate responses? [Completeness, Spec §FR-006]
+- [x] CHK006 Are requirements defined for invitation resend after timeout? [Completeness, Spec §FR-009]
 
 ## Requirement Clarity
 
-- [ ] CHK007 Is the status transition on accept vs reject unambiguous? [Clarity, Spec §FR-003]
-- [ ] CHK008 Is "confirmation" defined with clear expected outcome? [Clarity, Spec §FR-004]
-- [ ] CHK009 Is the 7-day expiration window clearly stated? [Clarity, Spec §NFR-003]
-- [ ] CHK010 Is "single-use" behavior specified clearly for links? [Clarity, Spec §NFR-003]
+- [x] CHK007 Is the status transition on accept vs reject unambiguous? [Clarity, Spec §FR-003]
+- [x] CHK008 Is "confirmation" defined with clear expected outcome? [Clarity, Spec §FR-004]
+- [x] CHK009 Is the 7-day expiration window clearly stated? [Clarity, Spec §NFR-003]
+- [x] CHK010 Is "single-use" behavior specified clearly for links? [Clarity, Spec §NFR-003]
 
 ## Requirement Consistency
 
-- [ ] CHK011 Do user stories and FRs describe the same accept/reject outcomes? [Consistency, Spec §User Story 1, Spec §FR-003]
-- [ ] CHK012 Do edge cases align with duplicate/expired link requirements? [Consistency, Spec §Edge Cases]
-- [ ] CHK013 Are success criteria aligned with response handling requirements? [Consistency, Spec §SC-002, Spec §SC-003]
+- [x] CHK011 Do user stories and FRs describe the same accept/reject outcomes? [Consistency, Spec §User Story 1, Spec §FR-003]
+- [x] CHK012 Do edge cases align with duplicate/expired link requirements? [Consistency, Spec §Edge Cases]
+- [x] CHK013 Are success criteria aligned with response handling requirements? [Consistency, Spec §SC-002, Spec §SC-003]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK014 Are acceptance scenarios sufficient to test accept and reject outcomes? [Coverage, Spec §User Story 1]
-- [ ] CHK015 Are acceptance scenarios sufficient to test invalid/expired links? [Coverage, Spec §User Story 2]
-- [ ] CHK016 Are acceptance scenarios sufficient to test duplicate responses? [Coverage, Spec §FR-006]
+- [x] CHK014 Are acceptance scenarios sufficient to test accept and reject outcomes? [Coverage, Spec §User Story 1]
+- [x] CHK015 Are acceptance scenarios sufficient to test invalid/expired links? [Coverage, Spec §User Story 2]
+- [x] CHK016 Are acceptance scenarios sufficient to test duplicate responses? [Coverage, Spec §FR-006]
 
 ## Scenario Coverage
 
-- [ ] CHK017 Are primary flows for accept/reject covered end-to-end? [Coverage, Spec §User Story 1]
-- [ ] CHK018 Are invalid/expired link flows covered with clear recovery guidance? [Coverage, Spec §User Story 2]
-- [ ] CHK019 Are resend flows after timeout addressed? [Coverage, Spec §FR-009]
+- [x] CHK017 Are primary flows for accept/reject covered end-to-end? [Coverage, Spec §User Story 1]
+- [x] CHK018 Are invalid/expired link flows covered with clear recovery guidance? [Coverage, Spec §User Story 2]
+- [x] CHK019 Are resend flows after timeout addressed? [Coverage, Spec §FR-009]
 
 ## Edge Case Coverage
 
-- [ ] CHK020 Are multiple response attempts explicitly addressed? [Edge Case, Spec §Edge Cases]
-- [ ] CHK021 Are concurrent responses explicitly addressed? [Edge Case, Spec §Edge Cases]
+- [x] CHK020 Are multiple response attempts explicitly addressed? [Edge Case, Spec §Edge Cases]
+- [x] CHK021 Are concurrent responses explicitly addressed? [Edge Case, Spec §Edge Cases]
 
 ## Non-Functional Requirements
 
-- [ ] CHK022 Are response-page accessibility requirements specified? [Completeness, Spec §NFR-002]
-- [ ] CHK023 Are response confirmation timing expectations specified? [Gap]
+- [x] CHK022 Are response-page accessibility requirements specified? [Completeness, Spec §NFR-002]
+- [x] CHK023 Are response confirmation timing expectations specified? [Gap]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK024 Are assumptions about "no login required" consistent with response handling? [Assumption, Spec §Assumptions]
-- [ ] CHK025 Are external email dependencies documented for response flow? [Assumption, Spec §Assumptions]
+- [x] CHK024 Are assumptions about "no login required" consistent with response handling? [Assumption, Spec §Assumptions]
+- [x] CHK025 Are external email dependencies documented for response flow? [Assumption, Spec §Assumptions]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK026 Is "response recorded" defined consistently across scenarios and requirements? [Ambiguity, Spec §FR-003]
-- [ ] CHK027 Are any response rules conflicting with resend logic? [Conflict, Spec §FR-009]
+- [x] CHK026 Is "response recorded" defined consistently across scenarios and requirements? [Ambiguity, Spec §FR-003]
+- [x] CHK027 Are any response rules conflicting with resend logic? [Conflict, Spec §FR-009]
 
 ## Notes
 

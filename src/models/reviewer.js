@@ -19,5 +19,7 @@ export function getActiveAssignmentCount(assignments = []) {
   if (!Array.isArray(assignments)) {
     return 0;
   }
-  return assignments.filter((assignment) => assignment && assignment.status === 'active').length;
+  return assignments.filter((assignment) => (
+    assignment && (assignment.status === 'active' || assignment.status === 'accepted')
+  )).length;
 }

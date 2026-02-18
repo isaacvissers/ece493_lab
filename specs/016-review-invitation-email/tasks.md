@@ -27,8 +27,8 @@ description: "Task list for UC-16 receive review invitation by email"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Verify MVC directory structure exists in src/models/, src/views/, src/controllers/, src/services/
-- [ ] T002 [P] Define localStorage keys and seed structures for invitations, reviewers, papers, assignments in src/services/storage.js
+- [X] T001 Verify MVC directory structure exists in src/models/, src/views/, src/controllers/, src/services/
+- [X] T002 [P] Define localStorage keys and seed structures for invitations, reviewers, papers, assignments in src/services/storage.js
 
 ---
 
@@ -38,15 +38,15 @@ description: "Task list for UC-16 receive review invitation by email"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 [P] Implement ReviewInvitation model in src/models/review_invitation.js
-- [ ] T004 [P] Implement Reviewer model in src/models/reviewer.js
-- [ ] T005 [P] Implement Paper model in src/models/paper.js
-- [ ] T006 [P] Implement Assignment model in src/models/assignment.js
-- [ ] T007 Implement invitation storage access layer in src/services/invitation-store.js
-- [ ] T008 Implement response recording service in src/services/response-recorder.js
-- [ ] T009 Implement invitation link validator (single-use, expiry) in src/services/invitation-link-validator.js
-- [ ] T010 Implement invitation email sender wrapper in src/services/invitation-email.js
-- [ ] T011 Implement failure logging service in src/services/invitation-log.js
+- [X] T003 [P] Implement ReviewInvitation model in src/models/review_invitation.js
+- [X] T004 [P] Implement Reviewer model in src/models/reviewer.js
+- [X] T005 [P] Implement Paper model in src/models/paper.js
+- [X] T006 [P] Implement Assignment model in src/models/assignment.js
+- [X] T007 Implement invitation storage access layer in src/services/invitation-store.js
+- [X] T008 Implement response recording service in src/services/response-recorder.js
+- [X] T009 Implement invitation link validator (single-use, expiry) in src/services/invitation-link-validator.js
+- [X] T010 Implement invitation email sender wrapper in src/services/invitation-email.js
+- [X] T011 Implement failure logging service in src/services/invitation-log.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -62,17 +62,17 @@ description: "Task list for UC-16 receive review invitation by email"
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T012 [P] [US1] Acceptance test for invitation email contents (AT-UC16-01) in tests/acceptance/at_uc16_01_invitation_email.test.js
-- [ ] T013 [P] [US1] Acceptance test for accept response (AT-UC16-02) in tests/acceptance/at_uc16_02_accept_response.test.js
-- [ ] T014 [P] [US1] Acceptance test for reject response (AT-UC16-03) in tests/acceptance/at_uc16_03_reject_response.test.js
-- [ ] T015 [P] [US1] Integration test for respond flow in tests/integration/review_invitation_respond.test.js
-- [ ] T016 [P] [US1] Unit tests for link validator in tests/unit/invitation_link_validator.test.js
+- [X] T012 [P] [US1] Acceptance test for invitation email contents (AT-UC16-01) in tests/acceptance/at_uc16_01_invitation_email.test.js
+- [X] T013 [P] [US1] Acceptance test for accept response (AT-UC16-02) in tests/acceptance/at_uc16_02_accept_response.test.js
+- [X] T014 [P] [US1] Acceptance test for reject response (AT-UC16-03) in tests/acceptance/at_uc16_03_reject_response.test.js
+- [X] T015 [P] [US1] Integration test for respond flow in tests/integration/review_invitation_respond.test.js
+- [X] T016 [P] [US1] Unit tests for link validator in tests/unit/invitation_link_validator.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Create and send invitation in src/services/invitation-service.js
-- [ ] T018 [P] [US1] Render reviewer confirmation page in src/views/reviewer-response-view.js
-- [ ] T019 [US1] Wire respond controller in src/controllers/review-invitation-controller.js
+- [X] T017 [P] [US1] Create and send invitation in src/services/invitation-service.js
+- [X] T018 [P] [US1] Render reviewer confirmation page in src/views/reviewer-response-view.js
+- [X] T019 [US1] Wire respond controller in src/controllers/review-invitation-controller.js
 
 **Checkpoint**: User Story 1 functional and independently testable
 
@@ -86,16 +86,16 @@ description: "Task list for UC-16 receive review invitation by email"
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T020 [P] [US2] Acceptance test for invalid/expired link error (AT-UC16-04) in tests/acceptance/at_uc16_04_invalid_link.test.js
-- [ ] T021 [P] [US2] Acceptance test for duplicate response handling (AT-UC16-05) in tests/acceptance/at_uc16_05_duplicate_response.test.js
-- [ ] T022 [P] [US2] Integration test for link validation failures in tests/integration/review_invitation_invalid_link.test.js
-- [ ] T023 [P] [US2] Unit tests for duplicate response detection in tests/unit/response_dedup.test.js
+- [X] T020 [P] [US2] Acceptance test for invalid/expired link error (AT-UC16-04) in tests/acceptance/at_uc16_04_invalid_link.test.js
+- [X] T021 [P] [US2] Acceptance test for duplicate response handling (AT-UC16-05) in tests/acceptance/at_uc16_05_duplicate_response.test.js
+- [X] T022 [P] [US2] Integration test for link validation failures in tests/integration/review_invitation_invalid_link.test.js
+- [X] T023 [P] [US2] Unit tests for duplicate response detection in tests/unit/response_dedup.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T024 [P] [US2] Add invalid/expired link handling in src/services/invitation-service.js
-- [ ] T025 [P] [US2] Render invalid/expired link error in src/views/reviewer-response-view.js
-- [ ] T026 [US2] Wire error handling paths in src/controllers/review-invitation-controller.js
+- [X] T024 [P] [US2] Add invalid/expired link handling in src/services/invitation-service.js
+- [X] T025 [P] [US2] Render invalid/expired link error in src/views/reviewer-response-view.js
+- [X] T026 [US2] Wire error handling paths in src/controllers/review-invitation-controller.js
 
 **Checkpoint**: User Stories 1 and 2 both functional and independently testable
 
@@ -109,17 +109,17 @@ description: "Task list for UC-16 receive review invitation by email"
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T027 [P] [US3] Acceptance test for send failure handling (AT-UC16-06) in tests/acceptance/at_uc16_06_send_failure.test.js
-- [ ] T028 [P] [US3] Acceptance test for response record failure (AT-UC16-07) in tests/acceptance/at_uc16_07_record_failure.test.js
-- [ ] T029 [P] [US3] Integration test for failure logging in tests/integration/review_invitation_failures.test.js
-- [ ] T030 [P] [US3] Unit tests for failure logging in tests/unit/invitation_log.test.js
+- [X] T027 [P] [US3] Acceptance test for send failure handling (AT-UC16-06) in tests/acceptance/at_uc16_06_send_failure.test.js
+- [X] T028 [P] [US3] Acceptance test for response record failure (AT-UC16-07) in tests/acceptance/at_uc16_07_record_failure.test.js
+- [X] T029 [P] [US3] Integration test for failure logging in tests/integration/review_invitation_failures.test.js
+- [X] T030 [P] [US3] Unit tests for failure logging in tests/unit/invitation_log.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T031 [P] [US3] Add send failure handling in src/services/invitation-service.js
-- [ ] T032 [P] [US3] Add record failure handling in src/services/response-recorder.js
-- [ ] T033 [US3] Ensure controller leaves assignment unchanged on failures in src/controllers/review-invitation-controller.js
-- [ ] T034 [US3] Record send/record failures in src/services/invitation-log.js
+- [X] T031 [P] [US3] Add send failure handling in src/services/invitation-service.js
+- [X] T032 [P] [US3] Add record failure handling in src/services/response-recorder.js
+- [X] T033 [US3] Ensure controller leaves assignment unchanged on failures in src/controllers/review-invitation-controller.js
+- [X] T034 [US3] Record send/record failures in src/services/invitation-log.js
 
 **Checkpoint**: All user stories functional and independently testable
 
@@ -129,10 +129,10 @@ description: "Task list for UC-16 receive review invitation by email"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T035 [P] Add keyboard focus states for reviewer response view in src/views/reviewer-response-view.js
-- [ ] T036 [P] Validate keyboard operability for response view in src/views/reviewer-response-view.js
-- [ ] T037 [P] Add performance validation note for 2-minute delivery SLA in specs/016-review-invitation-email/quickstart.md
-- [ ] T038 [P] Update quickstart validation notes for UC-16 in specs/016-review-invitation-email/quickstart.md
+- [X] T035 [P] Add keyboard focus states for reviewer response view in src/views/reviewer-response-view.js
+- [X] T036 [P] Validate keyboard operability for response view in src/views/reviewer-response-view.js
+- [X] T037 [P] Add performance validation note for 2-minute delivery SLA in specs/016-review-invitation-email/quickstart.md
+- [X] T038 [P] Update quickstart validation notes for UC-16 in specs/016-review-invitation-email/quickstart.md
 - [ ] T039 Run quickstart validation steps in specs/016-review-invitation-email/quickstart.md
 
 ---

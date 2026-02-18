@@ -20,7 +20,10 @@ export function createAssignment({
 }
 
 export function isActiveAssignment(assignment) {
-  return Boolean(assignment && assignment.status === 'active');
+  if (!assignment) {
+    return false;
+  }
+  return assignment.status === 'active' || assignment.status === 'accepted';
 }
 
 export function isSameAssignment(assignment, paperId, reviewerEmail) {

@@ -24,6 +24,7 @@ test('respects provided assignment id and timestamp', () => {
 
 test('detects active assignments', () => {
   expect(isActiveAssignment({ status: 'active' })).toBe(true);
+  expect(isActiveAssignment({ status: 'accepted' })).toBe(true);
   expect(isActiveAssignment({ status: 'completed' })).toBe(false);
   expect(isActiveAssignment(null)).toBe(false);
 });
