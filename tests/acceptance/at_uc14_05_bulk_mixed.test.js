@@ -2,8 +2,7 @@ import { createRefereeAssignmentView } from '../../src/views/referee-assignment-
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
+import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { sessionState } from '../../src/models/session-state.js';
 import { createAssignment } from '../../src/models/assignment.js';
 
@@ -13,8 +12,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -42,8 +39,7 @@ function submit(view) {
 beforeEach(() => {
   assignmentStorage.reset();
   assignmentStore.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
+  reviewRequestStore.reset();
   sessionState.clear();
   document.body.innerHTML = '';
 });
@@ -55,8 +51,9 @@ test('bulk assignment partially applies with mixed eligibility', () => {
   const { view } = setup('paper_6');
   setEmails(view, ['limit@example.com', 'ok1@example.com', 'ok2@example.com']);
   submit(view);
-  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Rejected: limit@example.com');
-  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Assigned: ok1@example.com');
+  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Blocked: limit@example.com');
+  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Request sent: ok1@example.com');
+  expect(reviewRequestStore.getRequests()).toHaveLength(2);
   const updated = assignmentStorage.getPaper('paper_6');
-  expect(updated.assignedRefereeEmails).toEqual(['ok1@example.com', 'ok2@example.com']);
+  expect(updated.assignedRefereeEmails).toEqual([]);
 });

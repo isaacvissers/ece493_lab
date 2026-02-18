@@ -1,8 +1,6 @@
 import { createRefereeAssignmentView } from '../../src/views/referee-assignment-view.js';
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
 import { sessionState } from '../../src/models/session-state.js';
 
 function setup(paperId) {
@@ -11,8 +9,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -33,20 +29,17 @@ function submit(view) {
 
 beforeEach(() => {
   assignmentStorage.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
   sessionState.clear();
   document.body.innerHTML = '';
 });
 
-test('shows validation errors for blank/duplicate', () => {
+test('shows validation errors for duplicate entries', () => {
   assignmentStorage.seedPaper({ id: 'paper_1', title: 'Paper', status: 'Submitted' });
   sessionState.authenticate({ id: 'acct_1', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
   const { view } = setup('paper_1');
   setEmails(view, ['', 'ref1@example.com', 'REF1@example.com']);
   submit(view);
-  expect(view.element.querySelector('#referee-email-1-error').textContent).toContain('required');
-  expect(view.element.querySelector('#referee-email-2-error').textContent).toBe('');
+  expect(view.element.querySelector('#referee-email-1-error').textContent).toBe('');
   expect(view.element.querySelector('#referee-email-3-error').textContent).toContain('Duplicate');
-  expect(view.element.querySelector('#referee-count-error').textContent).toContain('Exactly 3');
+  expect(view.element.querySelector('#referee-count-error').textContent).toBe('');
 });

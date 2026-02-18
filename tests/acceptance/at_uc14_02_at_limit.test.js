@@ -2,8 +2,7 @@ import { createRefereeAssignmentView } from '../../src/views/referee-assignment-
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
+import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { sessionState } from '../../src/models/session-state.js';
 import { createAssignment } from '../../src/models/assignment.js';
 
@@ -13,8 +12,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -42,8 +39,7 @@ function submit(view) {
 beforeEach(() => {
   assignmentStorage.reset();
   assignmentStore.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
+  reviewRequestStore.reset();
   sessionState.clear();
   document.body.innerHTML = '';
 });
@@ -58,7 +54,8 @@ test('at-limit reviewer is blocked with limit message', () => {
   setEmails(view, ['limit1@example.com', 'limit2@example.com', 'limit3@example.com']);
   submit(view);
   expect(view.element.querySelector('#assignment-summary').textContent).toContain('maximum of 5 active assignments');
-  expect(view.element.querySelector('#assignment-banner').textContent).toContain('No reviewers were assigned');
+  expect(view.element.querySelector('#assignment-banner').textContent).toContain('No review requests were sent');
+  expect(reviewRequestStore.getRequests()).toHaveLength(0);
   const updated = assignmentStorage.getPaper('paper_2');
   expect(updated.assignedRefereeEmails).toHaveLength(0);
 });

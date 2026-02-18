@@ -1,9 +1,7 @@
 import { createRefereeAssignmentView } from '../../src/views/referee-assignment-view.js';
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
-import { assignmentStore } from '../../src/services/assignment-store.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
+import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { sessionState } from '../../src/models/session-state.js';
 
 function setup(paperId) {
@@ -12,8 +10,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -34,21 +30,19 @@ function submit(view) {
 
 beforeEach(() => {
   assignmentStorage.reset();
-  assignmentStore.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
+  reviewRequestStore.reset();
   sessionState.clear();
   document.body.innerHTML = '';
 });
 
-test('save failure blocks assignment', () => {
+test('request save failure blocks assignments', () => {
   assignmentStorage.seedPaper({ id: 'paper_7', title: 'Paper', status: 'Submitted' });
-  assignmentStore.setSaveFailureMode(true);
+  reviewRequestStore.setSaveFailureMode(true);
   sessionState.authenticate({ id: 'acct_6', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
   const { view } = setup('paper_7');
   setEmails(view, ['a@example.com', 'b@example.com', 'c@example.com']);
   submit(view);
-  expect(view.element.querySelector('#assignment-summary').textContent).toContain('could not be saved');
-  expect(view.element.querySelector('#assignment-banner').textContent).toContain('No reviewers were assigned');
-  assignmentStore.setSaveFailureMode(false);
+  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Review request could not be delivered');
+  expect(view.element.querySelector('#assignment-banner').textContent).toContain('No review requests were sent');
+  reviewRequestStore.setSaveFailureMode(false);
 });

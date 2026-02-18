@@ -27,8 +27,8 @@ description: "Task list for UC-15 notify editor of assignment rule violations"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Verify MVC directory structure exists in src/models/, src/views/, src/controllers/, src/services/
-- [ ] T002 [P] Define localStorage keys and seed structures for reviewers, papers, assignments, review requests in src/services/storage.js
+- [x] T001 Verify MVC directory structure exists in src/models/, src/views/, src/controllers/, src/services/
+- [x] T002 [P] Define localStorage keys and seed structures for reviewers, papers, assignments, review requests in src/services/storage.js
 
 ---
 
@@ -38,15 +38,15 @@ description: "Task list for UC-15 notify editor of assignment rule violations"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 [P] Implement Reviewer model in src/models/reviewer.js
-- [ ] T004 [P] Implement Paper model in src/models/paper.js
-- [ ] T005 [P] Implement Assignment model (pending/accepted/rejected) in src/models/assignment.js
-- [ ] T006 [P] Implement Violation model in src/models/violation.js
-- [ ] T007 [P] Implement ReviewRequest model in src/models/review_request.js
-- [ ] T008 Implement assignment storage access layer in src/services/assignment-store.js
-- [ ] T009 Implement review-request storage access layer in src/services/review-request-store.js
-- [ ] T010 Implement rule evaluation service (email validity, duplicates, limit) in src/services/assignment-rules.js
-- [ ] T011 Implement violation logging service in src/services/violation-log.js
+- [x] T003 [P] Implement Reviewer model in src/models/reviewer.js
+- [x] T004 [P] Implement Paper model in src/models/paper.js
+- [x] T005 [P] Implement Assignment model (pending/accepted/rejected) in src/models/assignment.js
+- [x] T006 [P] Implement Violation model in src/models/violation.js
+- [x] T007 [P] Implement ReviewRequest model in src/models/review_request.js
+- [x] T008 Implement assignment storage access layer in src/services/assignment-store.js
+- [x] T009 Implement review-request storage access layer in src/services/review-request-store.js
+- [x] T010 Implement rule evaluation service (email validity, duplicates, limit) in src/services/assignment-rules.js
+- [x] T011 Implement violation logging service in src/services/violation-log.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -62,18 +62,18 @@ description: "Task list for UC-15 notify editor of assignment rule violations"
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T012 [P] [US1] Acceptance test for invalid email violation (AT-UC15-01) in tests/acceptance/at_uc15_01_invalid_email.test.js
-- [ ] T013 [P] [US1] Acceptance test for limit violation (AT-UC15-02) in tests/acceptance/at_uc15_02_limit_violation.test.js
-- [ ] T014 [P] [US1] Acceptance test for email request accept/reject (AT-UC15-07) in tests/acceptance/at_uc15_07_email_accept_reject.test.js
-- [ ] T015 [P] [US1] Integration test for single assignment flow in tests/integration/assign_single_with_email.test.js
-- [ ] T016 [P] [US1] Unit tests for rule evaluation service in tests/unit/assignment_rules.test.js
+- [x] T012 [P] [US1] Acceptance test for invalid email violation (AT-UC15-01) in tests/acceptance/at_uc15_01_invalid_email.test.js
+- [x] T013 [P] [US1] Acceptance test for limit violation (AT-UC15-02) in tests/acceptance/at_uc15_02_limit_violation.test.js
+- [x] T014 [P] [US1] Acceptance test for email request accept/reject (AT-UC15-07) in tests/acceptance/at_uc15_07_email_accept_reject.test.js
+- [x] T015 [P] [US1] Integration test for single assignment flow in tests/integration/assign_single_with_email.test.js
+- [x] T016 [P] [US1] Unit tests for rule evaluation service in tests/unit/assignment_rules.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Add single-assignment service flow with violations in src/services/assignment-service.js
-- [ ] T018 [P] [US1] Send reviewer email request for valid assignments in src/services/review-request-service.js
-- [ ] T019 [P] [US1] Render violation messages for single assignment in src/views/assign-referees-view.js
-- [ ] T020 [US1] Wire single-assignment submit handling in src/controllers/assign-referees-controller.js
+- [x] T017 [P] [US1] Add single-assignment service flow with violations in src/services/assignment-service.js
+- [x] T018 [P] [US1] Send reviewer email request for valid assignments in src/services/review-request-service.js
+- [x] T019 [P] [US1] Render violation messages for single assignment in src/views/assign-referees-view.js
+- [x] T020 [US1] Wire single-assignment submit handling in src/controllers/assign-referees-controller.js
 
 **Checkpoint**: User Story 1 functional and independently testable
 
@@ -87,16 +87,16 @@ description: "Task list for UC-15 notify editor of assignment rule violations"
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T021 [P] [US2] Acceptance test for multiple violations reporting (AT-UC15-03) in tests/acceptance/at_uc15_03_multi_violation.test.js
-- [ ] T022 [P] [US2] Acceptance test for partial-apply outcomes (AT-UC15-04) in tests/acceptance/at_uc15_04_partial_apply.test.js
-- [ ] T023 [P] [US2] Integration test for bulk assignment with per-entry outcomes in tests/integration/assign_bulk_with_violations.test.js
-- [ ] T024 [P] [US2] Unit tests for violation aggregation in tests/unit/violation_aggregation.test.js
+- [x] T021 [P] [US2] Acceptance test for multiple violations reporting (AT-UC15-03) in tests/acceptance/at_uc15_03_multi_violation.test.js
+- [x] T022 [P] [US2] Acceptance test for partial-apply outcomes (AT-UC15-04) in tests/acceptance/at_uc15_04_partial_apply.test.js
+- [x] T023 [P] [US2] Integration test for bulk assignment with per-entry outcomes in tests/integration/assign_bulk_with_violations.test.js
+- [x] T024 [P] [US2] Unit tests for violation aggregation in tests/unit/violation_aggregation.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T025 [P] [US2] Add bulk-assignment service flow with per-entry outcomes in src/services/assignment-service.js
-- [ ] T026 [P] [US2] Render per-entry outcome summary in src/views/assign-referees-view.js
-- [ ] T027 [US2] Wire bulk input handling in src/controllers/assign-referees-controller.js
+- [x] T025 [P] [US2] Add bulk-assignment service flow with per-entry outcomes in src/services/assignment-service.js
+- [x] T026 [P] [US2] Render per-entry outcome summary in src/views/assign-referees-view.js
+- [x] T027 [US2] Wire bulk input handling in src/controllers/assign-referees-controller.js
 
 **Checkpoint**: User Stories 1 and 2 both functional and independently testable
 
@@ -110,17 +110,17 @@ description: "Task list for UC-15 notify editor of assignment rule violations"
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T028 [P] [US3] Acceptance test for evaluation failure block (AT-UC15-05) in tests/acceptance/at_uc15_05_eval_failure.test.js
-- [ ] T029 [P] [US3] Acceptance test for notification UI failure fallback (AT-UC15-06) in tests/acceptance/at_uc15_06_ui_failure_fallback.test.js
-- [ ] T030 [P] [US3] Integration test for failure logging and fallback in tests/integration/assignment_failure_handling.test.js
-- [ ] T031 [P] [US3] Unit tests for failure logging in tests/unit/violation_log.test.js
+- [x] T028 [P] [US3] Acceptance test for evaluation failure block (AT-UC15-05) in tests/acceptance/at_uc15_05_eval_failure.test.js
+- [x] T029 [P] [US3] Acceptance test for notification UI failure fallback (AT-UC15-06) in tests/acceptance/at_uc15_06_ui_failure_fallback.test.js
+- [x] T030 [P] [US3] Integration test for failure logging and fallback in tests/integration/assignment_failure_handling.test.js
+- [x] T031 [P] [US3] Unit tests for failure logging in tests/unit/violation_log.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T032 [P] [US3] Add evaluation failure handling in src/services/assignment-service.js
-- [ ] T033 [P] [US3] Add notification failure fallback in src/views/assign-referees-view.js
-- [ ] T034 [US3] Ensure controller blocks invalid assignments on failures in src/controllers/assign-referees-controller.js
-- [ ] T035 [US3] Record evaluation/UI failures for admin review in src/services/violation-log.js
+- [x] T032 [P] [US3] Add evaluation failure handling in src/services/assignment-service.js
+- [x] T033 [P] [US3] Add notification failure fallback in src/views/assign-referees-view.js
+- [x] T034 [US3] Ensure controller blocks invalid assignments on failures in src/controllers/assign-referees-controller.js
+- [x] T035 [US3] Record evaluation/UI failures for admin review in src/services/violation-log.js
 
 **Checkpoint**: All user stories functional and independently testable
 
@@ -130,11 +130,11 @@ description: "Task list for UC-15 notify editor of assignment rule violations"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T036 [P] Add keyboard focus states for assignment UI elements in src/views/assign-referees-view.js
-- [ ] T037 [P] Validate keyboard operability for notification messaging in src/views/assign-referees-view.js
-- [ ] T038 [P] Add performance validation note for <=200 ms notifications in specs/015-notify-assignment-violations/quickstart.md
-- [ ] T039 [P] Update quickstart validation notes for UC-15 in specs/015-notify-assignment-violations/quickstart.md
-- [ ] T040 Run quickstart validation steps in specs/015-notify-assignment-violations/quickstart.md
+- [x] T036 [P] Add keyboard focus states for assignment UI elements in src/views/assign-referees-view.js
+- [x] T037 [P] Validate keyboard operability for notification messaging in src/views/assign-referees-view.js
+- [x] T038 [P] Add performance validation note for <=200 ms notifications in specs/015-notify-assignment-violations/quickstart.md
+- [x] T039 [P] Update quickstart validation notes for UC-15 in specs/015-notify-assignment-violations/quickstart.md
+- [x] T040 Run quickstart validation steps in specs/015-notify-assignment-violations/quickstart.md
 
 ---
 

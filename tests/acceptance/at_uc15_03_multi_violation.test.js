@@ -19,12 +19,6 @@ function setup(paperId) {
   return { view };
 }
 
-function seedAssignments(email, count) {
-  for (let i = 0; i < count; i += 1) {
-    assignmentStore.addAssignment(createAssignment({ paperId: `paper_seed_${i}`, reviewerEmail: email }));
-  }
-}
-
 function setEmails(view, emails) {
   emails.forEach((email, index) => {
     view.element.querySelector(`#referee-email-${index + 1}`).value = email;
@@ -44,15 +38,17 @@ beforeEach(() => {
   document.body.innerHTML = '';
 });
 
-test('bulk assignment applies partial results', () => {
-  assignmentStorage.seedPaper({ id: 'paper_11', title: 'Paper', status: 'Submitted' });
-  seedAssignments('limit@example.com', 5);
-  sessionState.authenticate({ id: 'acct_9', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
-  const { view } = setup('paper_11');
-  setEmails(view, ['limit@example.com', 'ok1@example.com', 'ok2@example.com']);
+test('reports multiple violations in one submission', () => {
+  assignmentStorage.seedPaper({ id: 'paper_4', title: 'Paper', status: 'Submitted' });
+  for (let i = 0; i < 5; i += 1) {
+    assignmentStore.addAssignment(createAssignment({ paperId: `seed_${i}`, reviewerEmail: 'limit@example.com' }));
+  }
+  sessionState.authenticate({ id: 'acct_4', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const { view } = setup('paper_4');
+  setEmails(view, ['invalid-email', 'limit@example.com', 'ok@example.com']);
   submit(view);
-  const updated = assignmentStorage.getPaper('paper_11');
-  expect(updated.assignedRefereeEmails).toEqual([]);
-  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Blocked: limit@example.com');
-  expect(reviewRequestStore.getRequests()).toHaveLength(2);
+  const summaryText = view.element.querySelector('#assignment-summary').textContent;
+  expect(summaryText).toContain('Invalid reviewer email');
+  expect(summaryText).toContain('maximum of 5 active assignments');
+  expect(summaryText).toContain('Request sent: ok@example.com');
 });

@@ -1,8 +1,7 @@
 import { createRefereeAssignmentView } from '../../src/views/referee-assignment-view.js';
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
+import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { sessionState } from '../../src/models/session-state.js';
 
 function setup(paperId) {
@@ -11,8 +10,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -33,19 +30,19 @@ function submit(view) {
 
 beforeEach(() => {
   assignmentStorage.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
+  reviewRequestStore.reset();
   sessionState.clear();
   document.body.innerHTML = '';
 });
 
-test('successful assignment saves and confirms', () => {
+test('successful request sends and confirms', () => {
   assignmentStorage.seedPaper({ id: 'paper_1', title: 'Paper', status: 'Submitted' });
   sessionState.authenticate({ id: 'acct_1', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
   const { view } = setup('paper_1');
   setEmails(view, ['a@example.com', 'b@example.com', 'c@example.com']);
   submit(view);
   const updated = assignmentStorage.getPaper('paper_1');
-  expect(updated.assignedRefereeEmails).toHaveLength(3);
+  expect(updated.assignedRefereeEmails).toHaveLength(0);
   expect(view.element.querySelector('#assignment-banner').textContent).toContain('paper_1');
+  expect(reviewRequestStore.getRequests()).toHaveLength(3);
 });

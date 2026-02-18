@@ -24,6 +24,7 @@ function createEmailRow(index) {
 }
 
 export function createRefereeAssignmentView() {
+  let summaryFailureMode = false;
   const container = createElement('section', 'card');
   const title = createElement('h1');
   title.textContent = 'Assign referees';
@@ -41,6 +42,9 @@ export function createRefereeAssignmentView() {
   const summary = document.createElement('ul');
   summary.id = 'assignment-summary';
   summary.className = 'helper';
+
+  const fallbackSummary = createElement('div', 'status error');
+  fallbackSummary.id = 'assignment-fallback';
 
   const paperMeta = createElement('p', 'helper');
   paperMeta.id = 'paper-meta';
@@ -63,7 +67,7 @@ export function createRefereeAssignmentView() {
     submitButton,
   );
 
-  container.append(title, paperMeta, authBanner, warning, banner, summary, form);
+  container.append(title, paperMeta, authBanner, warning, banner, summary, fallbackSummary, form);
 
   function clearErrors() {
     emailRows.forEach((row) => {
@@ -73,6 +77,7 @@ export function createRefereeAssignmentView() {
     banner.textContent = '';
     banner.className = 'status';
     summary.textContent = '';
+    fallbackSummary.textContent = '';
   }
 
   function setEditable(enabled) {
@@ -114,28 +119,39 @@ export function createRefereeAssignmentView() {
     },
     setSummary(result) {
       summary.textContent = '';
-      if (!result) {
-        return;
+      if (summaryFailureMode) {
+        return false;
       }
-      const { assigned = [], rejected = [] } = result;
+      if (!result) {
+        return true;
+      }
+      const { accepted = [], blocked = [] } = result;
       const items = [];
-      assigned.forEach((email) => {
+      accepted.forEach((email) => {
         const item = document.createElement('li');
-        item.textContent = `Assigned: ${email}`;
+        item.textContent = `Request sent: ${email}`;
         items.push(item);
       });
-      rejected.forEach((entry) => {
+      blocked.forEach((entry) => {
         const item = document.createElement('li');
-        item.textContent = `Rejected: ${entry.email} (${entry.reason})`;
+        item.textContent = `Blocked: ${entry.email} (${entry.reason})`;
         items.push(item);
       });
       if (items.length) {
         summary.append(...items);
       }
+      return true;
+    },
+    setFallbackSummary(message, entries = []) {
+      const details = entries.length ? ` ${entries.join(', ')}` : '';
+      fallbackSummary.textContent = `${message || ''}${details}`.trim();
+    },
+    setSummaryFailureMode(enabled) {
+      summaryFailureMode = Boolean(enabled);
     },
     setEditable,
     showConfirmation(paperId, emails) {
-      banner.textContent = `Assignment saved for ${paperId}: ${emails.join(', ')}.`;
+      banner.textContent = `Review requests sent for ${paperId}: ${emails.join(', ')}.`;
       banner.className = 'status';
     },
     onSubmit(handler) {

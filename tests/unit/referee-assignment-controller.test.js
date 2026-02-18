@@ -10,13 +10,14 @@ function createViewStub() {
       setAuthorizationMessage: jest.fn(),
       setWarning: jest.fn(),
       setStatus: jest.fn(),
-      setSummary: jest.fn(),
+      setSummary: jest.fn(() => true),
+      setFallbackSummary: jest.fn(),
       setFieldError: jest.fn(),
       setCountError: jest.fn(),
       setPaper: jest.fn(),
       setEditable: jest.fn(),
       showConfirmation: jest.fn(),
-      getRefereeEmails: jest.fn(() => ['a@example.com', 'b@example.com', 'c@example.com']),
+      getRefereeEmails: jest.fn(() => ['a@example.com', '', 'c@example.com']),
       onSubmit: (handler) => { submitHandler = handler; },
     },
     submit() {
@@ -35,22 +36,20 @@ function createMocks(overrides = {}) {
         assignedRefereeEmails: [],
         assignmentVersion: 0,
       })),
-      saveAssignments: jest.fn(() => ({
-        id: 'paper_1',
-        title: 'Paper',
-        status: 'Submitted',
-        assignedRefereeEmails: ['a@example.com', 'b@example.com', 'c@example.com'],
-        assignmentVersion: 1,
-      })),
       ...overrides.assignmentStorage,
     },
-    notificationService: {
-      sendNotifications: jest.fn(() => ({ ok: true, failures: [] })),
-      ...overrides.notificationService,
+    assignmentService: {
+      submitAssignments: jest.fn(() => ({
+        ok: true,
+        accepted: ['a@example.com', 'c@example.com'],
+        blocked: [],
+        violations: [],
+      })),
+      ...overrides.assignmentService,
     },
-    assignmentErrorLog: {
+    violationLog: {
       logFailure: jest.fn(),
-      ...overrides.assignmentErrorLog,
+      ...overrides.violationLog,
     },
     sessionState: {
       isAuthenticated: jest.fn(() => true),
@@ -71,8 +70,8 @@ test('blocks unauthenticated users and triggers auth callback', () => {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
     onAuthRequired,
@@ -91,8 +90,8 @@ test('blocks non-editor users with authorization message', () => {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
   });
@@ -109,8 +108,8 @@ test('blocks users without role', () => {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
   });
@@ -125,8 +124,8 @@ test('handles missing paper on init', () => {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'missing',
   });
@@ -142,8 +141,8 @@ test('stops submit when paper cannot be loaded', () => {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'missing',
   });
@@ -152,294 +151,221 @@ test('stops submit when paper cannot be loaded', () => {
   expect(getPaper).toHaveBeenCalledTimes(2);
 });
 
-test('blocks ineligible paper', () => {
+test('blocks when no emails are entered', () => {
   const { view, submit } = createViewStub();
-  const mocks = createMocks({
-    assignmentStorage: {
-      getPaper: jest.fn(() => ({ id: 'paper_2', title: 'Paper', status: 'Withdrawn', assignedRefereeEmails: [], assignmentVersion: 0 })),
-    },
-  });
-  const controller = createRefereeAssignmentController({
-    view,
-    assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
-    sessionState: mocks.sessionState,
-    paperId: 'paper_2',
-  });
-  controller.init();
-  submit();
-  expect(view.setStatus).toHaveBeenCalledWith('Paper is not eligible for assignment.', true);
-});
-
-test('shows validation errors for duplicates and count', () => {
-  const { view, submit } = createViewStub();
-  view.getRefereeEmails = jest.fn(() => ['dup@example.com', 'dup@example.com', 'c@example.com']);
+  view.getRefereeEmails = jest.fn(() => ['', '', '']);
   const mocks = createMocks();
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+  });
+  controller.init();
+  submit();
+  expect(view.setCountError).toHaveBeenCalledWith('Enter at least one referee email.');
+  expect(view.setStatus).toHaveBeenCalledWith('Please enter at least one referee email.', true);
+});
+
+test('marks invalid and duplicate emails as field errors', () => {
+  const { view, submit } = createViewStub();
+  view.getRefereeEmails = jest.fn(() => ['bad', 'dup@example.com', 'dup@example.com']);
+  const mocks = createMocks();
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
   });
   controller.init();
   submit();
   expect(view.setFieldError).toHaveBeenCalled();
-  expect(view.setCountError).toHaveBeenCalledWith('Exactly 3 referees are required.');
 });
 
-test('handles unknown rejection reasons with save message', () => {
+test('blocks on evaluation failure and logs it', () => {
   const { view, submit } = createViewStub();
+  const mocks = createMocks({
+    assignmentService: { submitAssignments: jest.fn(() => ({ ok: false, failure: 'evaluation_failed' })) },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+  });
+  controller.init();
+  submit();
+  expect(view.setStatus).toHaveBeenCalledWith('Assignments cannot be completed right now. Please try again.', true);
+  expect(mocks.violationLog.logFailure).toHaveBeenCalled();
+});
+
+test('blocks on evaluation failure without logger', () => {
+  const { view, submit } = createViewStub();
+  const mocks = createMocks({
+    assignmentService: { submitAssignments: jest.fn(() => ({ ok: false, failure: 'evaluation_failed' })) },
+    violationLog: null,
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: null,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+  });
+  controller.init();
+  submit();
+  expect(view.setStatus).toHaveBeenCalledWith('Assignments cannot be completed right now. Please try again.', true);
+});
+
+test('falls back when summary UI fails', () => {
+  const { view, submit } = createViewStub();
+  view.setSummary = jest.fn(() => false);
   const mocks = createMocks();
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
-    assignmentService: {
-      assignReviewers: () => ({
-        assigned: [],
-        rejected: [{ email: 'x@example.com', reason: 'other' }],
-        createdAssignments: [],
-      }),
-    },
   });
   controller.init();
   submit();
-  const summary = view.setSummary.mock.calls[view.setSummary.mock.calls.length - 1][0];
-  expect(summary.rejected[0].reason).toContain('Assignment could not be saved');
-  expect(view.setStatus).toHaveBeenCalledWith('No reviewers were assigned.', true);
+  expect(view.setFallbackSummary).toHaveBeenCalled();
+  expect(mocks.violationLog.logFailure).toHaveBeenCalled();
 });
 
-test('does not set no-reviewers message when result is empty', () => {
+test('falls back when summary UI fails without logger', () => {
   const { view, submit } = createViewStub();
-  const mocks = createMocks();
+  view.setSummary = jest.fn(() => false);
+  const mocks = createMocks({ violationLog: null });
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
-    sessionState: mocks.sessionState,
-    paperId: 'paper_1',
-    assignmentService: {
-      assignReviewers: () => ({
-        assigned: [],
-        rejected: [],
-        createdAssignments: [],
-      }),
-    },
-  });
-  controller.init();
-  submit();
-  expect(view.setStatus).not.toHaveBeenCalledWith('No reviewers were assigned.', true);
-});
-
-test('falls back to empty assigned referee list when missing', () => {
-  const { view, submit } = createViewStub();
-  const saveAssignments = jest.fn(() => ({
-    id: 'paper_1',
-    title: 'Paper',
-    status: 'Submitted',
-    assignedRefereeEmails: ['a@example.com', 'b@example.com', 'c@example.com'],
-    assignmentVersion: 1,
-  }));
-  const mocks = createMocks({
-    assignmentStorage: {
-      getPaper: jest.fn(() => ({
-        id: 'paper_1',
-        title: 'Paper',
-        status: 'Submitted',
-        assignedRefereeEmails: null,
-        assignmentVersion: 0,
-      })),
-      saveAssignments,
-    },
-  });
-  const controller = createRefereeAssignmentController({
-    view,
-    assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: null,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
   });
   controller.init();
   submit();
-  expect(saveAssignments).toHaveBeenCalled();
+  expect(view.setFallbackSummary).toHaveBeenCalled();
 });
 
-test('handles concurrent change on save', () => {
+test('shows confirmation when all requests sent', () => {
   const { view, submit } = createViewStub();
   const mocks = createMocks({
-    assignmentStorage: {
-      getPaper: jest.fn(() => ({ id: 'paper_1', title: 'Paper', status: 'Submitted', assignedRefereeEmails: [], assignmentVersion: 0 })),
-      saveAssignments: jest.fn(() => {
-        throw new Error('concurrent_change');
-      }),
-    },
+    assignmentService: { submitAssignments: jest.fn(() => ({ ok: true, accepted: ['a@example.com'], blocked: [], violations: [] })) },
   });
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
   });
   controller.init();
   submit();
-  expect(view.setStatus).toHaveBeenCalledWith('Assignment changed. Refresh this paper to continue.', true);
+  expect(view.showConfirmation).toHaveBeenCalledWith('paper_1', ['a@example.com']);
 });
 
-test('uses unknown error type when save throws without message', () => {
+test('sets status when some requests are blocked', () => {
   const { view, submit } = createViewStub();
   const mocks = createMocks({
-    assignmentStorage: {
-      getPaper: jest.fn(() => ({ id: 'paper_1', title: 'Paper', status: 'Submitted', assignedRefereeEmails: [], assignmentVersion: 0 })),
-      saveAssignments: jest.fn(() => {
-        throw {};
-      }),
-    },
+    assignmentService: { submitAssignments: jest.fn(() => ({
+      ok: true,
+      accepted: ['a@example.com'],
+      blocked: [{ email: 'b@example.com', reason: 'limit_reached' }],
+      violations: [],
+    })) },
   });
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
   });
   controller.init();
   submit();
-  expect(mocks.assignmentErrorLog.logFailure).toHaveBeenCalledWith({
-    errorType: 'unknown',
-    message: 'assignment_save_failed',
-    context: 'paper_1',
-  });
+  expect(view.setStatus).toHaveBeenCalledWith('Review requests sent with some blocked.', false);
 });
 
-test('handles ineligible paper error on save', () => {
+test('shows no-requests message when all blocked', () => {
   const { view, submit } = createViewStub();
   const mocks = createMocks({
-    assignmentStorage: {
-      getPaper: jest.fn(() => ({ id: 'paper_1', title: 'Paper', status: 'Submitted', assignedRefereeEmails: [], assignmentVersion: 0 })),
-      saveAssignments: jest.fn(() => {
-        throw new Error('paper_ineligible');
-      }),
-    },
+    assignmentService: { submitAssignments: jest.fn(() => ({
+      ok: true,
+      accepted: [],
+      blocked: [{ email: 'b@example.com', reason: 'invalid_email' }],
+      violations: [],
+    })) },
   });
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
   });
   controller.init();
   submit();
-  expect(view.setStatus).toHaveBeenCalledWith('Paper is not eligible for assignment.', true);
+  expect(view.setStatus).toHaveBeenCalledWith('No review requests were sent.', true);
 });
 
-test('handles unknown save error as unavailable', () => {
+test('falls back to default reason for unknown blocks', () => {
   const { view, submit } = createViewStub();
   const mocks = createMocks({
-    assignmentStorage: {
-      getPaper: jest.fn(() => ({ id: 'paper_1', title: 'Paper', status: 'Submitted', assignedRefereeEmails: [], assignmentVersion: 0 })),
-      saveAssignments: jest.fn(() => {
-        throw new Error('unexpected');
-      }),
-    },
+    assignmentService: { submitAssignments: jest.fn(() => ({
+      ok: true,
+      accepted: [],
+      blocked: [{ email: 'b@example.com', reason: 'mystery' }],
+      violations: [],
+    })) },
   });
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
   });
   controller.init();
   submit();
-  expect(view.setStatus).toHaveBeenCalledWith('Assignment is temporarily unavailable. Try again later.', true);
+  const summaryArg = view.setSummary.mock.calls[view.setSummary.mock.calls.length - 1][0];
+  expect(summaryArg.blocked[0].reason).toBe('Review request could not be delivered.');
 });
 
-test('handles save error without error logger', () => {
+test('does not set no-requests message when no entries exist', () => {
   const { view, submit } = createViewStub();
   const mocks = createMocks({
-    assignmentStorage: {
-      getPaper: jest.fn(() => ({ id: 'paper_1', title: 'Paper', status: 'Submitted', assignedRefereeEmails: [], assignmentVersion: 0 })),
-      saveAssignments: jest.fn(() => {
-        throw new Error('concurrent_change');
-      }),
-    },
+    assignmentService: { submitAssignments: jest.fn(() => ({
+      ok: true,
+      accepted: [],
+      blocked: [],
+      violations: [],
+    })) },
   });
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: null,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
     sessionState: mocks.sessionState,
     paperId: 'paper_1',
   });
   controller.init();
   submit();
-  expect(view.setStatus).toHaveBeenCalledWith('Assignment changed. Refresh this paper to continue.', true);
-});
-
-test('logs notification failures and shows warning', () => {
-  const { view, submit } = createViewStub();
-  const mocks = createMocks({
-    notificationService: { sendNotifications: jest.fn(() => ({ ok: false, failures: ['a@example.com'] })) },
-  });
-  const controller = createRefereeAssignmentController({
-    view,
-    assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
-    sessionState: mocks.sessionState,
-    paperId: 'paper_1',
-  });
-  controller.init();
-  submit();
-  expect(view.setWarning).toHaveBeenCalledWith('Notifications failed to send to all referees.');
-  expect(mocks.assignmentErrorLog.logFailure).toHaveBeenCalled();
-});
-
-test('handles notification failure without error logger', () => {
-  const { view, submit } = createViewStub();
-  const mocks = createMocks({
-    notificationService: { sendNotifications: jest.fn(() => ({ ok: false, failures: ['a@example.com'] })) },
-  });
-  const controller = createRefereeAssignmentController({
-    view,
-    assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: null,
-    sessionState: mocks.sessionState,
-    paperId: 'paper_1',
-  });
-  controller.init();
-  submit();
-  expect(view.setWarning).toHaveBeenCalledWith('Notifications failed to send to all referees.');
-});
-
-test('succeeds and shows confirmation', () => {
-  const { view, submit } = createViewStub();
-  const mocks = createMocks();
-  const controller = createRefereeAssignmentController({
-    view,
-    assignmentStorage: mocks.assignmentStorage,
-    notificationService: mocks.notificationService,
-    assignmentErrorLog: mocks.assignmentErrorLog,
-    sessionState: mocks.sessionState,
-    paperId: 'paper_1',
-  });
-  controller.init();
-  submit();
-  expect(view.showConfirmation).toHaveBeenCalledWith('paper_1', ['a@example.com', 'b@example.com', 'c@example.com']);
+  expect(view.setStatus).not.toHaveBeenCalledWith('No review requests were sent.', true);
 });

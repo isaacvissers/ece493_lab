@@ -2,6 +2,8 @@ import { assignmentStore } from './assignment-store.js';
 import { assignmentValidator } from './assignment-validator.js';
 import { createAssignment } from '../models/assignment.js';
 import { normalizeReviewerEmail } from '../models/reviewer.js';
+import { assignmentRules } from './assignment-rules.js';
+import { reviewRequestService } from './review-request-service.js';
 
 const DEFAULT_LIMIT = 5;
 
@@ -76,5 +78,51 @@ export const assignmentService = {
     });
 
     return { assigned, rejected, createdAssignments };
+  },
+  submitAssignments({ paperId, reviewerEmails, limit = DEFAULT_LIMIT } = {}) {
+    let evaluation = null;
+    try {
+      evaluation = assignmentRules.evaluate({ paperId, reviewerEmails, limit });
+    } catch (error) {
+      return {
+        ok: false,
+        failure: 'evaluation_failed',
+        accepted: [],
+        blocked: [],
+        violations: [],
+      };
+    }
+
+    const accepted = [];
+    const blocked = evaluation.violations.map((violation) => ({
+      email: violation.reviewerEmail,
+      reason: violation.rule,
+    }));
+
+    let requestFailures = [];
+    if (evaluation.candidates.length) {
+      const requestResult = reviewRequestService.sendReviewRequests({
+        paperId,
+        reviewerEmails: evaluation.candidates,
+      });
+      requestResult.sent.forEach((request) => {
+        accepted.push(request.reviewerEmail);
+      });
+      requestFailures = requestResult.failed.slice();
+      requestResult.failed.forEach((entry) => {
+        blocked.push({
+          email: entry.email,
+          reason: entry.reason || 'request_failed',
+        });
+      });
+    }
+
+    return {
+      ok: true,
+      accepted,
+      blocked,
+      violations: evaluation.violations,
+      requestFailures,
+    };
   },
 };

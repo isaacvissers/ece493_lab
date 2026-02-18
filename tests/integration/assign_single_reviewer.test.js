@@ -2,8 +2,8 @@ import { createRefereeAssignmentView } from '../../src/views/referee-assignment-
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
+import { reviewRequestService } from '../../src/services/review-request-service.js';
+import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { sessionState } from '../../src/models/session-state.js';
 import { createAssignment } from '../../src/models/assignment.js';
 
@@ -13,8 +13,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -42,20 +40,24 @@ function submit(view) {
 beforeEach(() => {
   assignmentStorage.reset();
   assignmentStore.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
+  reviewRequestStore.reset();
+  reviewRequestService.setDeliveryFailureMode(false);
   sessionState.clear();
   document.body.innerHTML = '';
 });
 
-test('single assignment flow persists to paper and store', () => {
+test('single assignment flow sends request and accepts', () => {
   assignmentStorage.seedPaper({ id: 'paper_10', title: 'Paper', status: 'Submitted' });
   seedAssignments('limit@example.com', 4);
   sessionState.authenticate({ id: 'acct_8', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
   const { view } = setup('paper_10');
   setEmails(view, ['limit@example.com', 'a@example.com', 'b@example.com']);
   submit(view);
+  expect(reviewRequestStore.getRequests()).toHaveLength(3);
+  expect(assignmentStore.getActiveCountForReviewer('limit@example.com')).toBe(4);
+  const request = reviewRequestStore.getRequests().find((entry) => entry.reviewerEmail === 'limit@example.com');
+  reviewRequestService.respondToRequest(request.requestId, 'accept');
   const updated = assignmentStorage.getPaper('paper_10');
-  expect(updated.assignedRefereeEmails).toHaveLength(3);
+  expect(updated.assignedRefereeEmails).toContain('limit@example.com');
   expect(assignmentStore.getActiveCountForReviewer('limit@example.com')).toBe(5);
 });

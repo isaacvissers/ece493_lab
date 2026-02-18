@@ -8,55 +8,55 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are requirements defined for sending reviewer email requests on valid assignments? [Completeness, Spec §FR-011]
-- [ ] CHK002 Are requirements defined for accept and reject outcomes? [Completeness, Spec §FR-011]
-- [ ] CHK003 Are requirements defined for when an assignment is created (on accept) vs not created (on reject)? [Completeness, Spec §FR-011]
-- [ ] CHK004 Are requirements defined for per-entry outcomes in bulk requests that include email requests? [Completeness, Spec §FR-008]
-- [ ] CHK005 Are requirements defined for email delivery timing expectations? [Completeness, Spec §NFR-003]
+- [x] CHK001 Are requirements defined for sending reviewer email requests on valid assignments? [Completeness, Spec §FR-011]
+- [x] CHK002 Are requirements defined for accept and reject outcomes? [Completeness, Spec §FR-011]
+- [x] CHK003 Are requirements defined for when an assignment is created (on accept) vs not created (on reject)? [Completeness, Spec §FR-011]
+- [x] CHK004 Are requirements defined for per-entry outcomes in bulk requests that include email requests? [Completeness, Spec §FR-008]
+- [x] CHK005 Are requirements defined for email delivery timing expectations? [Completeness, Spec §NFR-003]
 
 ## Requirement Clarity
 
-- [ ] CHK006 Is "email request" clearly defined in terms of required content/actions (accept/reject)? [Clarity, Spec §FR-011]
-- [ ] CHK007 Is "accept creates assignment" unambiguous about when creation occurs? [Clarity, Spec §FR-011]
-- [ ] CHK008 Is "reject leaves it unassigned" explicit about system state after rejection? [Clarity, Spec §FR-011]
-- [ ] CHK009 Is the delivery SLA (2 minutes) specific and measurable? [Clarity, Spec §NFR-003]
+- [x] CHK006 Is "email request" clearly defined in terms of required content/actions (accept/reject)? [Clarity, Spec §FR-011]
+- [x] CHK007 Is "accept creates assignment" unambiguous about when creation occurs? [Clarity, Spec §FR-011]
+- [x] CHK008 Is "reject leaves it unassigned" explicit about system state after rejection? [Clarity, Spec §FR-011]
+- [x] CHK009 Is the delivery SLA (2 minutes) specific and measurable? [Clarity, Spec §NFR-003]
 
 ## Requirement Consistency
 
-- [ ] CHK010 Do user stories and FRs agree on when emails are sent? [Consistency, Spec §User Story 1, Spec §FR-011]
-- [ ] CHK011 Do success criteria align with the email request requirements? [Consistency, Spec §SC-006, Spec §FR-011]
-- [ ] CHK012 Are email-related assumptions consistent with requirements? [Consistency, Spec §Assumptions]
+- [x] CHK010 Do user stories and FRs agree on when emails are sent? [Consistency, Spec §User Story 1, Spec §FR-011]
+- [x] CHK011 Do success criteria align with the email request requirements? [Consistency, Spec §SC-006, Spec §FR-011]
+- [x] CHK012 Are email-related assumptions consistent with requirements? [Consistency, Spec §Assumptions]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK013 Is SC-006 measurable without implementation detail leakage? [Measurability, Spec §SC-006]
-- [ ] CHK014 Are acceptance scenarios sufficient to test accept/reject outcomes? [Coverage, Spec §User Story 1]
+- [x] CHK013 Is SC-006 measurable without implementation detail leakage? [Measurability, Spec §SC-006]
+- [x] CHK014 Are acceptance scenarios sufficient to test accept/reject outcomes? [Coverage, Spec §User Story 1]
 
 ## Scenario Coverage
 
-- [ ] CHK015 Are primary flows for email request and acceptance covered? [Coverage, Spec §User Story 1]
-- [ ] CHK016 Are rejection flows explicitly addressed? [Coverage, Spec §User Story 1]
-- [ ] CHK017 Are email failures or delivery issues addressed in requirements or edge cases? [Gap]
+- [x] CHK015 Are primary flows for email request and acceptance covered? [Coverage, Spec §User Story 1]
+- [x] CHK016 Are rejection flows explicitly addressed? [Coverage, Spec §User Story 1]
+- [x] CHK017 Are email failures or delivery issues addressed in requirements or edge cases? [Gap]
 
 ## Edge Case Coverage
 
-- [ ] CHK018 Are duplicate requests or repeated accept/reject attempts addressed? [Gap]
-- [ ] CHK019 Are concurrent accept/reject responses addressed? [Gap]
+- [x] CHK018 Are duplicate requests or repeated accept/reject attempts addressed? [Gap]
+- [x] CHK019 Are concurrent accept/reject responses addressed? [Gap]
 
 ## Non-Functional Requirements
 
-- [ ] CHK020 Are performance expectations for email notifications explicitly stated? [Completeness, Spec §NFR-003]
-- [ ] CHK021 Are accessibility requirements for email-related messaging specified? [Gap]
+- [x] CHK020 Are performance expectations for email notifications explicitly stated? [Completeness, Spec §NFR-003]
+- [x] CHK021 Are accessibility requirements for email-related messaging specified? [Gap]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK022 Are external email delivery dependencies documented? [Gap]
-- [ ] CHK023 Are assumptions about reviewer contact methods documented? [Assumption, Spec §Assumptions]
+- [x] CHK022 Are external email delivery dependencies documented? [Gap]
+- [x] CHK023 Are assumptions about reviewer contact methods documented? [Assumption, Spec §Assumptions]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK024 Is the term "email request" used consistently across sections? [Ambiguity, Spec §FR-011]
-- [ ] CHK025 Are any email-related requirements conflicting with UI-only notification requirements? [Conflict, Spec §NFR-001]
+- [x] CHK024 Is the term "email request" used consistently across sections? [Ambiguity, Spec §FR-011]
+- [x] CHK025 Are any email-related requirements conflicting with UI-only notification requirements? [Conflict, Spec §NFR-001]
 
 ## Notes
 

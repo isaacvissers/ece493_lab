@@ -1,30 +1,28 @@
 import { UI_MESSAGES } from '../services/ui-messages.js';
-import { validateRefereeEmails } from '../models/referee-assignment.js';
 import { isEligibleStatus } from '../models/paper.js';
 import { assignmentService as defaultAssignmentService } from '../services/assignment-service.js';
-import { assignmentStore as defaultAssignmentStore } from '../services/assignment-store.js';
+import { validationService } from '../services/validation-service.js';
+import { normalizeRefereeEmail } from '../models/referee-assignment.js';
+import { violationLog as defaultViolationLog } from '../services/violation-log.js';
 
 const AUTH_MESSAGE = 'You do not have permission to assign referees.';
-const COUNT_MESSAGE = 'Exactly 3 referees are required.';
+const COUNT_MESSAGE = 'Enter at least one referee email.';
 const INELIGIBLE_MESSAGE = 'Paper is not eligible for assignment.';
-const CONCURRENT_MESSAGE = 'Assignment changed. Refresh this paper to continue.';
-const NOTIFICATION_WARNING = 'Notifications failed to send to all referees.';
-const ASSIGNMENT_UNAVAILABLE = 'Assignment is temporarily unavailable. Try again later.';
 const LIMIT_MESSAGE = 'Reviewer has reached the maximum of 5 active assignments.';
 const LOOKUP_MESSAGE = 'Reviewer assignment count could not be determined.';
 const SAVE_MESSAGE = 'Assignment could not be saved. Try again.';
 const DUPLICATE_MESSAGE = 'Reviewer is already assigned to this paper.';
+const EVALUATION_MESSAGE = 'Assignments cannot be completed right now. Please try again.';
+const REQUEST_FAILURE_MESSAGE = 'Review request could not be delivered.';
 
 export function createRefereeAssignmentController({
   view,
   assignmentStorage,
-  notificationService,
-  assignmentErrorLog,
+  violationLog = defaultViolationLog,
   sessionState,
   paperId,
   onAuthRequired,
   assignmentService = defaultAssignmentService,
-  assignmentStore = defaultAssignmentStore,
 }) {
   let currentPaper = null;
 
@@ -70,6 +68,7 @@ export function createRefereeAssignmentController({
     view.setAuthorizationMessage('');
     view.setWarning('');
     view.setSummary(null);
+    view.setFallbackSummary('');
 
     if (!applyAuthGuard()) {
       return;
@@ -83,112 +82,94 @@ export function createRefereeAssignmentController({
     }
 
     const rawEmails = view.getRefereeEmails();
-    const validation = validateRefereeEmails(rawEmails, currentPaper.assignedRefereeEmails || []);
-
-    validation.blanks.forEach((index) => {
-      view.setFieldError(index, 'Referee email is required.');
-    });
-    validation.invalid.forEach((index) => {
-      view.setFieldError(index, 'Referee email format is invalid.');
-    });
-    validation.duplicates.forEach((index) => {
-      view.setFieldError(index, 'Duplicate referee email.');
-    });
-    if (validation.uniqueEmails.length !== 3) {
+    const enteredEmails = rawEmails.filter((email) => (email || '').trim());
+    if (enteredEmails.length === 0) {
       view.setCountError(COUNT_MESSAGE);
-    }
-
-    if (!validation.ok) {
-      view.setStatus('Please fix the errors before assigning referees.', true);
+      view.setStatus('Please enter at least one referee email.', true);
       return;
     }
 
-    const assignmentResult = assignmentService.assignReviewers({
-      paperId: currentPaper.id,
-      reviewerEmails: validation.uniqueEmails,
+    const seen = new Set();
+    rawEmails.forEach((email, index) => {
+      const trimmed = (email || '').trim();
+      if (!trimmed) {
+        return;
+      }
+      if (!validationService.isEmailValid(trimmed)) {
+        view.setFieldError(index, 'Referee email format is invalid.');
+        return;
+      }
+      const normalized = normalizeRefereeEmail(trimmed);
+      if (seen.has(normalized)) {
+        view.setFieldError(index, 'Duplicate referee email.');
+        return;
+      }
+      seen.add(normalized);
     });
+
+    const assignmentResult = assignmentService.submitAssignments({
+      paperId: currentPaper.id,
+      reviewerEmails: rawEmails,
+    });
+    if (!assignmentResult.ok) {
+      view.setStatus(EVALUATION_MESSAGE, true);
+      if (violationLog) {
+        violationLog.logFailure({
+          errorType: 'evaluation_failed',
+          message: 'assignment_evaluation_failed',
+          context: currentPaper.id,
+        });
+      }
+      return;
+    }
+
     const summary = {
-      assigned: assignmentResult.assigned,
-      rejected: assignmentResult.rejected.map((entry) => {
+      accepted: assignmentResult.accepted,
+      blocked: assignmentResult.blocked.map((entry) => {
         const reasonMap = {
           limit_reached: LIMIT_MESSAGE,
           lookup_failed: LOOKUP_MESSAGE,
           save_failed: SAVE_MESSAGE,
           already_assigned: DUPLICATE_MESSAGE,
+          invalid_email: 'Invalid reviewer email.',
+          duplicate_entry: 'Duplicate reviewer entry.',
+          duplicate_assignment: DUPLICATE_MESSAGE,
+          delivery_failed: REQUEST_FAILURE_MESSAGE,
+          duplicate_request: REQUEST_FAILURE_MESSAGE,
+          request_failed: REQUEST_FAILURE_MESSAGE,
         };
         return {
           email: entry.email,
-          reason: reasonMap[entry.reason] || SAVE_MESSAGE,
+          reason: reasonMap[entry.reason] || REQUEST_FAILURE_MESSAGE,
         };
       }),
     };
-    view.setSummary(summary);
 
-    if (assignmentResult.assigned.length === 0) {
-      if (summary.rejected.length) {
-        view.setStatus('No reviewers were assigned.', true);
-      }
-      return;
-    }
-
-    let updatedPaper = null;
-    try {
-      updatedPaper = assignmentStorage.saveAssignments({
-        paperId: currentPaper.id,
-        refereeEmails: assignmentResult.assigned,
-        expectedVersion: currentPaper.assignmentVersion || 0,
-      });
-    } catch (error) {
-      const errorType = error && error.message ? error.message : 'unknown';
-      if (assignmentErrorLog) {
-        assignmentErrorLog.logFailure({
-          errorType,
-          message: 'assignment_save_failed',
-          context: currentPaper.id,
-        });
-      }
-      if (errorType === 'concurrent_change') {
-        view.setStatus(CONCURRENT_MESSAGE, true);
-        assignmentStore.removeAssignments({
-          paperId: currentPaper.id,
-          reviewerEmails: assignmentResult.assigned,
-        });
-        return;
-      }
-      if (errorType === 'paper_ineligible') {
-        view.setStatus(INELIGIBLE_MESSAGE, true);
-        assignmentStore.removeAssignments({
-          paperId: currentPaper.id,
-          reviewerEmails: assignmentResult.assigned,
-        });
-        return;
-      }
-      view.setStatus(ASSIGNMENT_UNAVAILABLE, true);
-      assignmentStore.removeAssignments({
-        paperId: currentPaper.id,
-        reviewerEmails: assignmentResult.assigned,
-      });
-      return;
-    }
-
-    currentPaper = updatedPaper;
-    const notificationResult = notificationService.sendNotifications(currentPaper.id, assignmentResult.assigned);
-    if (!notificationResult.ok) {
-      view.setWarning(NOTIFICATION_WARNING);
-      if (assignmentErrorLog) {
-        assignmentErrorLog.logFailure({
-          errorType: 'notification_failed',
-          message: 'notification_failed',
+    const summaryRendered = view.setSummary(summary);
+    if (!summaryRendered) {
+      view.setFallbackSummary('Unable to display assignment details.', summary.blocked.map((entry) => entry.email));
+      if (violationLog) {
+        violationLog.logFailure({
+          errorType: 'notification_ui_failed',
+          message: 'assignment_ui_failed',
           context: currentPaper.id,
         });
       }
     }
 
-    if (assignmentResult.rejected.length === 0) {
-      view.showConfirmation(currentPaper.id, assignmentResult.assigned);
-    } else {
-      view.setStatus('Assignments processed with some rejections.', false);
+    if (assignmentResult.accepted.length === 0) {
+      if (summary.blocked.length) {
+        view.setStatus('No review requests were sent.', true);
+      }
+      return;
     }
+
+    if (summary.blocked.length === 0) {
+      view.showConfirmation(currentPaper.id, assignmentResult.accepted);
+      return;
+    }
+
+    view.setStatus('Review requests sent with some blocked.', false);
   }
 
   return {

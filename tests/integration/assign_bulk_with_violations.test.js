@@ -19,12 +19,6 @@ function setup(paperId) {
   return { view };
 }
 
-function seedAssignments(email, count) {
-  for (let i = 0; i < count; i += 1) {
-    assignmentStore.addAssignment(createAssignment({ paperId: `paper_seed_${i}`, reviewerEmail: email }));
-  }
-}
-
 function setEmails(view, emails) {
   emails.forEach((email, index) => {
     view.element.querySelector(`#referee-email-${index + 1}`).value = email;
@@ -44,15 +38,16 @@ beforeEach(() => {
   document.body.innerHTML = '';
 });
 
-test('bulk assignment applies partial results', () => {
-  assignmentStorage.seedPaper({ id: 'paper_11', title: 'Paper', status: 'Submitted' });
-  seedAssignments('limit@example.com', 5);
-  sessionState.authenticate({ id: 'acct_9', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
-  const { view } = setup('paper_11');
-  setEmails(view, ['limit@example.com', 'ok1@example.com', 'ok2@example.com']);
+test('bulk assignment reports violations and partial apply', () => {
+  assignmentStorage.seedPaper({ id: 'paper_21', title: 'Paper', status: 'Submitted' });
+  assignmentStore.addAssignment(createAssignment({ paperId: 'paper_21', reviewerEmail: 'assigned@example.com' }));
+  sessionState.authenticate({ id: 'acct_21', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const { view } = setup('paper_21');
+  setEmails(view, ['assigned@example.com', 'ok@example.com', 'invalid-email']);
   submit(view);
-  const updated = assignmentStorage.getPaper('paper_11');
-  expect(updated.assignedRefereeEmails).toEqual([]);
-  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Blocked: limit@example.com');
-  expect(reviewRequestStore.getRequests()).toHaveLength(2);
+  const summaryText = view.element.querySelector('#assignment-summary').textContent;
+  expect(summaryText).toContain('Blocked: assigned@example.com');
+  expect(summaryText).toContain('Invalid reviewer email');
+  expect(summaryText).toContain('Request sent: ok@example.com');
+  expect(reviewRequestStore.getRequests()).toHaveLength(1);
 });

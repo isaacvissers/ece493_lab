@@ -1,8 +1,6 @@
 import { createRefereeAssignmentView } from '../../src/views/referee-assignment-view.js';
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
 import { sessionState } from '../../src/models/session-state.js';
 
 function setup(paperId) {
@@ -11,8 +9,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -27,8 +23,6 @@ function submit(view) {
 
 beforeEach(() => {
   assignmentStorage.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
   sessionState.clear();
   document.body.innerHTML = '';
 });

@@ -2,8 +2,7 @@ import { createRefereeAssignmentView } from '../../src/views/referee-assignment-
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
+import { violationLog } from '../../src/services/violation-log.js';
 import { sessionState } from '../../src/models/session-state.js';
 
 function setup(paperId) {
@@ -12,10 +11,9 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
+    violationLog,
   });
   controller.init();
   return { view };
@@ -35,8 +33,7 @@ function submit(view) {
 beforeEach(() => {
   assignmentStorage.reset();
   assignmentStore.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
+  violationLog.clear();
   sessionState.clear();
   document.body.innerHTML = '';
 });
@@ -48,7 +45,7 @@ test('lookup failure blocks assignment', () => {
   const { view } = setup('paper_5');
   setEmails(view, ['a@example.com', 'b@example.com', 'c@example.com']);
   submit(view);
-  expect(view.element.querySelector('#assignment-summary').textContent).toContain('could not be determined');
-  expect(view.element.querySelector('#assignment-banner').textContent).toContain('No reviewers were assigned');
+  expect(view.element.querySelector('#assignment-banner').textContent).toContain('Assignments cannot be completed');
+  expect(violationLog.getFailures()).toHaveLength(1);
   assignmentStore.setLookupFailureMode(false);
 });

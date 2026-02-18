@@ -1,6 +1,7 @@
 import { createRefereeAssignmentView } from '../../src/views/referee-assignment-view.js';
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
+import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { sessionState } from '../../src/models/session-state.js';
 
 function setup(paperId) {
@@ -29,16 +30,19 @@ function submit(view) {
 
 beforeEach(() => {
   assignmentStorage.reset();
+  reviewRequestStore.reset();
   sessionState.clear();
   document.body.innerHTML = '';
 });
 
-test('falls back when summary UI fails', () => {
-  assignmentStorage.seedPaper({ id: 'paper_1', title: 'Paper', status: 'Submitted' });
-  sessionState.authenticate({ id: 'acct_1', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
-  const { view } = setup('paper_1');
-  view.setSummaryFailureMode(true);
-  setEmails(view, ['invalid', '', '']);
+test('partial apply sends requests for valid entries', () => {
+  assignmentStorage.seedPaper({ id: 'paper_5', title: 'Paper', status: 'Submitted' });
+  sessionState.authenticate({ id: 'acct_5', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const { view } = setup('paper_5');
+  setEmails(view, ['valid@example.com', 'invalid-email', '']);
   submit(view);
-  expect(view.element.querySelector('#assignment-fallback').textContent).toContain('Unable to display');
+  const summaryText = view.element.querySelector('#assignment-summary').textContent;
+  expect(summaryText).toContain('Request sent: valid@example.com');
+  expect(summaryText).toContain('Invalid reviewer email');
+  expect(reviewRequestStore.getRequests()).toHaveLength(1);
 });

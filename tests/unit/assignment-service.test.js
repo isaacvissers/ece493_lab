@@ -1,9 +1,13 @@
 import { assignmentService } from '../../src/services/assignment-service.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';
+import { reviewRequestService } from '../../src/services/review-request-service.js';
+import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { createAssignment } from '../../src/models/assignment.js';
 
 beforeEach(() => {
   assignmentStore.reset();
+  reviewRequestStore.reset();
+  reviewRequestService.setDeliveryFailureMode(false);
 });
 
 test('assigns reviewers under limit', () => {
@@ -143,4 +147,74 @@ test('maps unknown errors to save_failed', () => {
   });
   expect(result.rejected[0].reason).toBe('save_failed');
   assignmentStore.addAssignment = original;
+});
+
+test('submitAssignments returns evaluation failure on lookup error', () => {
+  assignmentStore.setLookupFailureMode(true);
+  const result = assignmentService.submitAssignments({
+    paperId: 'paper_9',
+    reviewerEmails: ['a@example.com'],
+  });
+  expect(result.ok).toBe(false);
+  assignmentStore.setLookupFailureMode(false);
+});
+
+test('submitAssignments sends review requests for valid entries', () => {
+  const result = assignmentService.submitAssignments({
+    paperId: 'paper_10',
+    reviewerEmails: ['a@example.com'],
+  });
+  expect(result.ok).toBe(true);
+  expect(result.accepted).toEqual(['a@example.com']);
+  expect(reviewRequestStore.getRequests()).toHaveLength(1);
+});
+
+test('submitAssignments handles empty input', () => {
+  const result = assignmentService.submitAssignments({
+    paperId: 'paper_10',
+    reviewerEmails: [],
+  });
+  expect(result.ok).toBe(true);
+  expect(result.accepted).toHaveLength(0);
+  expect(result.blocked).toHaveLength(0);
+});
+
+test('submitAssignments handles missing args', () => {
+  const result = assignmentService.submitAssignments();
+  expect(result.ok).toBe(true);
+  expect(result.accepted).toHaveLength(0);
+});
+
+test('submitAssignments reports delivery failures', () => {
+  reviewRequestService.setDeliveryFailureMode(true);
+  const result = assignmentService.submitAssignments({
+    paperId: 'paper_11',
+    reviewerEmails: ['a@example.com'],
+  });
+  expect(result.ok).toBe(true);
+  expect(result.accepted).toHaveLength(0);
+  expect(result.blocked[0].reason).toBe('delivery_failed');
+});
+
+test('submitAssignments reports duplicate requests', () => {
+  assignmentService.submitAssignments({
+    paperId: 'paper_12',
+    reviewerEmails: ['a@example.com'],
+  });
+  const result = assignmentService.submitAssignments({
+    paperId: 'paper_12',
+    reviewerEmails: ['a@example.com'],
+  });
+  expect(result.blocked[0].reason).toBe('duplicate_request');
+});
+
+test('submitAssignments defaults missing failure reason', () => {
+  const original = reviewRequestService.sendReviewRequests;
+  reviewRequestService.sendReviewRequests = () => ({ sent: [], failed: [{ email: 'a@example.com' }] });
+  const result = assignmentService.submitAssignments({
+    paperId: 'paper_13',
+    reviewerEmails: ['a@example.com'],
+  });
+  expect(result.blocked[0].reason).toBe('request_failed');
+  reviewRequestService.sendReviewRequests = original;
 });

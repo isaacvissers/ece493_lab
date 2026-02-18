@@ -2,7 +2,6 @@ import { createRefereeAssignmentView } from '../../src/views/referee-assignment-
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';
-import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { violationLog } from '../../src/services/violation-log.js';
 import { sessionState } from '../../src/models/session-state.js';
 
@@ -34,32 +33,30 @@ function submit(view) {
 beforeEach(() => {
   assignmentStorage.reset();
   assignmentStore.reset();
-  reviewRequestStore.reset();
   violationLog.clear();
   sessionState.clear();
   document.body.innerHTML = '';
 });
 
-test('lookup failure blocks evaluation', () => {
-  assignmentStorage.seedPaper({ id: 'paper_12', title: 'Paper', status: 'Submitted' });
+test('evaluation failure logs and blocks', () => {
+  assignmentStorage.seedPaper({ id: 'paper_30', title: 'Paper', status: 'Submitted' });
   assignmentStore.setLookupFailureMode(true);
-  sessionState.authenticate({ id: 'acct_10', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
-  const { view } = setup('paper_12');
-  setEmails(view, ['a@example.com', 'b@example.com', 'c@example.com']);
+  sessionState.authenticate({ id: 'acct_30', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const { view } = setup('paper_30');
+  setEmails(view, ['a@example.com', '', '']);
   submit(view);
   expect(view.element.querySelector('#assignment-banner').textContent).toContain('Assignments cannot be completed');
   expect(violationLog.getFailures()).toHaveLength(1);
   assignmentStore.setLookupFailureMode(false);
 });
 
-test('request save failure blocks without persisting requests', () => {
-  assignmentStorage.seedPaper({ id: 'paper_13', title: 'Paper', status: 'Submitted' });
-  reviewRequestStore.setSaveFailureMode(true);
-  sessionState.authenticate({ id: 'acct_11', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
-  const { view } = setup('paper_13');
-  setEmails(view, ['a@example.com', 'b@example.com', 'c@example.com']);
+test('notification UI failure logs fallback', () => {
+  assignmentStorage.seedPaper({ id: 'paper_31', title: 'Paper', status: 'Submitted' });
+  sessionState.authenticate({ id: 'acct_31', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const { view } = setup('paper_31');
+  view.setSummaryFailureMode(true);
+  setEmails(view, ['invalid-email', '', '']);
   submit(view);
-  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Review request could not be delivered');
-  expect(reviewRequestStore.getRequests()).toHaveLength(0);
-  reviewRequestStore.setSaveFailureMode(false);
+  expect(view.element.querySelector('#assignment-fallback').textContent).toContain('Unable to display');
+  expect(violationLog.getFailures()).toHaveLength(1);
 });

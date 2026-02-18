@@ -9,6 +9,9 @@ import { uploadErrorLog } from '../src/services/upload-error-log.js';
 import { metadataStorage } from '../src/services/metadata-storage.js';
 import { metadataErrorLog } from '../src/services/metadata-error-log.js';
 import { assignmentStore } from '../src/services/assignment-store.js';
+import { reviewRequestStore } from '../src/services/review-request-store.js';
+import { violationLog } from '../src/services/violation-log.js';
+import { reviewRequestService } from '../src/services/review-request-service.js';
 
 beforeEach(() => {
   document.body.innerHTML = '';
@@ -25,5 +28,8 @@ beforeEach(() => {
   metadataStorage.reset();
   metadataErrorLog.clear();
   assignmentStore.reset();
+  reviewRequestStore.reset();
+  reviewRequestService.setDeliveryFailureMode(false);
+  violationLog.clear();
   validationService.setPolicyAvailable(true);
 });

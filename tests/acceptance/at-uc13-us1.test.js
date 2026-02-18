@@ -1,8 +1,8 @@
 import { createRefereeAssignmentView } from '../../src/views/referee-assignment-view.js';
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
+import { reviewRequestService } from '../../src/services/review-request-service.js';
+import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { sessionState } from '../../src/models/session-state.js';
 
 function setup(paperId) {
@@ -11,8 +11,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -33,30 +31,29 @@ function submit(view) {
 
 beforeEach(() => {
   assignmentStorage.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
+  reviewRequestService.setDeliveryFailureMode(false);
+  reviewRequestStore.reset();
   sessionState.clear();
   document.body.innerHTML = '';
 });
 
-test('happy path assigns referees and confirms', () => {
+test('happy path sends review requests and confirms', () => {
   assignmentStorage.seedPaper({ id: 'paper_1', title: 'Paper', status: 'Submitted' });
   sessionState.authenticate({ id: 'acct_1', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
   const { view } = setup('paper_1');
   setEmails(view, ['a@example.com', 'b@example.com', 'c@example.com']);
   submit(view);
   expect(view.element.querySelector('#assignment-banner').textContent).toContain('paper_1');
+  expect(reviewRequestStore.getRequests()).toHaveLength(3);
 });
 
-test('notification failure shows warning while keeping assignments', () => {
+test('delivery failure blocks review requests', () => {
   assignmentStorage.seedPaper({ id: 'paper_2', title: 'Paper', status: 'Submitted' });
   sessionState.authenticate({ id: 'acct_2', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
-  notificationService.setFailureMode(true);
-  notificationService.setRetryFailureMode(true);
+  reviewRequestService.setDeliveryFailureMode(true);
   const { view } = setup('paper_2');
   setEmails(view, ['a@example.com', 'b@example.com', 'c@example.com']);
   submit(view);
-  expect(view.element.querySelector('#notification-warning').textContent).toContain('Notifications failed');
-  const updated = assignmentStorage.getPaper('paper_2');
-  expect(updated.assignedRefereeEmails).toHaveLength(3);
+  expect(view.element.querySelector('#assignment-summary').textContent).toContain('Blocked');
+  expect(reviewRequestStore.getRequests()).toHaveLength(3);
 });

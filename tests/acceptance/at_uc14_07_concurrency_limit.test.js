@@ -2,8 +2,8 @@ import { createRefereeAssignmentView } from '../../src/views/referee-assignment-
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
+import { reviewRequestService } from '../../src/services/review-request-service.js';
+import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { sessionState } from '../../src/models/session-state.js';
 import { createAssignment } from '../../src/models/assignment.js';
 
@@ -13,8 +13,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -42,8 +40,8 @@ function submit(view) {
 beforeEach(() => {
   assignmentStorage.reset();
   assignmentStore.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
+  reviewRequestStore.reset();
+  reviewRequestService.setDeliveryFailureMode(false);
   sessionState.clear();
   document.body.innerHTML = '';
 });
@@ -57,6 +55,8 @@ test('concurrent assignments do not exceed limit', () => {
   const first = setup('paper_8');
   setEmails(first.view, ['limit@example.com', 'a@example.com', 'b@example.com']);
   submit(first.view);
+  const request = reviewRequestStore.getRequests().find((entry) => entry.reviewerEmail === 'limit@example.com');
+  reviewRequestService.respondToRequest(request.requestId, 'accept');
 
   document.body.innerHTML = '';
   const second = setup('paper_9');

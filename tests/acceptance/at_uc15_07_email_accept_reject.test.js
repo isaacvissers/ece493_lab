@@ -5,7 +5,6 @@ import { assignmentStore } from '../../src/services/assignment-store.js';
 import { reviewRequestService } from '../../src/services/review-request-service.js';
 import { reviewRequestStore } from '../../src/services/review-request-store.js';
 import { sessionState } from '../../src/models/session-state.js';
-import { createAssignment } from '../../src/models/assignment.js';
 
 function setup(paperId) {
   const view = createRefereeAssignmentView();
@@ -18,12 +17,6 @@ function setup(paperId) {
   });
   controller.init();
   return { view };
-}
-
-function seedAssignments(email, count) {
-  for (let i = 0; i < count; i += 1) {
-    assignmentStore.addAssignment(createAssignment({ paperId: `paper_seed_${i}`, reviewerEmail: email }));
-  }
 }
 
 function setEmails(view, emails) {
@@ -46,23 +39,23 @@ beforeEach(() => {
   document.body.innerHTML = '';
 });
 
-test('boundary transition 4 to 5 then deny', () => {
+test('accept creates assignment and reject leaves it unassigned', () => {
   assignmentStorage.seedPaper({ id: 'paper_3', title: 'Paper', status: 'Submitted' });
-  assignmentStorage.seedPaper({ id: 'paper_4', title: 'Paper', status: 'Submitted' });
-  seedAssignments('limit@example.com', 4);
   sessionState.authenticate({ id: 'acct_3', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const { view } = setup('paper_3');
+  setEmails(view, ['accept@example.com', 'reject@example.com', '']);
+  submit(view);
 
-  const first = setup('paper_3');
-  setEmails(first.view, ['limit@example.com', 'a@example.com', 'b@example.com']);
-  submit(first.view);
-  const request = reviewRequestStore.getRequests().find((entry) => entry.reviewerEmail === 'limit@example.com');
-  reviewRequestService.respondToRequest(request.requestId, 'accept');
-  expect(assignmentStore.getActiveCountForReviewer('limit@example.com')).toBe(5);
+  const requests = reviewRequestStore.getRequests();
+  const acceptRequest = requests.find((entry) => entry.reviewerEmail === 'accept@example.com');
+  const rejectRequest = requests.find((entry) => entry.reviewerEmail === 'reject@example.com');
 
-  document.body.innerHTML = '';
-  const second = setup('paper_4');
-  setEmails(second.view, ['limit@example.com', 'c@example.com', 'd@example.com']);
-  submit(second.view);
-  expect(assignmentStore.getActiveCountForReviewer('limit@example.com')).toBe(5);
-  expect(second.view.element.querySelector('#assignment-summary').textContent).toContain('maximum of 5 active assignments');
+  reviewRequestService.respondToRequest(acceptRequest.requestId, 'accept');
+  reviewRequestService.respondToRequest(rejectRequest.requestId, 'reject');
+
+  const updated = assignmentStorage.getPaper('paper_3');
+  expect(updated.assignedRefereeEmails).toContain('accept@example.com');
+  expect(updated.assignedRefereeEmails).not.toContain('reject@example.com');
+  expect(assignmentStore.getActiveCountForReviewer('accept@example.com')).toBe(1);
+  expect(assignmentStore.getActiveCountForReviewer('reject@example.com')).toBe(0);
 });

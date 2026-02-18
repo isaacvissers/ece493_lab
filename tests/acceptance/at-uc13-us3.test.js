@@ -1,8 +1,6 @@
 import { createRefereeAssignmentView } from '../../src/views/referee-assignment-view.js';
 import { createRefereeAssignmentController } from '../../src/controllers/referee-assignment-controller.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
-import { notificationService } from '../../src/services/notification-service.js';
-import { assignmentErrorLog } from '../../src/services/assignment-error-log.js';
 import { sessionState } from '../../src/models/session-state.js';
 
 function setup(paperId) {
@@ -11,8 +9,6 @@ function setup(paperId) {
   const controller = createRefereeAssignmentController({
     view,
     assignmentStorage,
-    notificationService,
-    assignmentErrorLog,
     sessionState,
     paperId,
   });
@@ -33,19 +29,17 @@ function submit(view) {
 
 beforeEach(() => {
   assignmentStorage.reset();
-  assignmentErrorLog.clear();
-  notificationService.clear();
   sessionState.clear();
   document.body.innerHTML = '';
 });
 
-test('blank emails block assignment', () => {
+test('blank emails require at least one entry', () => {
   assignmentStorage.seedPaper({ id: 'paper_1', title: 'Paper', status: 'Submitted' });
   sessionState.authenticate({ id: 'acct_1', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
   const { view } = setup('paper_1');
-  setEmails(view, ['', 'b@example.com', 'c@example.com']);
+  setEmails(view, ['', '', '']);
   submit(view);
-  expect(view.element.querySelector('#referee-email-1-error').textContent).toContain('required');
+  expect(view.element.querySelector('#referee-count-error').textContent).toContain('Enter at least one');
 });
 
 test('invalid emails block assignment', () => {
@@ -64,5 +58,4 @@ test('duplicate emails are rejected', () => {
   setEmails(view, ['dup@example.com', 'dup@example.com', 'c@example.com']);
   submit(view);
   expect(view.element.querySelector('#referee-email-2-error').textContent).toContain('Duplicate');
-  expect(view.element.querySelector('#referee-count-error').textContent).toContain('Exactly 3');
 });
