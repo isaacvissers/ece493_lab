@@ -8,53 +8,53 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are rules for listing accepted assignments explicitly defined? [Completeness, Spec §FR-001]
-- [ ] CHK002 Are access requirements for opening accepted papers defined? [Completeness, Spec §FR-002]
-- [ ] CHK003 Are denial rules defined for non-accepted access attempts? [Completeness, Spec §FR-003]
-- [ ] CHK004 Are authentication prompt/return requirements defined? [Completeness, Spec §FR-004]
-- [ ] CHK005 Are synchronization visibility rules defined for list refresh? [Completeness, Spec §FR-005]
-- [ ] CHK006 Are retrieval failure handling requirements defined? [Completeness, Spec §FR-006]
-- [ ] CHK007 Are unavailable manuscript handling requirements defined? [Completeness, Spec §FR-007]
+- [X] CHK001 Are rules for listing accepted assignments explicitly defined? [Completeness, Spec §FR-001]
+- [X] CHK002 Are access requirements for opening accepted papers defined? [Completeness, Spec §FR-002]
+- [X] CHK003 Are denial rules defined for non-accepted access attempts? [Completeness, Spec §FR-003]
+- [X] CHK004 Are authentication prompt/return requirements defined? [Completeness, Spec §FR-004]
+- [X] CHK005 Are synchronization visibility rules defined for list refresh? [Completeness, Spec §FR-005]
+- [X] CHK006 Are retrieval failure handling requirements defined? [Completeness, Spec §FR-006]
+- [X] CHK007 Are unavailable manuscript handling requirements defined? [Completeness, Spec §FR-007]
 
 ## Requirement Clarity
 
-- [ ] CHK008 Is “accepted assignment” status explicitly defined in the spec? [Gap]
-- [ ] CHK009 Is “assigned papers list” scope defined (only accepted vs all)? [Clarity, Spec §FR-001]
-- [ ] CHK010 Is “manuscript access” defined (view/download/link)? [Ambiguity, Spec §FR-002]
-- [ ] CHK011 Is the “return after login” destination defined (list vs paper)? [Clarity, Spec §FR-004]
-- [ ] CHK012 Is “synchronization delay” behavior explicitly ruled out or defined? [Clarity, Spec §Assumptions]
+- [X] CHK008 Is “accepted assignment” status explicitly defined in the spec? [Gap]
+- [X] CHK009 Is “assigned papers list” scope defined (only accepted vs all)? [Clarity, Spec §FR-001]
+- [X] CHK010 Is “manuscript access” defined (view/download/link)? [Ambiguity, Spec §FR-002]
+- [X] CHK011 Is the “return after login” destination defined (list vs paper)? [Clarity, Spec §FR-004]
+- [X] CHK012 Is “synchronization delay” behavior explicitly ruled out or defined? [Clarity, Spec §Assumptions]
 
 ## Requirement Consistency
 
-- [ ] CHK013 Do user stories, FRs, and assumptions consistently state accepted-only visibility? [Consistency, Spec §US1, §FR-001, §Assumptions]
-- [ ] CHK014 Do access denial scenarios align with FR-003? [Consistency, Spec §US2, §FR-003]
+- [X] CHK013 Do user stories, FRs, and assumptions consistently state accepted-only visibility? [Consistency, Spec §US1, §FR-001, §Assumptions]
+- [X] CHK014 Do access denial scenarios align with FR-003? [Consistency, Spec §US2, §FR-003]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK015 Do acceptance scenarios cover listing accepted assignments after refresh? [Acceptance Criteria, Spec §US1]
-- [ ] CHK016 Do acceptance scenarios cover denial of unaccepted access? [Acceptance Criteria, Spec §US2]
-- [ ] CHK017 Do acceptance scenarios cover unavailable manuscript blocking? [Acceptance Criteria, Spec §US3]
+- [X] CHK015 Do acceptance scenarios cover listing accepted assignments after refresh? [Acceptance Criteria, Spec §US1]
+- [X] CHK016 Do acceptance scenarios cover denial of unaccepted access? [Acceptance Criteria, Spec §US2]
+- [X] CHK017 Do acceptance scenarios cover unavailable manuscript blocking? [Acceptance Criteria, Spec §US3]
 
 ## Scenario Coverage
 
-- [ ] CHK018 Are primary flows for list view and paper access covered? [Scenario Coverage, Spec §US1, §US2]
-- [ ] CHK019 Are alternate flows for authentication recovery covered? [Gap]
-- [ ] CHK020 Are exception flows for retrieval failures covered? [Scenario Coverage, Spec §US3]
+- [X] CHK018 Are primary flows for list view and paper access covered? [Scenario Coverage, Spec §US1, §US2]
+- [X] CHK019 Are alternate flows for authentication recovery covered? [Gap]
+- [X] CHK020 Are exception flows for retrieval failures covered? [Scenario Coverage, Spec §US3]
 
 ## Edge Case Coverage
 
-- [ ] CHK021 Are session-expired cases defined with recovery steps? [Gap]
-- [ ] CHK022 Are acceptance-not-recorded cases defined with guidance? [Scenario Coverage, Spec §US3]
+- [X] CHK021 Are session-expired cases defined with recovery steps? [Gap]
+- [X] CHK022 Are acceptance-not-recorded cases defined with guidance? [Scenario Coverage, Spec §US3]
 
 ## Non-Functional Requirements
 
-- [ ] CHK023 Are performance requirements defined for list retrieval? [Completeness, Spec §NFR-001]
-- [ ] CHK024 Are accessibility requirements defined for list actions/errors? [Completeness, Spec §NFR-002]
+- [X] CHK023 Are performance requirements defined for list retrieval? [Completeness, Spec §NFR-001]
+- [X] CHK024 Are accessibility requirements defined for list actions/errors? [Completeness, Spec §NFR-002]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK025 Are assumptions about acceptance-only visibility explicit and consistent? [Assumption, Spec §Assumptions]
+- [X] CHK025 Are assumptions about acceptance-only visibility explicit and consistent? [Assumption, Spec §Assumptions]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK026 Is the scope of paper details visibility consistent with acceptance rules? [Ambiguity, Spec §FR-002, §FR-003]
+- [X] CHK026 Is the scope of paper details visibility consistent with acceptance rules? [Ambiguity, Spec §FR-002, §FR-003]

@@ -27,9 +27,9 @@ integration/acceptance tests mapped to AT-18 cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Verify MVC folder structure exists in src/models, src/views, src/controllers, src/services
-- [ ] T002 [P] Create AT-18 integration test file in tests/integration/at-18-assignments.test.js
-- [ ] T003 [P] Create unit test skeleton for assignment list logic in tests/unit/reviewer-assignments.test.js
+- [X] T001 Verify MVC folder structure exists in src/models, src/views, src/controllers, src/services
+- [X] T002 [P] Create AT-18 integration test file in tests/integration/at-18-assignments.test.js
+- [X] T003 [P] Create unit test skeleton for assignment list logic in tests/unit/reviewer-assignments.test.js
 
 ---
 
@@ -39,11 +39,11 @@ integration/acceptance tests mapped to AT-18 cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Implement ReviewerAssignment data access helpers in src/models/reviewer-assignment.js
-- [ ] T005 Implement Paper data access helpers in src/models/paper.js
-- [ ] T006 [P] Implement Manuscript data access helpers in src/models/manuscript.js (handle missing/unavailable per FR-007)
-- [ ] T007 [P] Add assignment status constants in src/models/reviewer-assignment-status.js
-- [ ] T008 Implement shared error logging helper in src/services/error-log.js
+- [X] T004 Implement ReviewerAssignment data access helpers in src/models/reviewer-assignment.js
+- [X] T005 Implement Paper data access helpers in src/models/paper.js
+- [X] T006 [P] Implement Manuscript data access helpers in src/models/manuscript.js (handle missing/unavailable per FR-007)
+- [X] T007 [P] Add assignment status constants in src/models/reviewer-assignment-status.js
+- [X] T008 Implement shared error logging helper in src/services/error-log.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -57,16 +57,16 @@ integration/acceptance tests mapped to AT-18 cases.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T009 [P] [US1] Acceptance tests for AT-UC18-01..02 in tests/integration/at-18-assignments.test.js
-- [ ] T010 [P] [US1] Integration test for list refresh behavior in tests/integration/assignment-refresh.test.js
-- [ ] T011 [P] [US1] Unit tests for accepted-only filtering in tests/unit/reviewer-assignments.test.js
+- [X] T009 [P] [US1] Acceptance tests for AT-UC18-01..02 in tests/integration/at-18-assignments.test.js
+- [X] T010 [P] [US1] Integration test for list refresh behavior in tests/integration/assignment-refresh.test.js
+- [X] T011 [P] [US1] Unit tests for accepted-only filtering in tests/unit/reviewer-assignments.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Implement accepted-assignment list query in src/services/reviewer-assignments.js
-- [ ] T013 [US1] Implement list controller action in src/controllers/reviewer-assignments-controller.js
-- [ ] T014 [US1] Update assigned papers list view in src/views/reviewer-assignments-view.js
-- [ ] T015 [US1] Wire list refresh action in src/controllers/reviewer-assignments-controller.js
+- [X] T012 [P] [US1] Implement accepted-assignment list query in src/services/reviewer-assignments.js
+- [X] T013 [US1] Implement list controller action in src/controllers/reviewer-assignments-controller.js
+- [X] T014 [US1] Update assigned papers list view in src/views/reviewer-assignments-view.js
+- [X] T015 [US1] Wire list refresh action in src/controllers/reviewer-assignments-controller.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -80,15 +80,15 @@ integration/acceptance tests mapped to AT-18 cases.
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T016 [P] [US2] Acceptance tests for AT-UC18-03..04 in tests/integration/at-18-assignments.test.js
-- [ ] T017 [P] [US2] Integration test for accepted access vs denial in tests/integration/assignment-access.test.js
-- [ ] T018 [P] [US2] Unit tests for access control rules in tests/unit/assignment-access.test.js
+- [X] T016 [P] [US2] Acceptance tests for AT-UC18-03..04 in tests/integration/at-18-assignments.test.js
+- [X] T017 [P] [US2] Integration test for accepted access vs denial in tests/integration/assignment-access.test.js
+- [X] T018 [P] [US2] Unit tests for access control rules in tests/unit/assignment-access.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T019 [P] [US2] Implement paper access service in src/services/reviewer-paper-access.js
-- [ ] T020 [US2] Implement paper details controller action in src/controllers/reviewer-paper-controller.js
-- [ ] T021 [US2] Update paper details view with manuscript link in src/views/reviewer-paper-view.js
+- [X] T019 [P] [US2] Implement paper access service in src/services/reviewer-paper-access.js
+- [X] T020 [US2] Implement paper details controller action in src/controllers/reviewer-paper-controller.js
+- [X] T021 [US2] Update paper details view with manuscript link in src/views/reviewer-paper-view.js
 
 **Checkpoint**: User Stories 1 and 2 both work independently
 
@@ -102,17 +102,17 @@ integration/acceptance tests mapped to AT-18 cases.
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T022 [P] [US3] Acceptance tests for AT-UC18-05..08 in tests/integration/at-18-errors.test.js
-- [ ] T023 [P] [US3] Integration test for retrieval failure handling in tests/integration/assignment-retrieval-failure.test.js
-- [ ] T024 [P] [US3] Unit tests for error messaging rules in tests/unit/assignment-errors.test.js
+- [X] T022 [P] [US3] Acceptance tests for AT-UC18-05..08 in tests/integration/at-18-errors.test.js
+- [X] T023 [P] [US3] Integration test for retrieval failure handling in tests/integration/assignment-retrieval-failure.test.js
+- [X] T024 [P] [US3] Unit tests for error messaging rules in tests/unit/assignment-errors.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T025 [P] [US3] Implement retrieval failure handling in src/services/reviewer-assignments.js
-- [ ] T026 [US3] Implement unavailable paper handling in src/services/reviewer-paper-access.js
-- [ ] T027 [US3] Update views to show error/recovery messages in src/views/reviewer-assignments-view.js
-- [ ] T028 [US3] Ensure controller logs failures via src/services/error-log.js
-- [ ] T029 [US3] Add login recovery redirect handling in src/controllers/auth-controller.js
+- [X] T025 [P] [US3] Implement retrieval failure handling in src/services/reviewer-assignments.js
+- [X] T026 [US3] Implement unavailable paper handling in src/services/reviewer-paper-access.js
+- [X] T027 [US3] Update views to show error/recovery messages in src/views/reviewer-assignments-view.js
+- [X] T028 [US3] Ensure controller logs failures via src/services/error-log.js
+- [X] T029 [US3] Add login recovery redirect handling in src/controllers/auth-controller.js
 
 **Checkpoint**: All user stories now independently functional
 
@@ -122,10 +122,10 @@ integration/acceptance tests mapped to AT-18 cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T030 [P] Align terminology across reviewer views in src/views/
-- [ ] T031 [P] Verify accessibility focus states for error messages in src/views/reviewer-assignments-view.js
-- [ ] T032 [P] Add list retrieval performance check (<=2s) in tests/integration/assignment-performance.test.js
-- [ ] T033 Run quickstart validation checklist in specs/018-view-assigned-paper/quickstart.md
+- [X] T030 [P] Align terminology across reviewer views in src/views/
+- [X] T031 [P] Verify accessibility focus states for error messages in src/views/reviewer-assignments-view.js
+- [X] T032 [P] Add list retrieval performance check (<=2s) in tests/integration/assignment-performance.test.js
+- [X] T033 Run quickstart validation checklist in specs/018-view-assigned-paper/quickstart.md
 
 ---
 

@@ -69,3 +69,16 @@ export function createManuscript(values, fileMeta, submittedBy = null) {
     updatedAt: now,
   };
 }
+
+export function isManuscriptAvailable(manuscript) {
+  if (!manuscript) {
+    return false;
+  }
+  if (manuscript.status && ['withdrawn', 'removed'].includes(manuscript.status)) {
+    return false;
+  }
+  if (manuscript.fileStatus === 'missing') {
+    return false;
+  }
+  return Boolean(manuscript.file);
+}

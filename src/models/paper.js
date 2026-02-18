@@ -8,6 +8,7 @@ export function createPaper({
   status = 'Submitted',
   assignedRefereeEmails = [],
   assignmentVersion = 0,
+  manuscriptAvailable = true,
 } = {}) {
   return {
     id: id || generatePaperId(),
@@ -15,6 +16,7 @@ export function createPaper({
     status,
     assignedRefereeEmails: Array.isArray(assignedRefereeEmails) ? assignedRefereeEmails : [],
     assignmentVersion,
+    manuscriptAvailable,
   };
 }
 
@@ -29,4 +31,18 @@ export function assignReferees(paper, refereeEmails) {
     assignedRefereeEmails: refereeEmails.slice(),
     assignmentVersion: (paper.assignmentVersion || 0) + 1,
   };
+}
+
+export function isPaperAvailable(paper) {
+  if (!paper) {
+    return false;
+  }
+  const normalized = (paper.status || '').toString().trim().toLowerCase();
+  if (normalized === 'withdrawn' || normalized === 'removed') {
+    return false;
+  }
+  if (paper.manuscriptAvailable === false) {
+    return false;
+  }
+  return true;
 }
