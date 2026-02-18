@@ -8,51 +8,51 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are access rules defined for accepted assignments? [Completeness, Spec §FR-001]
-- [ ] CHK002 Is draft loading required when present? [Completeness, Spec §FR-002]
-- [ ] CHK003 Are denial rules defined for unassigned access? [Completeness, Spec §FR-003]
-- [ ] CHK004 Are denial rules defined for pending/rejected assignments? [Completeness, Spec §FR-004]
-- [ ] CHK005 Are closed-period access rules defined? [Completeness, Spec §FR-005]
-- [ ] CHK006 Are missing form configuration rules defined? [Completeness, Spec §FR-006]
-- [ ] CHK007 Are form/draft retrieval failure rules defined? [Completeness, Spec §FR-007]
+- [X] CHK001 Are access rules defined for accepted assignments? [Completeness, Spec §FR-001]
+- [X] CHK002 Is draft loading required when present? [Completeness, Spec §FR-002]
+- [X] CHK003 Are denial rules defined for unassigned access? [Completeness, Spec §FR-003]
+- [X] CHK004 Are denial rules defined for pending/rejected assignments? [Completeness, Spec §FR-004]
+- [X] CHK005 Are closed-period access rules defined? [Completeness, Spec §FR-005]
+- [X] CHK006 Are missing form configuration rules defined? [Completeness, Spec §FR-006]
+- [X] CHK007 Are form/draft retrieval failure rules defined? [Completeness, Spec §FR-007]
 
 ## Requirement Clarity
 
-- [ ] CHK008 Is “view-only” clearly defined (no editing/submission)? [Clarity, Spec §FR-005]
-- [ ] CHK009 Is “authorization” scope defined (assigned + accepted)? [Clarity, Spec §FR-001, §FR-003, §FR-004]
-- [ ] CHK010 Is “review form” scope defined (template/fields)? [Clarity, Spec §Key Entities]
+- [X] CHK008 Is “view-only” clearly defined (no editing/submission)? [Clarity, Spec §FR-005]
+- [X] CHK009 Is “authorization” scope defined (assigned + accepted)? [Clarity, Spec §FR-001, §FR-003, §FR-004]
+- [X] CHK010 Is “review form” scope defined (template/fields)? [Clarity, Spec §Key Entities]
 
 ## Requirement Consistency
 
-- [ ] CHK011 Do user stories and FRs consistently require accepted assignment for access? [Consistency, Spec §US1, §FR-001]
-- [ ] CHK012 Do closed-period rules align between acceptance scenarios and FR-005? [Consistency, Spec §US2, §FR-005]
+- [X] CHK011 Do user stories and FRs consistently require accepted assignment for access? [Consistency, Spec §US1, §FR-001]
+- [X] CHK012 Do closed-period rules align between acceptance scenarios and FR-005? [Consistency, Spec §US2, §FR-005]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK013 Do acceptance scenarios cover opening form with accepted assignment? [Acceptance Criteria, Spec §US1]
-- [ ] CHK014 Do acceptance scenarios cover unassigned/pending access denial? [Acceptance Criteria, Spec §US2]
-- [ ] CHK015 Do acceptance scenarios cover closed-period behavior? [Acceptance Criteria, Spec §US2]
+- [X] CHK013 Do acceptance scenarios cover opening form with accepted assignment? [Acceptance Criteria, Spec §US1]
+- [X] CHK014 Do acceptance scenarios cover unassigned/pending access denial? [Acceptance Criteria, Spec §US2]
+- [X] CHK015 Do acceptance scenarios cover closed-period behavior? [Acceptance Criteria, Spec §US2]
 
 ## Scenario Coverage
 
-- [ ] CHK016 Are primary access flows covered? [Scenario Coverage, Spec §US1]
-- [ ] CHK017 Are authorization denial flows covered? [Scenario Coverage, Spec §US2]
-- [ ] CHK018 Are missing form/data failure flows covered? [Scenario Coverage, Spec §US3]
+- [X] CHK016 Are primary access flows covered? [Scenario Coverage, Spec §US1]
+- [X] CHK017 Are authorization denial flows covered? [Scenario Coverage, Spec §US2]
+- [X] CHK018 Are missing form/data failure flows covered? [Scenario Coverage, Spec §US3]
 
 ## Edge Case Coverage
 
-- [ ] CHK019 Is session-expired handling defined? [Gap]
-- [ ] CHK020 Is “no assigned papers” scenario defined? [Gap]
+- [X] CHK019 Is session-expired handling defined? [Gap]
+- [X] CHK020 Is “no assigned papers” scenario defined? [Gap]
 
 ## Non-Functional Requirements
 
-- [ ] CHK021 Are performance targets defined for form retrieval? [Completeness, Spec §NFR-001]
-- [ ] CHK022 Are accessibility requirements defined for form errors? [Completeness, Spec §NFR-002]
+- [X] CHK021 Are performance targets defined for form retrieval? [Completeness, Spec §NFR-001]
+- [X] CHK022 Are accessibility requirements defined for form errors? [Completeness, Spec §NFR-002]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK023 Are assumptions about authentication and review period explicit? [Assumption, Spec §Assumptions]
+- [X] CHK023 Are assumptions about authentication and review period explicit? [Assumption, Spec §Assumptions]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK024 Is allowed review form content/scope consistent with access rules? [Ambiguity, Spec §FR-001, §Key Entities]
+- [X] CHK024 Is allowed review form content/scope consistent with access rules? [Ambiguity, Spec §FR-001, §Key Entities]

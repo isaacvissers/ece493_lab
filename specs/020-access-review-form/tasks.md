@@ -27,9 +27,9 @@ integration/acceptance tests mapped to AT-20 cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Verify MVC folder structure exists in src/models, src/views, src/controllers, src/services
-- [ ] T002 [P] Create AT-20 integration test file in tests/integration/at-20-review-form.test.js
-- [ ] T003 [P] Create unit test skeleton for review form access in tests/unit/review-form-access.test.js
+- [X] T001 Verify MVC folder structure exists in src/models, src/views, src/controllers, src/services
+- [X] T002 [P] Create AT-20 integration test file in tests/integration/at-20-review-form.test.js
+- [X] T003 [P] Create unit test skeleton for review form access in tests/unit/review-form-access.test.js
 
 ---
 
@@ -39,11 +39,11 @@ integration/acceptance tests mapped to AT-20 cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Implement ReviewForm data access helpers in src/models/review-form.js
-- [ ] T005 Implement ReviewDraft data access helpers in src/models/review-draft.js
-- [ ] T006 [P] Implement ReviewerAssignment data access helpers in src/models/reviewer-assignment.js
-- [ ] T007 [P] Implement Paper data access helpers in src/models/paper.js
-- [ ] T008 Implement shared error logging helper in src/services/error-log.js
+- [X] T004 Implement ReviewForm data access helpers in src/models/review-form.js
+- [X] T005 Implement ReviewDraft data access helpers in src/models/review-draft.js
+- [X] T006 [P] Implement ReviewerAssignment data access helpers in src/models/reviewer-assignment.js
+- [X] T007 [P] Implement Paper data access helpers in src/models/paper.js
+- [X] T008 Implement shared error logging helper in src/services/error-log.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -57,16 +57,16 @@ integration/acceptance tests mapped to AT-20 cases.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T009 [P] [US1] Acceptance tests for AT-UC20-01..02 in tests/integration/at-20-review-form.test.js
-- [ ] T010 [P] [US1] Integration test for draft loading in tests/integration/review-draft-load.test.js
-- [ ] T011 [P] [US1] Unit tests for draft retrieval rules in tests/unit/review-form-access.test.js
+- [X] T009 [P] [US1] Acceptance tests for AT-UC20-01..02 in tests/integration/at-20-review-form.test.js
+- [X] T010 [P] [US1] Integration test for draft loading in tests/integration/review-draft-load.test.js
+- [X] T011 [P] [US1] Unit tests for draft retrieval rules in tests/unit/review-form-access.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Implement review form access service in src/services/review-form-access.js (include closed-period view-only checks)
-- [ ] T013 [P] [US1] Implement draft load logic in src/services/review-draft-load.js
-- [ ] T014 [US1] Implement review form controller action in src/controllers/review-form-controller.js
-- [ ] T015 [US1] Update review form view in src/views/review-form-view.js
+- [X] T012 [P] [US1] Implement review form access service in src/services/review-form-access.js (include closed-period view-only checks)
+- [X] T013 [P] [US1] Implement draft load logic in src/services/review-draft-load.js
+- [X] T014 [US1] Implement review form controller action in src/controllers/review-form-controller.js
+- [X] T015 [US1] Update review form view in src/views/review-form-view.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -80,15 +80,15 @@ integration/acceptance tests mapped to AT-20 cases.
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T016 [P] [US2] Acceptance tests for AT-UC20-03..05 in tests/integration/at-20-review-form.test.js
-- [ ] T017 [P] [US2] Integration test for closed-period view-only behavior in tests/integration/review-period-closed.test.js
-- [ ] T018 [P] [US2] Unit tests for authorization checks in tests/unit/review-form-access.test.js
+- [X] T016 [P] [US2] Acceptance tests for AT-UC20-03..05 in tests/integration/at-20-review-form.test.js
+- [X] T017 [P] [US2] Integration test for closed-period view-only behavior in tests/integration/review-period-closed.test.js
+- [X] T018 [P] [US2] Unit tests for authorization checks in tests/unit/review-form-access.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T019 [P] [US2] Implement authorization guard in src/services/review-form-access.js
-- [ ] T020 [US2] Implement closed-period view-only handling in src/controllers/review-form-controller.js
-- [ ] T021 [US2] Update view to show closed-period message in src/views/review-form-view.js
+- [X] T019 [P] [US2] Implement authorization guard in src/services/review-form-access.js
+- [X] T020 [US2] Implement closed-period view-only handling in src/controllers/review-form-controller.js
+- [X] T021 [US2] Update view to show closed-period message in src/views/review-form-view.js
 
 **Checkpoint**: User Stories 1 and 2 both work independently
 
@@ -102,16 +102,16 @@ integration/acceptance tests mapped to AT-20 cases.
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T022 [P] [US3] Acceptance tests for AT-UC20-06..08 in tests/integration/at-20-review-form-errors.test.js
-- [ ] T023 [P] [US3] Integration test for form missing error in tests/integration/review-form-missing.test.js
-- [ ] T024 [P] [US3] Unit tests for error handling rules in tests/unit/review-form-errors.test.js
+- [X] T022 [P] [US3] Acceptance tests for AT-UC20-06..08 in tests/integration/at-20-review-form-errors.test.js
+- [X] T023 [P] [US3] Integration test for form missing error in tests/integration/review-form-missing.test.js
+- [X] T024 [P] [US3] Unit tests for error handling rules in tests/unit/review-form-errors.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T025 [P] [US3] Implement missing form detection in src/services/review-form-access.js
-- [ ] T026 [US3] Implement retrieval failure handling in src/services/review-form-access.js
-- [ ] T027 [US3] Update view with error states in src/views/review-form-view.js
-- [ ] T028 [US3] Ensure controller logs failures via src/services/error-log.js
+- [X] T025 [P] [US3] Implement missing form detection in src/services/review-form-access.js
+- [X] T026 [US3] Implement retrieval failure handling in src/services/review-form-access.js
+- [X] T027 [US3] Update view with error states in src/views/review-form-view.js
+- [X] T028 [US3] Ensure controller logs failures via src/services/error-log.js
 
 **Checkpoint**: All user stories now independently functional
 
@@ -121,10 +121,10 @@ integration/acceptance tests mapped to AT-20 cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T029 [P] Align terminology across review form views in src/views/
-- [ ] T030 [P] Verify accessibility focus states for review form errors in src/views/review-form-view.js
-- [ ] T031 [P] Add form access performance check (<=2s) in tests/integration/review-form-performance.test.js
-- [ ] T032 Run quickstart validation checklist in specs/020-access-review-form/quickstart.md
+- [X] T029 [P] Align terminology across review form views in src/views/
+- [X] T030 [P] Verify accessibility focus states for review form errors in src/views/review-form-view.js
+- [X] T031 [P] Add form access performance check (<=2s) in tests/integration/review-form-performance.test.js
+- [X] T032 Run quickstart validation checklist in specs/020-access-review-form/quickstart.md
 
 ---
 
