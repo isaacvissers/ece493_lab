@@ -3,6 +3,10 @@ import { createReviewDraft } from '../models/review-draft.js';
 import { createReviewerAssignment } from '../models/reviewer-assignment.js';
 import { createSubmittedReview } from '../models/submitted-review.js';
 import { createValidationRuleSet } from '../models/validation-rule-set.js';
+import { createReview } from '../models/review.js';
+import { createPaper } from '../models/paper.js';
+import { createEditor } from '../models/editor.js';
+import { createNotification } from '../models/notification.js';
 import { REQUIRED_REVIEW_FIELDS } from '../models/review-constants.js';
 
 export function buildReviewFixtures(overrides = {}) {
@@ -57,6 +61,41 @@ export function buildReviewFixtures(overrides = {}) {
         confidenceRating: 4,
       },
       ...(overrides.submittedReview || {}),
+    }),
+  };
+}
+
+export function buildEditorDeliveryFixtures(overrides = {}) {
+  const paperId = overrides.paperId || 'paper_delivery';
+  const reviewId = overrides.reviewId || 'review_delivery';
+  const editorId = overrides.editorId || 'editor_1';
+
+  return {
+    review: createReview({
+      reviewId,
+      paperId,
+      reviewerId: overrides.reviewerId || 'reviewer_1',
+      status: 'submitted',
+      content: {
+        summary: 'Review summary',
+      },
+      ...(overrides.review || {}),
+    }),
+    paper: createPaper({
+      paperId,
+      editorId,
+      ...(overrides.paper || {}),
+    }),
+    editor: createEditor({
+      editorId,
+      permissions: ['review_access'],
+      ...(overrides.editor || {}),
+    }),
+    notification: createNotification({
+      reviewId,
+      editorId,
+      channels: ['email', 'in_app'],
+      ...(overrides.notification || {}),
     }),
   };
 }
