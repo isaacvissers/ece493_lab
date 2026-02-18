@@ -8,6 +8,8 @@ export function createReviewForm({
   status = 'active',
   fields = [],
   requiredFields = [],
+  allowedCharactersRule = 'no_control_chars_no_markup',
+  maxLengths = {},
 } = {}) {
   return {
     formId: formId || generateFormId(),
@@ -15,6 +17,8 @@ export function createReviewForm({
     status,
     fields: Array.isArray(fields) ? fields : [],
     requiredFields: Array.isArray(requiredFields) ? requiredFields : [],
+    allowedCharactersRule,
+    maxLengths: maxLengths && typeof maxLengths === 'object' ? { ...maxLengths } : {},
   };
 }
 

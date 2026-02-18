@@ -7,18 +7,18 @@
 
 ## Phase 1: Setup
 
-- [ ] T001 Create feature folder structure per plan in src/ and tests/
-- [ ] T002 Add seed fixtures for ReviewForm, ValidationRuleSet, ReviewDraft in src/services/fixtures.js
-- [ ] T003 Add shared constants for validation types and field keys in src/models/validationConstants.js
+- [X] T001 Create feature folder structure per plan in src/ and tests/
+- [X] T002 Add seed fixtures for ReviewForm, ValidationRuleSet, ReviewDraft in src/services/fixtures.js
+- [X] T003 Add shared constants for validation types and field keys in src/models/validationConstants.js
 
 ## Phase 2: Foundational
 
-- [ ] T004 Implement ReviewForm model with required fields and length rules in src/models/ReviewForm.js
-- [ ] T005 Implement ValidationRuleSet model and loader in src/models/ValidationRuleSet.js
-- [ ] T006 Implement ReviewDraft model with validationErrors in src/models/ReviewDraft.js
-- [ ] T007 Implement validation error model helper in src/models/ValidationError.js
-- [ ] T008 Implement review validation service (required, invalid chars, max length) in src/services/reviewValidationService.js
-- [ ] T009 Implement rules availability guard and logging in src/services/validationRulesService.js
+- [X] T004 Implement ReviewForm model with required fields and length rules in src/models/ReviewForm.js
+- [X] T005 Implement ValidationRuleSet model and loader in src/models/ValidationRuleSet.js
+- [X] T006 Implement ReviewDraft model with validationErrors in src/models/ReviewDraft.js
+- [X] T007 Implement validation error model helper in src/models/ValidationError.js
+- [X] T008 Implement review validation service (required, invalid chars, max length) in src/services/reviewValidationService.js
+- [X] T009 Implement rules availability guard and logging in src/services/validationRulesService.js
 
 ## Phase 3: User Story 1 - Validate on save/submit (P1)
 
@@ -26,13 +26,13 @@
 
 **Independent Test Criteria**: Valid inputs save/submit successfully; blanks/invalid chars are blocked with errors.
 
-- [ ] T010 [P] [US1] Add unit tests for required-field and invalid-character rules in tests/unit/reviewValidationRules.test.js
-- [ ] T011 [P] [US1] Add unit tests for save vs submit validation differences in tests/unit/reviewValidationContext.test.js
-- [ ] T012 [US1] Implement validation flow in review save/submit controller in src/controllers/reviewValidationController.js
-- [ ] T013 [US1] Render field-level validation errors in src/views/reviewValidationView.js
-- [ ] T014 [US1] Add integration test for valid save/submit success in tests/integration/reviewValidationHappyPath.test.js
-- [ ] T015 [US1] Add integration test for blank required field blocking submission in tests/integration/reviewBlankRequiredFlow.test.js
-- [ ] T016 [US1] Add integration test for invalid character blocking in tests/integration/reviewInvalidCharsFlow.test.js
+- [X] T010 [P] [US1] Add unit tests for required-field and invalid-character rules in tests/unit/reviewValidationRules.test.js
+- [X] T011 [P] [US1] Add unit tests for save vs submit validation differences in tests/unit/reviewValidationContext.test.js
+- [X] T012 [US1] Implement validation flow in review save/submit controller in src/controllers/reviewValidationController.js
+- [X] T013 [US1] Render field-level validation errors in src/views/reviewValidationView.js
+- [X] T014 [US1] Add integration test for valid save/submit success in tests/integration/reviewValidationHappyPath.test.js
+- [X] T015 [US1] Add integration test for blank required field blocking submission in tests/integration/reviewBlankRequiredFlow.test.js
+- [X] T016 [US1] Add integration test for invalid character blocking in tests/integration/reviewInvalidCharsFlow.test.js
 
 ## Phase 4: User Story 2 - Show consolidated validation feedback (P2)
 
@@ -40,11 +40,11 @@
 
 **Independent Test Criteria**: Multiple errors show a consolidated summary with per-field messages.
 
-- [ ] T017 [P] [US2] Add unit tests for consolidated error summary composition in tests/unit/reviewErrorSummary.test.js
-- [ ] T018 [US2] Implement consolidated error summary component in src/views/reviewErrorSummaryView.js
-- [ ] T019 [US2] Update validation view to list each field with its error message in src/views/reviewValidationView.js
-- [ ] T020 [US2] Add integration test for multi-error summary in tests/integration/reviewMultiErrorFlow.test.js
-- [ ] T021 [US2] Add integration test for max-length violation messaging in tests/integration/reviewMaxLengthFlow.test.js
+- [X] T017 [P] [US2] Add unit tests for consolidated error summary composition in tests/unit/reviewErrorSummary.test.js
+- [X] T018 [US2] Implement consolidated error summary component in src/views/reviewErrorSummaryView.js
+- [X] T019 [US2] Update validation view to list each field with its error message in src/views/reviewValidationView.js
+- [X] T020 [US2] Add integration test for multi-error summary in tests/integration/reviewMultiErrorFlow.test.js
+- [X] T021 [US2] Add integration test for max-length violation messaging in tests/integration/reviewMaxLengthFlow.test.js
 
 ## Phase 5: User Story 3 - Fail safely on validation or storage issues (P3)
 
@@ -52,19 +52,19 @@
 
 **Independent Test Criteria**: Rules-unavailable and storage-failure scenarios block action, show error, and log.
 
-- [ ] T022 [P] [US3] Add unit tests for rules-unavailable guard in tests/unit/validationRulesGuard.test.js
-- [ ] T023 [P] [US3] Add unit tests for storage failure handling in tests/unit/reviewStorageFailure.test.js
-- [ ] T024 [US3] Implement rules-unavailable error handling in src/controllers/reviewValidationController.js
-- [ ] T025 [US3] Implement storage failure error handling in src/services/reviewStorageService.js
-- [ ] T026 [US3] Add integration test for rules-unavailable failure in tests/integration/reviewRulesUnavailableFlow.test.js
-- [ ] T027 [US3] Add integration test for storage failure after validation in tests/integration/reviewStorageFailureFlow.test.js
+- [X] T022 [P] [US3] Add unit tests for rules-unavailable guard in tests/unit/validationRulesGuard.test.js
+- [X] T023 [P] [US3] Add unit tests for storage failure handling in tests/unit/reviewStorageFailure.test.js
+- [X] T024 [US3] Implement rules-unavailable error handling in src/controllers/reviewValidationController.js
+- [X] T025 [US3] Implement storage failure error handling in src/services/reviewStorageService.js
+- [X] T026 [US3] Add integration test for rules-unavailable failure in tests/integration/reviewRulesUnavailableFlow.test.js
+- [X] T027 [US3] Add integration test for storage failure after validation in tests/integration/reviewStorageFailureFlow.test.js
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T028 Add accessibility focus management for validation errors in src/views/reviewValidationAccessibility.js
-- [ ] T029 Add performance guard for validation feedback timing in src/controllers/reviewValidationController.js
-- [ ] T030 Add integration test for accessibility focus behavior in tests/integration/reviewValidationAccessibilityFlow.test.js
-- [ ] T031 Add performance validation checklist for 200ms target in tests/integration/reviewValidationPerformanceChecklist.md
+- [X] T028 Add accessibility focus management for validation errors in src/views/reviewValidationAccessibility.js
+- [X] T029 Add performance guard for validation feedback timing in src/controllers/reviewValidationController.js
+- [X] T030 Add integration test for accessibility focus behavior in tests/integration/reviewValidationAccessibilityFlow.test.js
+- [X] T031 Add performance validation checklist for 200ms target in tests/integration/reviewValidationPerformanceChecklist.md
 
 ## Dependencies
 

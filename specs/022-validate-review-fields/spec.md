@@ -93,6 +93,7 @@ As a reviewer, I want the system to fail safely when validation rules or storage
 - Input exceeds maximum length.
 - Database write failure after validation passes.
 - Validation rules unavailable.
+- Required-field blanks allowed on draft but invalid characters/lengths still blocked.
 
 ## Requirements *(mandatory)*
 
@@ -100,12 +101,52 @@ As a reviewer, I want the system to fail safely when validation rules or storage
 
 - **FR-001**: The system MUST validate review form fields on **Save Draft** and **Submit Review** actions.
 - **FR-002**: The system MUST block **Submit Review** when any required field is blank and show field-level errors plus a consolidated error summary.
-- **FR-003**: The system MUST block **Save Draft** when invalid characters are present in any validated field and explain the invalid character rule. Invalid characters are control characters and any markup/script tags.
+- **FR-003**: The system MUST block **Save Draft** and **Submit Review** when invalid characters are present in any validated text field and explain the invalid character rule. Invalid characters are control characters and any markup/script tags.
 - **FR-004**: The system MUST validate length limits for any field with a configured maximum and show the maximum allowed length when violated.
 - **FR-005**: The system MUST allow saving drafts with blank required fields, but MUST enforce required fields on submission.
 - **FR-006**: The system MUST highlight all invalid fields and present a consolidated error summary when multiple errors occur. The summary MUST list each invalid field with its specific error message.
 - **FR-007**: The system MUST block save/submit if validation rules are unavailable, show a temporary error, and log the configuration issue.
 - **FR-008**: The system MUST show a save/submit error and log failures when storage fails after validation passes.
+
+### Validation Rules Detail
+
+**Trigger points**:
+- Validation runs on both **Save Draft** and **Submit Review** (FR-001).
+
+**Field scope**:
+- Text fields: `summary`, `commentsToAuthors`
+- Choice fields: `recommendation` (allowed options), `confidenceRating` (numeric range)
+- Only text fields are checked for invalid characters and max length.
+
+**Required-field handling**:
+- Required fields are defined by `ReviewForm.requiredFields`.
+- **Submit Review**: required fields must be non-blank (FR-002).
+- **Save Draft**: required fields may be blank, but other validations still apply (FR-005).
+
+**Invalid character policy** (FR-003):
+- Disallow ASCII control characters (`U+0000`–`U+001F`, `U+007F`).
+- Disallow markup/script tags (any `<...>` tag-like sequences).
+- Apply to text fields on both save and submit.
+
+**Length limits** (FR-004):
+- If `ReviewForm.maxLengths` contains a field key, enforce `value.length <= max`.
+- Error messages must include the configured maximum.
+- If a max length is not configured for a field, no length check is applied.
+
+**Choice/range validation**:
+- `recommendation` must be one of the configured options.
+- `confidenceRating` must be within the configured range.
+
+**Multi-error display** (FR-006):
+- Show all field errors at once.
+- Error summary lists each field with its specific message in form order.
+
+**Fail-safe rules** (FR-007):
+- If validation rules are missing/malformed (e.g., `ReviewForm` not available), block the action, show a temporary error, and log the configuration issue.
+
+**Success confirmations**:
+- Save Draft: confirm draft saved.
+- Submit Review: confirm review submitted.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -135,3 +176,8 @@ As a reviewer, I want the system to fail safely when validation rules or storage
 - Required fields and length limits are defined by the ReviewForm configuration.
 - Invalid characters include control characters and markup/script tags; other printable characters are allowed unless configured otherwise.
 - Drafts may be saved with required blanks, but submissions must enforce required fields.
+- If validation rules are missing, the system must fail closed (block + message + log).
+
+## Dependencies
+
+- ReviewForm configuration (required fields, max lengths, invalid character policy) must be available at validation time.

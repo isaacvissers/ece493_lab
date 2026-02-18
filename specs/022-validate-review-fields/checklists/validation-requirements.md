@@ -8,62 +8,62 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are validation trigger points for save draft and submit explicitly defined? [Completeness, Spec §FR-001]
-- [ ] CHK002 Are required-field rules for submission explicitly stated, including blank handling? [Completeness, Spec §FR-002]
-- [ ] CHK003 Are invalid character rules explicitly defined and scoped to fields/actions? [Completeness, Spec §FR-003]
-- [ ] CHK004 Are length-limit rules specified for fields with configured maximums? [Completeness, Spec §FR-004]
-- [ ] CHK005 Are draft-blank allowances explicitly stated and bounded? [Completeness, Spec §FR-005]
-- [ ] CHK006 Are multi-error display requirements fully specified? [Completeness, Spec §FR-006]
-- [ ] CHK007 Are fail-safe requirements for missing rules specified (block + message + log)? [Completeness, Spec §FR-007]
-- [ ] CHK008 Are storage failure requirements specified after validation passes? [Completeness, Spec §FR-008]
+- [x] CHK001 Are validation trigger points for save draft and submit explicitly defined? [Completeness, Spec §FR-001]
+- [x] CHK002 Are required-field rules for submission explicitly stated, including blank handling? [Completeness, Spec §FR-002]
+- [x] CHK003 Are invalid character rules explicitly defined and scoped to fields/actions? [Completeness, Spec §FR-003]
+- [x] CHK004 Are length-limit rules specified for fields with configured maximums? [Completeness, Spec §FR-004]
+- [x] CHK005 Are draft-blank allowances explicitly stated and bounded? [Completeness, Spec §FR-005]
+- [x] CHK006 Are multi-error display requirements fully specified? [Completeness, Spec §FR-006]
+- [x] CHK007 Are fail-safe requirements for missing rules specified (block + message + log)? [Completeness, Spec §FR-007]
+- [x] CHK008 Are storage failure requirements specified after validation passes? [Completeness, Spec §FR-008]
 
 ## Requirement Clarity
 
-- [ ] CHK009 Is the invalid character policy unambiguous (control chars + markup/script tags)? [Clarity, Spec §FR-003]
-- [ ] CHK010 Is “required field” definition clear (per ReviewForm config)? [Clarity, Spec §Assumptions]
-- [ ] CHK011 Is “consolidated error summary” defined with explicit behavior? [Clarity, Spec §FR-006]
-- [ ] CHK012 Are success confirmations defined for save vs submit outcomes? [Clarity, Spec §User Story 1]
+- [x] CHK009 Is the invalid character policy unambiguous (control chars + markup/script tags)? [Clarity, Spec §FR-003]
+- [x] CHK010 Is “required field” definition clear (per ReviewForm config)? [Clarity, Spec §Assumptions]
+- [x] CHK011 Is “consolidated error summary” defined with explicit behavior? [Clarity, Spec §FR-006]
+- [x] CHK012 Are success confirmations defined for save vs submit outcomes? [Clarity, Spec §User Story 1]
 
 ## Requirement Consistency
 
-- [ ] CHK013 Do validation requirements align with User Story 1 acceptance scenarios? [Consistency, Spec §User Story 1]
-- [ ] CHK014 Do consolidated feedback requirements align across User Story 2 and FR-006? [Consistency, Spec §User Story 2]
-- [ ] CHK015 Do fail-safe requirements align with User Story 3 scenarios (rules unavailable, storage failure)? [Consistency, Spec §User Story 3]
+- [x] CHK013 Do validation requirements align with User Story 1 acceptance scenarios? [Consistency, Spec §User Story 1]
+- [x] CHK014 Do consolidated feedback requirements align across User Story 2 and FR-006? [Consistency, Spec §User Story 2]
+- [x] CHK015 Do fail-safe requirements align with User Story 3 scenarios (rules unavailable, storage failure)? [Consistency, Spec §User Story 3]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK016 Are success criteria measurable and technology-agnostic? [Acceptance Criteria, Spec §SC-001]
-- [ ] CHK017 Are performance-related criteria consistent with NFRs and constitution targets? [Acceptance Criteria, Spec §SC-004]
-- [ ] CHK018 Are acceptance scenarios sufficient to verify each FR? [Acceptance Criteria, Spec §User Scenarios]
+- [x] CHK016 Are success criteria measurable and technology-agnostic? [Acceptance Criteria, Spec §SC-001]
+- [x] CHK017 Are performance-related criteria consistent with NFRs and constitution targets? [Acceptance Criteria, Spec §SC-004]
+- [x] CHK018 Are acceptance scenarios sufficient to verify each FR? [Acceptance Criteria, Spec §User Scenarios]
 
 ## Scenario Coverage
 
-- [ ] CHK019 Are primary save/submit validation flows covered? [Coverage, Spec §User Story 1]
-- [ ] CHK020 Are blank required field errors covered for submission? [Coverage, Spec §User Story 1]
-- [ ] CHK021 Are invalid character failures covered for save and submit? [Coverage, Spec §User Story 1]
-- [ ] CHK022 Are multiple error scenarios covered with consolidated feedback? [Coverage, Spec §User Story 2]
-- [ ] CHK023 Are length-limit violations covered in scenarios? [Coverage, Gap]
-- [ ] CHK024 Are rules-unavailable and storage-failure scenarios covered? [Coverage, Spec §User Story 3]
+- [x] CHK019 Are primary save/submit validation flows covered? [Coverage, Spec §User Story 1]
+- [x] CHK020 Are blank required field errors covered for submission? [Coverage, Spec §User Story 1]
+- [x] CHK021 Are invalid character failures covered for save and submit? [Coverage, Spec §User Story 1]
+- [x] CHK022 Are multiple error scenarios covered with consolidated feedback? [Coverage, Spec §User Story 2]
+- [x] CHK023 Are length-limit violations covered in scenarios? [Coverage, Gap]
+- [x] CHK024 Are rules-unavailable and storage-failure scenarios covered? [Coverage, Spec §User Story 3]
 
 ## Edge Case Coverage
 
-- [ ] CHK025 Are max-length edge cases defined when limits exist? [Edge Case, Spec §Edge Cases]
-- [ ] CHK026 Are multiple validation errors across fields defined? [Edge Case, Spec §Edge Cases]
-- [ ] CHK027 Are configuration failures explicitly described as fail-safe? [Edge Case, Spec §Edge Cases]
+- [x] CHK025 Are max-length edge cases defined when limits exist? [Edge Case, Spec §Edge Cases]
+- [x] CHK026 Are multiple validation errors across fields defined? [Edge Case, Spec §Edge Cases]
+- [x] CHK027 Are configuration failures explicitly described as fail-safe? [Edge Case, Spec §Edge Cases]
 
 ## Non-Functional Requirements
 
-- [ ] CHK028 Are accessibility requirements for validation feedback defined and testable? [Non-Functional, Spec §NFR-001]
-- [ ] CHK029 Are performance constraints quantified and aligned with constitution targets? [Non-Functional, Spec §NFR-002]
+- [x] CHK028 Are accessibility requirements for validation feedback defined and testable? [Non-Functional, Spec §NFR-001]
+- [x] CHK029 Are performance constraints quantified and aligned with constitution targets? [Non-Functional, Spec §NFR-002]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK030 Are assumptions about ReviewForm-configured rules documented and bounded? [Assumption, Spec §Assumptions]
-- [ ] CHK031 Are dependencies on validation rule availability documented? [Dependency, Spec §FR-007]
+- [x] CHK030 Are assumptions about ReviewForm-configured rules documented and bounded? [Assumption, Spec §Assumptions]
+- [x] CHK031 Are dependencies on validation rule availability documented? [Dependency, Spec §FR-007]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK032 Are there no conflicts between draft-blank allowance and required-field enforcement? [Conflict, Spec §FR-005]
+- [x] CHK032 Are there no conflicts between draft-blank allowance and required-field enforcement? [Conflict, Spec §FR-005]
 
 ## Notes
 
