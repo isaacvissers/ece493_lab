@@ -8,62 +8,62 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are required review fields explicitly enumerated for submission validation? [Completeness, Spec §FR-001]
-- [ ] CHK002 Are conditions for storing a submitted review fully specified (data captured, status change)? [Completeness, Spec §FR-002]
-- [ ] CHK003 Are duplicate submission handling requirements fully specified (block + user feedback)? [Completeness, Spec §FR-003]
-- [ ] CHK004 Are closed-period submission restrictions and view-only behavior fully specified? [Completeness, Spec §FR-004]
-- [ ] CHK005 Are authorization failure requirements defined for unauthorized reviewers? [Completeness, Spec §FR-005]
-- [ ] CHK006 Are validation error presentation requirements defined for both field-level and summary? [Completeness, Spec §FR-006]
-- [ ] CHK007 Are save-failure behaviors defined (error, logging, draft preservation)? [Completeness, Spec §FR-007]
-- [ ] CHK008 Are notification requirements specified when notifications are enabled? [Completeness, Spec §FR-008]
+- [x] CHK001 Are required review fields explicitly enumerated for submission validation? [Completeness, Spec §FR-001]
+- [x] CHK002 Are conditions for storing a submitted review fully specified (data captured, status change)? [Completeness, Spec §FR-002]
+- [x] CHK003 Are duplicate submission handling requirements fully specified (block + user feedback)? [Completeness, Spec §FR-003]
+- [x] CHK004 Are closed-period submission restrictions and view-only behavior fully specified? [Completeness, Spec §FR-004]
+- [x] CHK005 Are authorization failure requirements defined for unauthorized reviewers? [Completeness, Spec §FR-005]
+- [x] CHK006 Are validation error presentation requirements defined for both field-level and summary? [Completeness, Spec §FR-006]
+- [x] CHK007 Are save-failure behaviors defined (error, logging, draft preservation)? [Completeness, Spec §FR-007]
+- [x] CHK008 Are notification requirements specified when notifications are enabled? [Completeness, Spec §FR-008]
 
 ## Requirement Clarity
 
-- [ ] CHK009 Is “completed review” defined with measurable criteria (e.g., required fields present)? [Clarity, Spec §User Story 1]
-- [ ] CHK010 Is “valid review” defined with specific validation rules beyond “required fields”? [Clarity, Spec §FR-001]
-- [ ] CHK011 Is the finality rule (no resubmission) unambiguous across requirements and scenarios? [Clarity, Spec §FR-003]
-- [ ] CHK012 Is “view-only access” defined with clear allowed/blocked actions? [Clarity, Spec §FR-004]
-- [ ] CHK013 Is the authorization error experience defined with specific user guidance? [Clarity, Spec §FR-005]
+- [x] CHK009 Is “completed review” defined with measurable criteria (e.g., required fields present)? [Clarity, Spec §User Story 1]
+- [x] CHK010 Is “valid review” defined with specific validation rules beyond “required fields”? [Clarity, Spec §FR-001]
+- [x] CHK011 Is the finality rule (no resubmission) unambiguous across requirements and scenarios? [Clarity, Spec §FR-003]
+- [x] CHK012 Is “view-only access” defined with clear allowed/blocked actions? [Clarity, Spec §FR-004]
+- [x] CHK013 Is the authorization error experience defined with specific user guidance? [Clarity, Spec §FR-005]
 
 ## Requirement Consistency
 
-- [ ] CHK014 Do validation requirements align between User Story 2 and FR-001/FR-006? [Consistency, Spec §User Story 2]
-- [ ] CHK015 Do submission failure scenarios align with FR-007 (log + preserve draft)? [Consistency, Spec §User Story 3]
-- [ ] CHK016 Do edge cases align with functional requirements (e.g., unauthorized, duplicate, closed)? [Consistency, Spec §Edge Cases]
+- [x] CHK014 Do validation requirements align between User Story 2 and FR-001/FR-006? [Consistency, Spec §User Story 2]
+- [x] CHK015 Do submission failure scenarios align with FR-007 (log + preserve draft)? [Consistency, Spec §User Story 3]
+- [x] CHK016 Do edge cases align with functional requirements (e.g., unauthorized, duplicate, closed)? [Consistency, Spec §Edge Cases]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK017 Are success criteria measurable and technology-agnostic? [Acceptance Criteria, Spec §SC-001]
-- [ ] CHK018 Are performance success criteria consistent with NFR targets? [Acceptance Criteria, Spec §SC-004]
-- [ ] CHK019 Are acceptance scenarios sufficient to verify each functional requirement? [Acceptance Criteria, Spec §User Scenarios]
+- [x] CHK017 Are success criteria measurable and technology-agnostic? [Acceptance Criteria, Spec §SC-001]
+- [x] CHK018 Are performance success criteria consistent with NFR targets? [Acceptance Criteria, Spec §SC-004]
+- [x] CHK019 Are acceptance scenarios sufficient to verify each functional requirement? [Acceptance Criteria, Spec §User Scenarios]
 
 ## Scenario Coverage
 
-- [ ] CHK020 Are primary submission flows fully specified (valid submit)? [Coverage, Spec §User Story 1]
-- [ ] CHK021 Are validation failure flows fully specified (field + summary)? [Coverage, Spec §User Story 2]
-- [ ] CHK022 Are closed-period flows fully specified (blocked submit + view-only)? [Coverage, Spec §User Story 3]
-- [ ] CHK023 Are unauthorized submission flows specified in scenarios? [Coverage, Gap]
-- [ ] CHK024 Are submission storage failures specified in scenarios? [Coverage, Spec §User Story 3]
+- [x] CHK020 Are primary submission flows fully specified (valid submit)? [Coverage, Spec §User Story 1]
+- [x] CHK021 Are validation failure flows fully specified (field + summary)? [Coverage, Spec §User Story 2]
+- [x] CHK022 Are closed-period flows fully specified (blocked submit + view-only)? [Coverage, Spec §User Story 3]
+- [x] CHK023 Are unauthorized submission flows specified in scenarios? [Coverage, Gap]
+- [x] CHK024 Are submission storage failures specified in scenarios? [Coverage, Spec §User Story 3]
 
 ## Edge Case Coverage
 
-- [ ] CHK025 Is session-expired handling during submission specified? [Edge Case, Spec §Edge Cases]
-- [ ] CHK026 Is duplicate submission behavior specified beyond the primary flow? [Edge Case, Spec §Edge Cases]
-- [ ] CHK027 Is notification failure handling specified when notifications are enabled? [Edge Case, Spec §Edge Cases]
+- [x] CHK025 Is session-expired handling during submission specified? [Edge Case, Spec §Edge Cases]
+- [x] CHK026 Is duplicate submission behavior specified beyond the primary flow? [Edge Case, Spec §Edge Cases]
+- [x] CHK027 Is notification failure handling specified when notifications are enabled? [Edge Case, Spec §Edge Cases]
 
 ## Non-Functional Requirements
 
-- [ ] CHK028 Are performance requirements quantified and aligned with constitution limits? [Non-Functional, Spec §NFR-001]
-- [ ] CHK029 Are accessibility requirements for error messaging defined and testable? [Non-Functional, Spec §NFR-002]
+- [x] CHK028 Are performance requirements quantified and aligned with constitution limits? [Non-Functional, Spec §NFR-001]
+- [x] CHK029 Are accessibility requirements for error messaging defined and testable? [Non-Functional, Spec §NFR-002]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK030 Are assumptions about draft preservation and period enforcement documented? [Assumption, Spec §Assumptions]
-- [ ] CHK031 Are external dependencies or notification enablement conditions documented? [Dependency, Spec §FR-008]
+- [x] CHK030 Are assumptions about draft preservation and period enforcement documented? [Assumption, Spec §Assumptions]
+- [x] CHK031 Are external dependencies or notification enablement conditions documented? [Dependency, Spec §FR-008]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK032 Are any requirements conflicting with constitution performance expectations resolved? [Conflict, Spec §NFR-001]
+- [x] CHK032 Are any requirements conflicting with constitution performance expectations resolved? [Conflict, Spec §NFR-001]
 
 ## Notes
 

@@ -1,15 +1,21 @@
-export function createNotificationLogEntry({
+function generateNotificationId() {
+  return `notif_${Date.now()}_${Math.random().toString(16).slice(2, 10)}`;
+}
+
+export function createNotificationLog({
+  notificationId = null,
   paperId,
-  refereeEmail,
+  reviewerEmail,
   status,
-  errorMessage = null,
-  attemptedAt = null,
-}) {
+  createdAt = null,
+  message = '',
+} = {}) {
   return {
+    notificationId: notificationId || generateNotificationId(),
     paperId,
-    refereeEmail,
+    reviewerEmail,
     status,
-    errorMessage,
-    attemptedAt: attemptedAt || new Date().toISOString(),
+    message,
+    createdAt: createdAt || new Date().toISOString(),
   };
 }

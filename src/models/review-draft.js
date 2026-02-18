@@ -7,6 +7,7 @@ export function createReviewDraft({
   paperId,
   reviewerEmail,
   content = {},
+  validationErrors = null,
   updatedAt = null,
 } = {}) {
   return {
@@ -14,6 +15,7 @@ export function createReviewDraft({
     paperId,
     reviewerEmail,
     content,
+    validationErrors,
     updatedAt: updatedAt || new Date().toISOString(),
   };
 }

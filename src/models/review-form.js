@@ -7,12 +7,14 @@ export function createReviewForm({
   paperId,
   status = 'active',
   fields = [],
+  requiredFields = [],
 } = {}) {
   return {
     formId: formId || generateFormId(),
     paperId,
     status,
     fields: Array.isArray(fields) ? fields : [],
+    requiredFields: Array.isArray(requiredFields) ? requiredFields : [],
   };
 }
 
