@@ -8,53 +8,53 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are readiness gating rules defined for each count condition (<3, =3, >3)? [Completeness, Spec §FR-001, §FR-002, §FR-003]
-- [ ] CHK002 Are actions to add/remove referees defined when the count is incorrect? [Completeness, Spec §FR-004, §FR-005]
-- [ ] CHK003 Are failure-handling requirements defined for count lookup failures? [Completeness, Spec §FR-006]
-- [ ] CHK004 Are audit/recording requirements defined for readiness decisions? [Completeness, Spec §FR-008]
-- [ ] CHK005 Are invitation-missing flags defined when invitations are enabled? [Completeness, Spec §FR-009]
+- [X] CHK001 Are readiness gating rules defined for each count condition (<3, =3, >3)? [Completeness, Spec §FR-001, §FR-002, §FR-003]
+- [X] CHK002 Are actions to add/remove referees defined when the count is incorrect? [Completeness, Spec §FR-004, §FR-005]
+- [X] CHK003 Are failure-handling requirements defined for count lookup failures? [Completeness, Spec §FR-006]
+- [X] CHK004 Are audit/recording requirements defined for readiness decisions? [Completeness, Spec §FR-008]
+- [X] CHK005 Are invitation-missing flags defined when invitations are enabled? [Completeness, Spec §FR-009]
 
 ## Requirement Clarity
 
-- [ ] CHK006 Is "non-declined" explicitly defined (statuses included/excluded) in the spec? [Gap]
-- [ ] CHK007 Is "notify the editor" specified with required content (e.g., current count)? [Clarity, Spec §FR-002, §FR-003]
-- [ ] CHK008 Is "fail safely" specified with concrete outcomes (block + message + log)? [Clarity, Spec §FR-006]
-- [ ] CHK009 Is the "review readiness checkpoint" clearly defined in the flow? [Gap]
-- [ ] CHK010 Is the guidance action scope defined (add/remove vs replace) when more than three are assigned? [Clarity, Spec §FR-005]
+- [X] CHK006 Is "non-declined" explicitly defined (statuses included/excluded) in the spec? [Gap]
+- [X] CHK007 Is "notify the editor" specified with required content (e.g., current count)? [Clarity, Spec §FR-002, §FR-003]
+- [X] CHK008 Is "fail safely" specified with concrete outcomes (block + message + log)? [Clarity, Spec §FR-006]
+- [X] CHK009 Is the "review readiness checkpoint" clearly defined in the flow? [Gap]
+- [X] CHK010 Is the guidance action scope defined (add/remove vs replace) when more than three are assigned? [Clarity, Spec §FR-005]
 
 ## Requirement Consistency
 
-- [ ] CHK011 Do user stories and FRs consistently apply the non-declined counting rule? [Consistency, Spec §Clarifications, §US1, §FR-001]
-- [ ] CHK012 Are edge cases consistent with the fourth-assignment prevention rule? [Consistency, Spec §Edge Cases, §FR-007]
-- [ ] CHK013 Is "exactly three" used consistently across assumptions and requirements? [Consistency, Spec §Assumptions, §FR-001]
+- [X] CHK011 Do user stories and FRs consistently apply the non-declined counting rule? [Consistency, Spec §Clarifications, §US1, §FR-001]
+- [X] CHK012 Are edge cases consistent with the fourth-assignment prevention rule? [Consistency, Spec §Edge Cases, §FR-007]
+- [X] CHK013 Is "exactly three" used consistently across assumptions and requirements? [Consistency, Spec §Assumptions, §FR-001]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK014 Do acceptance scenarios cover readiness allow/block outcomes for <3 and >3? [Acceptance Criteria, Spec §US1]
-- [ ] CHK015 Do acceptance scenarios cover lookup failure behavior? [Acceptance Criteria, Spec §US3]
-- [ ] CHK016 Are success criteria measurable and technology-agnostic? [Measurability, Spec §SC-001..SC-005]
+- [X] CHK014 Do acceptance scenarios cover readiness allow/block outcomes for <3 and >3? [Acceptance Criteria, Spec §US1]
+- [X] CHK015 Do acceptance scenarios cover lookup failure behavior? [Acceptance Criteria, Spec §US3]
+- [X] CHK016 Are success criteria measurable and technology-agnostic? [Measurability, Spec §SC-001..SC-005]
 
 ## Scenario Coverage
 
-- [ ] CHK017 Are primary readiness flows fully defined (allow with exactly three)? [Scenario Coverage, Spec §US1]
-- [ ] CHK018 Are alternate flows for fixing counts defined (add/remove guidance)? [Scenario Coverage, Spec §US2]
-- [ ] CHK019 Are exception flows for count determination failures defined? [Scenario Coverage, Spec §US3]
+- [X] CHK017 Are primary readiness flows fully defined (allow with exactly three)? [Scenario Coverage, Spec §US1]
+- [X] CHK018 Are alternate flows for fixing counts defined (add/remove guidance)? [Scenario Coverage, Spec §US2]
+- [X] CHK019 Are exception flows for count determination failures defined? [Scenario Coverage, Spec §US3]
 
 ## Edge Case Coverage
 
-- [ ] CHK020 Are concurrent assignment changes handled with defined behavior? [Gap]
-- [ ] CHK021 Are missing invitation edge cases defined with expected flags? [Edge Case, Spec §Edge Cases, §FR-009]
+- [X] CHK020 Are concurrent assignment changes handled with defined behavior? [Gap]
+- [X] CHK021 Are missing invitation edge cases defined with expected flags? [Edge Case, Spec §Edge Cases, §FR-009]
 
 ## Non-Functional Requirements
 
-- [ ] CHK022 Are performance requirements defined for readiness evaluation? [Completeness, Spec §NFR-001]
-- [ ] CHK023 Are accessibility requirements defined for readiness errors? [Completeness, Spec §NFR-002]
+- [X] CHK022 Are performance requirements defined for readiness evaluation? [Completeness, Spec §NFR-001]
+- [X] CHK023 Are accessibility requirements defined for readiness errors? [Completeness, Spec §NFR-002]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK024 Are assumptions about invitation optionality and editor controls documented? [Assumption, Spec §Assumptions]
+- [X] CHK024 Are assumptions about invitation optionality and editor controls documented? [Assumption, Spec §Assumptions]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK025 Is the treatment of withdrawn assignments vs declined explicitly resolved? [Ambiguity, Spec §FR-001]
-- [ ] CHK026 Is the criteria for "missing invitations" explicitly defined? [Ambiguity, Spec §FR-009]
+- [X] CHK025 Is the treatment of withdrawn assignments vs declined explicitly resolved? [Ambiguity, Spec §FR-001]
+- [X] CHK026 Is the criteria for "missing invitations" explicitly defined? [Ambiguity, Spec §FR-009]

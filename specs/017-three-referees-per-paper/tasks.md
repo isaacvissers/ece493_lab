@@ -27,9 +27,9 @@ integration/acceptance tests mapped to AT-17 cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Verify MVC folder structure exists in src/models, src/views, src/controllers, src/services
-- [ ] T002 [P] Create test skeletons for AT-17 coverage in tests/integration/at-17-readiness.test.js
-- [ ] T003 [P] Create unit test skeletons for readiness logic in tests/unit/referee-readiness.test.js
+- [X] T001 Verify MVC folder structure exists in src/models, src/views, src/controllers, src/services
+- [X] T002 [P] Create test skeletons for AT-17 coverage in tests/integration/at-17-readiness.test.js
+- [X] T003 [P] Create unit test skeletons for readiness logic in tests/unit/referee-readiness.test.js
 
 ---
 
@@ -39,11 +39,11 @@ integration/acceptance tests mapped to AT-17 cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Implement RefereeAssignment data access helpers in src/models/referee-assignment.js
-- [ ] T005 Implement ReadinessAudit model helpers in src/models/readiness-audit.js
-- [ ] T006 [P] Implement referee count calculation utility in src/services/referee-count.js
-- [ ] T007 [P] Add assignment status constants in src/models/referee-assignment-status.js
-- [ ] T008 Implement shared error logging helper in src/services/error-log.js
+- [X] T004 Implement RefereeAssignment data access helpers in src/models/referee-assignment.js
+- [X] T005 Implement ReadinessAudit model helpers in src/models/readiness-audit.js
+- [X] T006 [P] Implement referee count calculation utility in src/services/referee-count.js
+- [X] T007 [P] Add assignment status constants in src/models/referee-assignment-status.js
+- [X] T008 Implement shared error logging helper in src/services/error-log.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -57,21 +57,21 @@ integration/acceptance tests mapped to AT-17 cases.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T009 [P] [US1] Acceptance tests for AT-UC17-01..03 in tests/integration/at-17-readiness.test.js
-- [ ] T010 [P] [US1] Integration test for readiness checkpoint flow in tests/integration/readiness-checkpoint.test.js
-- [ ] T011 [P] [US1] Unit tests for count rules in tests/unit/referee-readiness.test.js
-- [ ] T012 [P] [US1] Acceptance test for 4th-assignment block in tests/integration/at-17-readiness.test.js
-- [ ] T013 [P] [US1] Acceptance test for missing invitations flag in tests/integration/at-17-readiness.test.js
+- [X] T009 [P] [US1] Acceptance tests for AT-UC17-01..03 in tests/integration/at-17-readiness.test.js
+- [X] T010 [P] [US1] Integration test for readiness checkpoint flow in tests/integration/readiness-checkpoint.test.js
+- [X] T011 [P] [US1] Unit tests for count rules in tests/unit/referee-readiness.test.js
+- [X] T012 [P] [US1] Acceptance test for 4th-assignment block in tests/integration/at-17-readiness.test.js
+- [X] T013 [P] [US1] Acceptance test for missing invitations flag in tests/integration/at-17-readiness.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T014 [P] [US1] Implement readiness policy evaluator in src/services/referee-readiness.js
-- [ ] T015 [P] [US1] Add readiness audit recording in src/services/readiness-audit.js
-- [ ] T016 [P] [US1] Enforce 4th-assignment block in src/services/referee-assignment-guard.js
-- [ ] T017 [P] [US1] Add missing invitation flagging in src/services/referee-invitation-check.js
-- [ ] T018 [US1] Implement readiness controller action in src/controllers/review-readiness-controller.js
-- [ ] T019 [US1] Update readiness view messaging in src/views/review-readiness-view.js
-- [ ] T020 [US1] Wire readiness check into "Start review" flow in src/controllers/review-workflow-controller.js
+- [X] T014 [P] [US1] Implement readiness policy evaluator in src/services/referee-readiness.js
+- [X] T015 [P] [US1] Add readiness audit recording in src/services/readiness-audit.js
+- [X] T016 [P] [US1] Enforce 4th-assignment block in src/services/referee-assignment-guard.js
+- [X] T017 [P] [US1] Add missing invitation flagging in src/services/referee-invitation-check.js
+- [X] T018 [US1] Implement readiness controller action in src/controllers/review-readiness-controller.js
+- [X] T019 [US1] Update readiness view messaging in src/views/review-readiness-view.js
+- [X] T020 [US1] Wire readiness check into "Start review" flow in src/controllers/review-workflow-controller.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -85,16 +85,16 @@ integration/acceptance tests mapped to AT-17 cases.
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T021 [P] [US2] Acceptance tests for AT-UC17-04..05 in tests/integration/at-17-guidance.test.js
-- [ ] T022 [P] [US2] Integration test for add/remove guidance UI in tests/integration/referee-guidance.test.js
-- [ ] T023 [P] [US2] Unit tests for guidance decision logic in tests/unit/referee-guidance.test.js
+- [X] T021 [P] [US2] Acceptance tests for AT-UC17-04..05 in tests/integration/at-17-guidance.test.js
+- [X] T022 [P] [US2] Integration test for add/remove guidance UI in tests/integration/referee-guidance.test.js
+- [X] T023 [P] [US2] Unit tests for guidance decision logic in tests/unit/referee-guidance.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T024 [P] [US2] Implement guidance message builder in src/services/referee-guidance.js
-- [ ] T025 [US2] Add add/remove actions in src/controllers/referee-assignment-controller.js
-- [ ] T026 [US2] Update guidance UI in src/views/referee-guidance-view.js
-- [ ] T027 [US2] Connect guidance actions to readiness block state in src/controllers/review-readiness-controller.js
+- [X] T024 [P] [US2] Implement guidance message builder in src/services/referee-guidance.js
+- [X] T025 [US2] Add add/remove actions in src/controllers/referee-assignment-controller.js
+- [X] T026 [US2] Update guidance UI in src/views/referee-guidance-view.js
+- [X] T027 [US2] Connect guidance actions to readiness block state in src/controllers/review-readiness-controller.js
 
 **Checkpoint**: User Stories 1 and 2 both work independently
 
@@ -108,15 +108,15 @@ integration/acceptance tests mapped to AT-17 cases.
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T028 [P] [US3] Acceptance test for AT-UC17-06..07 in tests/integration/at-17-failure.test.js
-- [ ] T029 [P] [US3] Integration test for lookup failure handling in tests/integration/referee-count-failure.test.js
-- [ ] T030 [P] [US3] Unit tests for fail-safe behavior in tests/unit/referee-fail-safe.test.js
+- [X] T028 [P] [US3] Acceptance test for AT-UC17-06..07 in tests/integration/at-17-failure.test.js
+- [X] T029 [P] [US3] Integration test for lookup failure handling in tests/integration/referee-count-failure.test.js
+- [X] T030 [P] [US3] Unit tests for fail-safe behavior in tests/unit/referee-fail-safe.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T031 [P] [US3] Implement fail-safe handling in src/services/referee-readiness.js
-- [ ] T032 [US3] Surface error state in src/views/review-readiness-view.js
-- [ ] T033 [US3] Ensure controller logs failures via src/services/error-log.js
+- [X] T031 [P] [US3] Implement fail-safe handling in src/services/referee-readiness.js
+- [X] T032 [US3] Surface error state in src/views/review-readiness-view.js
+- [X] T033 [US3] Ensure controller logs failures via src/services/error-log.js
 
 **Checkpoint**: All user stories now independently functional
 
@@ -126,10 +126,10 @@ integration/acceptance tests mapped to AT-17 cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T034 [P] Align terminology across readiness and guidance views in src/views/
-- [ ] T035 [P] Verify accessibility focus states for readiness errors in src/views/review-readiness-view.js
-- [ ] T036 [P] Add readiness performance check (<=2s) in tests/integration/readiness-performance.test.js
-- [ ] T037 Run quickstart validation checklist in specs/017-three-referees-per-paper/quickstart.md
+- [X] T034 [P] Align terminology across readiness and guidance views in src/views/
+- [X] T035 [P] Verify accessibility focus states for readiness errors in src/views/review-readiness-view.js
+- [X] T036 [P] Add readiness performance check (<=2s) in tests/integration/readiness-performance.test.js
+- [X] T037 Run quickstart validation checklist in specs/017-three-referees-per-paper/quickstart.md
 
 ---
 

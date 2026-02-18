@@ -1,7 +1,41 @@
 import { validationService } from '../services/validation-service.js';
+import {
+  REFEREE_ASSIGNMENT_STATUS,
+  NON_DECLINED_REFEREE_STATUSES,
+} from './referee-assignment-status.js';
+
+function generateAssignmentId() {
+  return `ref_${Date.now()}_${Math.random().toString(16).slice(2, 10)}`;
+}
 
 export function normalizeRefereeEmail(email) {
   return (email || '').trim().toLowerCase();
+}
+
+export function createRefereeAssignment({
+  assignmentId = null,
+  paperId,
+  refereeEmail,
+  status = REFEREE_ASSIGNMENT_STATUS.pending,
+  createdAt = null,
+  updatedAt = null,
+} = {}) {
+  const timestamp = createdAt || new Date().toISOString();
+  return {
+    assignmentId: assignmentId || generateAssignmentId(),
+    paperId,
+    refereeEmail: normalizeRefereeEmail(refereeEmail),
+    status,
+    createdAt: timestamp,
+    updatedAt: updatedAt || timestamp,
+  };
+}
+
+export function isNonDeclinedRefereeAssignment(assignment) {
+  if (!assignment) {
+    return false;
+  }
+  return NON_DECLINED_REFEREE_STATUSES.includes(assignment.status);
 }
 
 export function validateRefereeEmails(rawEmails, existingEmails = []) {

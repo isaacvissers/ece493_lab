@@ -4,6 +4,7 @@ import { createAssignment } from '../models/assignment.js';
 import { normalizeReviewerEmail } from '../models/reviewer.js';
 import { assignmentRules } from './assignment-rules.js';
 import { reviewRequestService } from './review-request-service.js';
+import { refereeAssignmentGuard as defaultAssignmentGuard } from './referee-assignment-guard.js';
 
 const DEFAULT_LIMIT = 5;
 
@@ -79,10 +80,42 @@ export const assignmentService = {
 
     return { assigned, rejected, createdAssignments };
   },
-  submitAssignments({ paperId, reviewerEmails, limit = DEFAULT_LIMIT } = {}) {
+  submitAssignments({
+    paperId,
+    reviewerEmails,
+    limit = DEFAULT_LIMIT,
+    assignmentGuard = defaultAssignmentGuard,
+  } = {}) {
+    const emails = Array.isArray(reviewerEmails) ? reviewerEmails : [];
+    if (assignmentGuard) {
+      try {
+        const guard = assignmentGuard.canAssign({ paperId });
+        if (!guard.ok) {
+          const blocked = emails
+            .map((email) => normalizeReviewerEmail(email))
+            .filter(Boolean)
+            .map((email) => ({ email, reason: guard.reason }));
+          return {
+            ok: true,
+            accepted: [],
+            blocked,
+            violations: [],
+            requestFailures: [],
+          };
+        }
+      } catch (error) {
+        return {
+          ok: false,
+          failure: 'evaluation_failed',
+          accepted: [],
+          blocked: [],
+          violations: [],
+        };
+      }
+    }
     let evaluation = null;
     try {
-      evaluation = assignmentRules.evaluate({ paperId, reviewerEmails, limit });
+      evaluation = assignmentRules.evaluate({ paperId, reviewerEmails: emails, limit });
     } catch (error) {
       return {
         ok: false,

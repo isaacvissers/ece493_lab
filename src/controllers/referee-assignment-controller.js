@@ -134,6 +134,7 @@ export function createRefereeAssignmentController({
           invalid_email: 'Invalid reviewer email.',
           duplicate_entry: 'Duplicate reviewer entry.',
           duplicate_assignment: DUPLICATE_MESSAGE,
+          fourth_assignment: 'Paper already has three referees assigned. Remove or replace a referee to meet policy.',
           delivery_failed: REQUEST_FAILURE_MESSAGE,
           duplicate_request: REQUEST_FAILURE_MESSAGE,
           request_failed: REQUEST_FAILURE_MESSAGE,
@@ -176,6 +177,42 @@ export function createRefereeAssignmentController({
     init() {
       loadPaper();
       view.onSubmit(handleSubmit);
+    },
+    addReferees(refereeEmails) {
+      if (!applyAuthGuard()) {
+        return { ok: false, reason: 'unauthorized' };
+      }
+      if (!currentPaper && !loadPaper()) {
+        return { ok: false, reason: 'paper_not_found' };
+      }
+      return assignmentService.submitAssignments({
+        paperId: currentPaper.id,
+        reviewerEmails: refereeEmails,
+      });
+    },
+    removeReferees(refereeEmails) {
+      if (!applyAuthGuard()) {
+        return { ok: false, reason: 'unauthorized' };
+      }
+      if (!currentPaper && !loadPaper()) {
+        return { ok: false, reason: 'paper_not_found' };
+      }
+      const existing = Array.isArray(currentPaper.assignedRefereeEmails) ? currentPaper.assignedRefereeEmails : [];
+      const toRemove = new Set(refereeEmails.map(normalizeRefereeEmail).filter(Boolean));
+      const remaining = existing.filter((email) => !toRemove.has(normalizeRefereeEmail(email)));
+      try {
+        const updated = assignmentStorage.saveAssignments({
+          paperId: currentPaper.id,
+          refereeEmails: remaining,
+          expectedVersion: currentPaper.assignmentVersion || 0,
+        });
+        currentPaper = updated;
+        view.setStatus('Referee assignments updated.', false);
+        return { ok: true, paper: updated };
+      } catch (error) {
+        view.setStatus('Assignment update failed. Try again.', true);
+        return { ok: false, reason: error && error.message ? error.message : 'update_failed' };
+      }
     },
   };
 }

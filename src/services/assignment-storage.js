@@ -42,6 +42,20 @@ export const assignmentStorage = {
   getPaper(paperId) {
     return loadPapers().find((paper) => paper.id === paperId) || null;
   },
+  updatePaperStatus({ paperId, status, expectedVersion = null }) {
+    const papers = loadPapers().slice();
+    const index = papers.findIndex((paper) => paper.id === paperId);
+    if (index === -1) {
+      throw new Error('paper_not_found');
+    }
+    const paper = papers[index];
+    if (expectedVersion !== null && paper.assignmentVersion !== expectedVersion) {
+      throw new Error('concurrent_change');
+    }
+    papers[index] = { ...paper, status };
+    persistPapers(papers);
+    return papers[index];
+  },
   saveAssignments({ paperId, refereeEmails, expectedVersion }) {
     const papers = loadPapers().slice();
     const index = papers.findIndex((paper) => paper.id === paperId);
