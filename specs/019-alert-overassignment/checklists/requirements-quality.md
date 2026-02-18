@@ -8,49 +8,49 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are over-assignment detection rules defined for count > 3? [Completeness, Spec §FR-001]
-- [ ] CHK002 Are blocking rules defined for assignment attempts that exceed three? [Completeness, Spec §FR-002]
-- [ ] CHK003 Are guidance actions defined for correcting over-assignments? [Completeness, Spec §FR-003]
-- [ ] CHK004 Are view-time alerts defined for already over-assigned papers? [Completeness, Spec §FR-007]
-- [ ] CHK005 Are batch overage behaviors defined (partial apply + blocked list)? [Completeness, Spec §FR-004]
+- [X] CHK001 Are over-assignment detection rules defined for count > 3? [Completeness, Spec §FR-001]
+- [X] CHK002 Are blocking rules defined for assignment attempts that exceed three? [Completeness, Spec §FR-002]
+- [X] CHK003 Are guidance actions defined for correcting over-assignments? [Completeness, Spec §FR-003]
+- [X] CHK004 Are view-time alerts defined for already over-assigned papers? [Completeness, Spec §FR-007]
+- [X] CHK005 Are batch overage behaviors defined (partial apply + blocked list)? [Completeness, Spec §FR-004]
 
 ## Requirement Clarity
 
-- [ ] CHK006 Is the reviewer count rule explicitly stated as maximum three? [Clarity, Spec §Assumptions]
-- [ ] CHK007 Is “alert” content defined (current count + guidance)? [Clarity, Spec §FR-001, §FR-003]
-- [ ] CHK008 Is the “blocked additions identified” outcome explicit? [Clarity, Spec §FR-004]
+- [X] CHK006 Is the reviewer count rule explicitly stated as maximum three? [Clarity, Spec §Assumptions]
+- [X] CHK007 Is “alert” content defined (current count + guidance)? [Clarity, Spec §FR-001, §FR-003]
+- [X] CHK008 Is the “blocked additions identified” outcome explicit? [Clarity, Spec §FR-004]
 
 ## Requirement Consistency
 
-- [ ] CHK009 Do user stories and FRs consistently require blocking over-assignment? [Consistency, Spec §US1, §FR-002, §Assumptions]
-- [ ] CHK010 Do batch scenarios align with partial-apply rule? [Consistency, Spec §US2, §FR-004]
+- [X] CHK009 Do user stories and FRs consistently require blocking over-assignment? [Consistency, Spec §US1, §FR-002, §Assumptions]
+- [X] CHK010 Do batch scenarios align with partial-apply rule? [Consistency, Spec §US2, §FR-004]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK011 Do acceptance scenarios cover add-time blocking and alerting? [Acceptance Criteria, Spec §US1]
-- [ ] CHK012 Do acceptance scenarios cover view-time alerting? [Acceptance Criteria, Spec §US1]
-- [ ] CHK013 Do acceptance scenarios cover batch overage identification? [Acceptance Criteria, Spec §US2]
+- [X] CHK011 Do acceptance scenarios cover add-time blocking and alerting? [Acceptance Criteria, Spec §US1]
+- [X] CHK012 Do acceptance scenarios cover view-time alerting? [Acceptance Criteria, Spec §US1]
+- [X] CHK013 Do acceptance scenarios cover batch overage identification? [Acceptance Criteria, Spec §US2]
 
 ## Scenario Coverage
 
-- [ ] CHK014 Are primary detection and alert flows covered? [Scenario Coverage, Spec §US1]
-- [ ] CHK015 Are alternate batch flows covered? [Scenario Coverage, Spec §US2]
+- [X] CHK014 Are primary detection and alert flows covered? [Scenario Coverage, Spec §US1]
+- [X] CHK015 Are alternate batch flows covered? [Scenario Coverage, Spec §US2]
 
 ## Edge Case Coverage
 
-- [ ] CHK016 Is already-over-assigned-on-view handled? [Edge Case, Spec §Edge Cases]
-- [ ] CHK017 Is UI alert failure handled with fallback? [Edge Case, Spec §US3]
-- [ ] CHK018 Is count lookup failure handled with fail-safe? [Edge Case, Spec §US3]
+- [X] CHK016 Is already-over-assigned-on-view handled? [Edge Case, Spec §Edge Cases]
+- [X] CHK017 Is UI alert failure handled with fallback? [Edge Case, Spec §US3]
+- [X] CHK018 Is count lookup failure handled with fail-safe? [Edge Case, Spec §US3]
 
 ## Non-Functional Requirements
 
-- [ ] CHK019 Are performance targets defined for count checks? [Completeness, Spec §NFR-001]
-- [ ] CHK020 Are accessibility requirements defined for alert messages? [Completeness, Spec §NFR-002]
+- [X] CHK019 Are performance targets defined for count checks? [Completeness, Spec §NFR-001]
+- [X] CHK020 Are accessibility requirements defined for alert messages? [Completeness, Spec §NFR-002]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK021 Are assumptions about max-three policy and blocking explicit? [Assumption, Spec §Assumptions]
+- [X] CHK021 Are assumptions about max-three policy and blocking explicit? [Assumption, Spec §Assumptions]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK022 Is the guidance path explicit when unassign is not supported? [Ambiguity, Spec §FR-003, §Edge Cases]
+- [X] CHK022 Is the guidance path explicit when unassign is not supported? [Ambiguity, Spec §FR-003, §Edge Cases]

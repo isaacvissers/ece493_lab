@@ -4,6 +4,10 @@ import { assignmentService as defaultAssignmentService } from '../services/assig
 import { validationService } from '../services/validation-service.js';
 import { normalizeRefereeEmail } from '../models/referee-assignment.js';
 import { violationLog as defaultViolationLog } from '../services/violation-log.js';
+import { overassignmentCheck as defaultOverassignmentCheck } from '../services/overassignment-check.js';
+import { overassignmentAlert as defaultOverassignmentAlert } from '../services/overassignment-alert.js';
+import { reviewerBatchAssign as defaultReviewerBatchAssign } from '../services/reviewer-batch-assign.js';
+import { errorLog as defaultErrorLog } from '../services/error-log.js';
 
 const AUTH_MESSAGE = 'You do not have permission to assign referees.';
 const COUNT_MESSAGE = 'Enter at least one referee email.';
@@ -19,10 +23,14 @@ export function createRefereeAssignmentController({
   view,
   assignmentStorage,
   violationLog = defaultViolationLog,
+  errorLog = defaultErrorLog,
   sessionState,
   paperId,
   onAuthRequired,
   assignmentService = defaultAssignmentService,
+  overassignmentCheck = defaultOverassignmentCheck,
+  overassignmentAlert = defaultOverassignmentAlert,
+  reviewerBatchAssign = defaultReviewerBatchAssign,
 }) {
   let currentPaper = null;
 
@@ -107,9 +115,36 @@ export function createRefereeAssignmentController({
       seen.add(normalized);
     });
 
+    const countCheck = overassignmentCheck.evaluate({
+      paperId: currentPaper.id,
+      errorLog,
+    });
+    if (!countCheck.ok) {
+      view.setStatus('Reviewer count could not be determined. Please try again.', true);
+      return;
+    }
+
+    const { allowed, blocked, remaining } = reviewerBatchAssign.split({
+      reviewerEmails: rawEmails,
+      currentCount: countCheck.count,
+      max: 3,
+    });
+
+    if (remaining === 0) {
+      const alertPayload = overassignmentAlert.build({ count: countCheck.count, blocked });
+      view.setWarning(alertPayload.message);
+      view.setStatus('Over-assignment blocked.', true);
+      const summary = {
+        accepted: [],
+        blocked: blocked.map((email) => ({ email, reason: 'overassigned' })),
+      };
+      view.setSummary(summary);
+      return;
+    }
+
     const assignmentResult = assignmentService.submitAssignments({
       paperId: currentPaper.id,
-      reviewerEmails: rawEmails,
+      reviewerEmails: allowed,
     });
     if (!assignmentResult.ok) {
       view.setStatus(EVALUATION_MESSAGE, true);
@@ -135,6 +170,7 @@ export function createRefereeAssignmentController({
           duplicate_entry: 'Duplicate reviewer entry.',
           duplicate_assignment: DUPLICATE_MESSAGE,
           fourth_assignment: 'Paper already has three referees assigned. Remove or replace a referee to meet policy.',
+          overassigned: 'Over-assignment blocked. Reduce reviewers to three.',
           delivery_failed: REQUEST_FAILURE_MESSAGE,
           duplicate_request: REQUEST_FAILURE_MESSAGE,
           request_failed: REQUEST_FAILURE_MESSAGE,
@@ -145,6 +181,13 @@ export function createRefereeAssignmentController({
         };
       }),
     };
+    if (blocked.length) {
+      const alertPayload = overassignmentAlert.build({ count: countCheck.count, blocked });
+      view.setWarning(alertPayload.message);
+      summary.blocked = summary.blocked.concat(
+        blocked.map((email) => ({ email, reason: 'overassigned' })),
+      );
+    }
 
     const summaryRendered = view.setSummary(summary);
     if (!summaryRendered) {
@@ -176,6 +219,13 @@ export function createRefereeAssignmentController({
   return {
     init() {
       loadPaper();
+      if (currentPaper) {
+        const check = overassignmentCheck.evaluate({ paperId: currentPaper.id, errorLog });
+        if (check.ok && check.overassigned) {
+          const alertPayload = overassignmentAlert.build({ count: check.count });
+          view.setWarning(alertPayload.message);
+        }
+      }
       view.onSubmit(handleSubmit);
     },
     addReferees(refereeEmails) {

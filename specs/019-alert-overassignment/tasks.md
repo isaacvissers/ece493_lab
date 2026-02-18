@@ -27,9 +27,9 @@ integration/acceptance tests mapped to AT-19 cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Verify MVC folder structure exists in src/models, src/views, src/controllers, src/services
-- [ ] T002 [P] Create AT-19 integration test file in tests/integration/at-19-overassignment.test.js
-- [ ] T003 [P] Create unit test skeleton for reviewer count rules in tests/unit/reviewer-count.test.js
+- [X] T001 Verify MVC folder structure exists in src/models, src/views, src/controllers, src/services
+- [X] T002 [P] Create AT-19 integration test file in tests/integration/at-19-overassignment.test.js
+- [X] T003 [P] Create unit test skeleton for reviewer count rules in tests/unit/reviewer-count.test.js
 
 ---
 
@@ -39,11 +39,11 @@ integration/acceptance tests mapped to AT-19 cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Implement ReviewerAssignment data access helpers in src/models/reviewer-assignment.js
-- [ ] T005 Implement Paper data access helpers in src/models/paper.js
-- [ ] T006 [P] Add assignment status constants in src/models/reviewer-assignment-status.js
-- [ ] T007 [P] Implement reviewer count calculation utility in src/services/reviewer-count.js (count all assigned reviewers regardless of status)
-- [ ] T008 Implement shared error logging helper in src/services/error-log.js
+- [X] T004 Implement ReviewerAssignment data access helpers in src/models/reviewer-assignment.js
+- [X] T005 Implement Paper data access helpers in src/models/paper.js
+- [X] T006 [P] Add assignment status constants in src/models/reviewer-assignment-status.js
+- [X] T007 [P] Implement reviewer count calculation utility in src/services/reviewer-count.js (count all assigned reviewers regardless of status)
+- [X] T008 Implement shared error logging helper in src/services/error-log.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -57,17 +57,17 @@ integration/acceptance tests mapped to AT-19 cases.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T009 [P] [US1] Acceptance tests for AT-UC19-01..02 in tests/integration/at-19-overassignment.test.js
-- [ ] T010 [P] [US1] Integration test for over-assignment alert on view in tests/integration/overassignment-view-alert.test.js
-- [ ] T011 [P] [US1] Unit tests for blocking rule in tests/unit/reviewer-count.test.js
+- [X] T009 [P] [US1] Acceptance tests for AT-UC19-01..02 in tests/integration/at-19-overassignment.test.js
+- [X] T010 [P] [US1] Integration test for over-assignment alert on view in tests/integration/overassignment-view-alert.test.js
+- [X] T011 [P] [US1] Unit tests for blocking rule in tests/unit/reviewer-count.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Implement over-assignment evaluator in src/services/overassignment-check.js
-- [ ] T013 [P] [US1] Implement alert payload builder in src/services/overassignment-alert.js
-- [ ] T014 [US1] Implement assignment controller block + alert in src/controllers/reviewer-assignment-controller.js
-- [ ] T015 [US1] Update alert UI in src/views/reviewer-assignments-view.js
-- [ ] T016 [US1] Add view-time alert check in src/controllers/reviewer-assignments-controller.js
+- [X] T012 [P] [US1] Implement over-assignment evaluator in src/services/overassignment-check.js
+- [X] T013 [P] [US1] Implement alert payload builder in src/services/overassignment-alert.js
+- [X] T014 [US1] Implement assignment controller block + alert in src/controllers/reviewer-assignment-controller.js
+- [X] T015 [US1] Update alert UI in src/views/reviewer-assignments-view.js
+- [X] T016 [US1] Add view-time alert check in src/controllers/reviewer-assignments-controller.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -81,15 +81,15 @@ integration/acceptance tests mapped to AT-19 cases.
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T017 [P] [US2] Acceptance tests for AT-UC19-03..04 in tests/integration/at-19-overassignment.test.js
-- [ ] T018 [P] [US2] Integration test for batch partial-apply in tests/integration/batch-overassignment.test.js
-- [ ] T019 [P] [US2] Unit tests for batch selection rules in tests/unit/batch-overassignment.test.js
+- [X] T017 [P] [US2] Acceptance tests for AT-UC19-03..04 in tests/integration/at-19-overassignment.test.js
+- [X] T018 [P] [US2] Integration test for batch partial-apply in tests/integration/batch-overassignment.test.js
+- [X] T019 [P] [US2] Unit tests for batch selection rules in tests/unit/batch-overassignment.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Implement batch assignment handler in src/services/reviewer-batch-assign.js
-- [ ] T021 [US2] Integrate batch endpoint in src/controllers/reviewer-assignment-controller.js
-- [ ] T022 [US2] Update batch results UI in src/views/reviewer-assignments-view.js
+- [X] T020 [P] [US2] Implement batch assignment handler in src/services/reviewer-batch-assign.js
+- [X] T021 [US2] Integrate batch endpoint in src/controllers/reviewer-assignment-controller.js
+- [X] T022 [US2] Update batch results UI in src/views/reviewer-assignments-view.js
 
 **Checkpoint**: User Stories 1 and 2 both work independently
 
@@ -103,15 +103,15 @@ integration/acceptance tests mapped to AT-19 cases.
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T023 [P] [US3] Acceptance tests for AT-UC19-05..08 in tests/integration/at-19-failures.test.js
-- [ ] T024 [P] [US3] Integration test for alert UI fallback in tests/integration/alert-fallback.test.js
-- [ ] T025 [P] [US3] Unit tests for fail-safe handling in tests/unit/overassignment-fail-safe.test.js
+- [X] T023 [P] [US3] Acceptance tests for AT-UC19-05..08 in tests/integration/at-19-failures.test.js
+- [X] T024 [P] [US3] Integration test for alert UI fallback in tests/integration/alert-fallback.test.js
+- [X] T025 [P] [US3] Unit tests for fail-safe handling in tests/unit/overassignment-fail-safe.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T026 [P] [US3] Implement count lookup failure handling in src/services/overassignment-check.js
-- [ ] T027 [US3] Implement alert UI fallback in src/views/reviewer-assignments-view.js
-- [ ] T028 [US3] Ensure controller logs failures via src/services/error-log.js
+- [X] T026 [P] [US3] Implement count lookup failure handling in src/services/overassignment-check.js
+- [X] T027 [US3] Implement alert UI fallback in src/views/reviewer-assignments-view.js
+- [X] T028 [US3] Ensure controller logs failures via src/services/error-log.js
 
 **Checkpoint**: All user stories now independently functional
 
@@ -121,10 +121,10 @@ integration/acceptance tests mapped to AT-19 cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T029 [P] Align terminology across reviewer assignment views in src/views/
-- [ ] T030 [P] Verify accessibility focus states for alert messages in src/views/reviewer-assignments-view.js
-- [ ] T031 [P] Add assignment action performance check (<=2s) in tests/integration/overassignment-performance.test.js
-- [ ] T032 Run quickstart validation checklist in specs/019-alert-overassignment/quickstart.md
+- [X] T029 [P] Align terminology across reviewer assignment views in src/views/
+- [X] T030 [P] Verify accessibility focus states for alert messages in src/views/reviewer-assignments-view.js
+- [X] T031 [P] Add assignment action performance check (<=2s) in tests/integration/overassignment-performance.test.js
+- [X] T032 Run quickstart validation checklist in specs/019-alert-overassignment/quickstart.md
 
 ---
 

@@ -8,6 +8,7 @@ function createElement(tag, className) {
 
 export function createReviewerAssignmentsView() {
   let openHandler = null;
+  let alertFailureMode = false;
 
   const container = createElement('section', 'card');
   const title = createElement('h1');
@@ -18,6 +19,13 @@ export function createReviewerAssignmentsView() {
   banner.setAttribute('aria-live', 'polite');
   banner.tabIndex = -1;
 
+  const alert = createElement('div', 'status warning');
+  alert.id = 'overassignment-alert';
+  alert.tabIndex = -1;
+
+  const alertFallback = createElement('div', 'status error');
+  alertFallback.id = 'overassignment-alert-fallback';
+
   const list = createElement('ul', 'list');
   list.id = 'assignments-list';
 
@@ -26,7 +34,7 @@ export function createReviewerAssignmentsView() {
   refreshButton.type = 'button';
   refreshButton.textContent = 'Refresh list';
 
-  container.append(title, banner, refreshButton, list);
+  container.append(title, banner, alert, alertFallback, refreshButton, list);
 
   function setStatus(message, isError) {
     banner.textContent = message || '';
@@ -70,6 +78,24 @@ export function createReviewerAssignmentsView() {
     element: container,
     setStatus,
     setAssignments,
+    setAlert({ message = '' } = {}) {
+      alert.textContent = '';
+      alertFallback.textContent = '';
+      if (alertFailureMode) {
+        return false;
+      }
+      alert.textContent = message;
+      if (message) {
+        alert.focus();
+      }
+      return true;
+    },
+    setAlertFallback(message) {
+      alertFallback.textContent = message || '';
+    },
+    setAlertFailureMode(enabled) {
+      alertFailureMode = Boolean(enabled);
+    },
     onRefresh(handler) {
       refreshButton.addEventListener('click', handler);
     },
