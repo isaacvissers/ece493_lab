@@ -89,6 +89,27 @@ test('referee assignment controller returns update_failed when storage throws wi
   expect(result).toEqual({ ok: false, reason: 'update_failed' });
 });
 
+test('referee assignment controller returns error message when storage throws with message', () => {
+  const view = {
+    setStatus: jest.fn(),
+    setEditable: jest.fn(),
+    setPaper: jest.fn(),
+    onSubmit: jest.fn(),
+  };
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: {
+      getPaper: () => ({ id: 'paper_2', status: 'submitted', assignmentVersion: 0, assignedRefereeEmails: [] }),
+      saveAssignments: () => { throw new Error('update_boom'); },
+    },
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ role: 'editor' }) },
+    paperId: 'paper_2',
+  });
+
+  const result = controller.removeReferees(['referee@example.com']);
+  expect(result).toEqual({ ok: false, reason: 'update_boom' });
+});
+
 test('review form controller skips auth redirect when authController is null', () => {
   const view = { setStatus: jest.fn(), setForm: jest.fn(), setDraft: jest.fn(), setViewOnly: jest.fn() };
   const controller = createReviewFormController({
@@ -113,6 +134,11 @@ test('review form controller allows reviewer without email to load failure', () 
 
   controller.init();
   expect(view.setStatus).toHaveBeenCalledWith('You are not authorized to access this review form.', true);
+});
+
+test('review form controller can be constructed with defaults', () => {
+  const controller = createReviewFormController();
+  expect(typeof controller.init).toBe('function');
 });
 
 test('review readiness controller skips guidance when service returns null', () => {
@@ -167,6 +193,12 @@ test('review readiness controller handles unauthenticated access with auth callb
   expect(onAuthRequired).toHaveBeenCalled();
 });
 
+test('review readiness controller can be constructed with defaults', () => {
+  const controller = createReviewReadinessController();
+  expect(typeof controller.init).toBe('function');
+  expect(typeof controller.evaluateReadiness).toBe('function');
+});
+
 test('review readiness controller rejects non-editor users', () => {
   const view = {
     setStatus: jest.fn(),
@@ -217,6 +249,11 @@ test('review status controller handles missing reviewer email field', () => {
 
   controller.init();
   expect(reviewStatusService.getStatus).toHaveBeenCalledWith({ paperId: 'paper_2', reviewerEmail: null });
+});
+
+test('review status controller can be constructed with defaults', () => {
+  const controller = createReviewStatusController();
+  expect(typeof controller.init).toBe('function');
 });
 
 test('review status controller shows success message when status ok', () => {
@@ -319,6 +356,146 @@ test('review submission controller handles unauthenticated submit without submis
   controller.init();
   const handler = formView.onSubmit.mock.calls.at(-1)[0];
   handler({ preventDefault: () => {} });
+});
+
+test('review submission controller can be constructed with defaults', () => {
+  const controller = createReviewSubmissionController();
+  expect(typeof controller.init).toBe('function');
+});
+
+test('review submission controller covers performance undefined and confirm/validation/closed paths', () => {
+  const submissionView = { setStatus: jest.fn(), setFinalityMessage: jest.fn(), setNotificationWarning: jest.fn() };
+  const formView = {
+    isConfirmed: () => false,
+    onSubmit: jest.fn(),
+    getValues: () => ({ summary: 'ok' }),
+    setViewOnly: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const originalPerformance = global.performance;
+  global.performance = undefined;
+
+  const controllerConfirm = createReviewSubmissionController({
+    formView,
+    submissionView,
+    validationView: null,
+    errorSummaryView: null,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    paperId: 'paper_c',
+    reviewValidationService: { validate: () => ({ ok: true }) },
+    reviewSubmissionService: { submit: () => ({ ok: true }) },
+  });
+  controllerConfirm.init();
+  const confirmHandler = formView.onSubmit.mock.calls.at(-1)[0];
+  confirmHandler({ preventDefault: () => {} });
+  expect(submissionView.setStatus).toHaveBeenCalledWith('Please confirm your submission is final.', true);
+
+  formView.isConfirmed = () => true;
+  const validationView = { clear: jest.fn(), setFieldError: jest.fn() };
+  const errorSummaryView = { clear: jest.fn(), setErrors: jest.fn() };
+  const controllerValidation = createReviewSubmissionController({
+    formView,
+    submissionView,
+    validationView,
+    errorSummaryView,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    paperId: 'paper_v',
+    reviewValidationService: { validate: () => ({ ok: false, errors: { summary: 'required' } }) },
+    reviewSubmissionService: { preserveDraft: jest.fn() },
+  });
+  controllerValidation.init();
+  const validationHandler = formView.onSubmit.mock.calls.at(-1)[0];
+  validationHandler({ preventDefault: () => {} });
+  expect(validationView.setFieldError).toHaveBeenCalled();
+
+  const controllerClosed = createReviewSubmissionController({
+    formView,
+    submissionView,
+    validationView: null,
+    errorSummaryView: null,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    paperId: 'paper_closed',
+    reviewValidationService: { validate: () => ({ ok: true }) },
+    reviewSubmissionService: { submit: () => ({ ok: false, reason: 'closed' }) },
+  });
+  controllerClosed.init();
+  const closedHandler = formView.onSubmit.mock.calls.at(-1)[0];
+  closedHandler({ preventDefault: () => {} });
+  expect(formView.setViewOnly).toHaveBeenCalledWith(true, 'Review period is closed. View-only access.');
+
+  global.performance = originalPerformance;
+});
+
+test('review submission controller explicitly hits confirm, validation, and closed branches', () => {
+  const submissionView = { setStatus: jest.fn(), setFinalityMessage: jest.fn(), setNotificationWarning: jest.fn() };
+
+  const formViewConfirm = {
+    isConfirmed: () => false,
+    onSubmit: jest.fn(),
+    getValues: () => ({ summary: 'ok' }),
+    setViewOnly: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const controllerConfirm = createReviewSubmissionController({
+    formView: formViewConfirm,
+    submissionView,
+    validationView: null,
+    errorSummaryView: null,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    paperId: 'paper_confirm',
+    reviewValidationService: { validate: () => ({ ok: true }) },
+    reviewSubmissionService: { submit: () => ({ ok: true }) },
+  });
+  controllerConfirm.init();
+  const confirmHandler = formViewConfirm.onSubmit.mock.calls.at(-1)[0];
+  confirmHandler({ preventDefault: () => {} });
+  expect(submissionView.setStatus).toHaveBeenCalledWith('Please confirm your submission is final.', true);
+
+  const formViewValidation = {
+    isConfirmed: () => true,
+    onSubmit: jest.fn(),
+    getValues: () => ({ summary: '' }),
+    setViewOnly: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const validationView = { clear: jest.fn(), setFieldError: jest.fn() };
+  const errorSummaryView = { clear: jest.fn(), setErrors: jest.fn() };
+  const controllerValidation = createReviewSubmissionController({
+    formView: formViewValidation,
+    submissionView,
+    validationView,
+    errorSummaryView,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    paperId: 'paper_validation',
+    reviewValidationService: { validate: () => ({ ok: false, errors: { summary: 'required' } }) },
+    reviewSubmissionService: { preserveDraft: jest.fn() },
+  });
+  controllerValidation.init();
+  const validationHandler = formViewValidation.onSubmit.mock.calls.at(-1)[0];
+  validationHandler({ preventDefault: () => {} });
+  expect(validationView.setFieldError).toHaveBeenCalled();
+
+  const formViewClosed = {
+    isConfirmed: () => true,
+    onSubmit: jest.fn(),
+    getValues: () => ({ summary: 'ok' }),
+    setViewOnly: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const controllerClosed = createReviewSubmissionController({
+    formView: formViewClosed,
+    submissionView,
+    validationView: null,
+    errorSummaryView: null,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    paperId: 'paper_closed_2',
+    reviewValidationService: { validate: () => ({ ok: true }) },
+    reviewSubmissionService: { submit: () => ({ ok: false, reason: 'closed' }) },
+  });
+  controllerClosed.init();
+  const closedHandler = formViewClosed.onSubmit.mock.calls.at(-1)[0];
+  closedHandler({ preventDefault: () => {} });
+  expect(formViewClosed.setViewOnly).toHaveBeenCalledWith(true, 'Review period is closed. View-only access.');
 });
 
 test('review submission controller handles duplicate and validation_failed branches', () => {
@@ -442,6 +619,11 @@ test('review submit controller handles missing editor', () => {
   expect(adminFlagService.addFlag).toHaveBeenCalledWith({ reviewId: 'rev_missing', reason: 'missing_editor' });
 });
 
+test('review submit controller can be constructed with defaults', () => {
+  const controller = createReviewSubmitController();
+  expect(typeof controller.submit).toBe('function');
+});
+
 test('review validation controller handles rules unavailable and validation errors', () => {
   const view = {
     clearErrors: jest.fn(),
@@ -497,6 +679,149 @@ test('review validation controller handles rules unavailable and validation erro
   expect(view.setFieldError).toHaveBeenCalledWith('summary', 'Summary required.');
 });
 
+test('review validation controller clears view and shows rules unavailable status', () => {
+  const view = {
+    clearErrors: jest.fn(),
+    setStatus: jest.fn(),
+    getValues: () => ({ summary: '' }),
+    setFieldError: jest.fn(),
+    onSaveDraft: jest.fn(),
+    onSubmitReview: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const controller = createReviewValidationController({
+    view,
+    summaryView: { clear: jest.fn(), setErrors: jest.fn() },
+    formId: 'form_rules',
+    validationRulesService: { getRules: jest.fn(() => ({ ok: false })) },
+    reviewValidationService: { validate: jest.fn() },
+    reviewStorageService: { saveDraft: jest.fn(), submitReview: jest.fn() },
+  });
+
+  controller.init();
+  const saveHandler = view.onSaveDraft.mock.calls.at(-1)[0];
+  saveHandler({ preventDefault: () => {} });
+  expect(view.clearErrors).toHaveBeenCalled();
+  expect(view.setStatus).toHaveBeenCalledWith('Validation rules are unavailable. Please try again later.', true);
+});
+
+test('review validation controller sets validation error status', () => {
+  const view = {
+    clearErrors: jest.fn(),
+    setStatus: jest.fn(),
+    getValues: () => ({ summary: '' }),
+    setFieldError: jest.fn(),
+    onSaveDraft: jest.fn(),
+    onSubmitReview: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const summaryView = { clear: jest.fn(), setErrors: jest.fn() };
+  const controller = createReviewValidationController({
+    view,
+    summaryView,
+    formId: 'form_validate',
+    validationRulesService: {
+      getRules: () => ({ ok: true, rules: { requiredFields: ['summary'], maxLengths: {}, invalidCharacterPolicy: 'allow_all' } }),
+    },
+    reviewValidationService: { validate: () => ({ ok: false, errors: { summary: 'required' }, messages: {} }) },
+    reviewStorageService: { saveDraft: jest.fn(), submitReview: jest.fn() },
+    reviewValidationAccessibility: null,
+  });
+
+  controller.init();
+  const submitHandler = view.onSubmitReview.mock.calls.at(-1)[0];
+  submitHandler({ preventDefault: () => {} });
+  expect(view.setStatus).toHaveBeenCalledWith('Please correct the highlighted errors.', true);
+});
+test('review validation controller uses reviewerEmail and handles no view', () => {
+  const view = {
+    clearErrors: jest.fn(),
+    setStatus: jest.fn(),
+    getValues: () => ({ summary: 'Ok' }),
+    setFieldError: jest.fn(),
+    onSaveDraft: jest.fn(),
+    onSubmitReview: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const reviewStorageService = { saveDraft: jest.fn(), submitReview: jest.fn() };
+  const controllerWithEmail = createReviewValidationController({
+    reviewerEmail: 'rev@example.com',
+    view,
+    summaryView: { clear: jest.fn(), setErrors: jest.fn() },
+    formId: 'form_email',
+    validationRulesService: {
+      getRules: () => ({ ok: true, rules: { requiredFields: [], maxLengths: {}, invalidCharacterPolicy: 'allow_all' } }),
+    },
+    reviewValidationService: { validate: () => ({ ok: true }) },
+    reviewStorageService,
+  });
+
+  controllerWithEmail.init();
+  const saveHandler = view.onSaveDraft.mock.calls.at(-1)[0];
+  saveHandler({ preventDefault: () => {} });
+  expect(reviewStorageService.saveDraft).toHaveBeenCalledWith(expect.objectContaining({
+    reviewerEmail: 'rev@example.com',
+  }));
+
+  const controllerNoView = createReviewValidationController({ view: null });
+  expect(() => controllerNoView.init()).not.toThrow();
+});
+
+test('review validation controller uses session state email when reviewerEmail missing', () => {
+  const view = {
+    clearErrors: jest.fn(),
+    setStatus: jest.fn(),
+    getValues: () => ({ summary: 'Ok' }),
+    setFieldError: jest.fn(),
+    onSaveDraft: jest.fn(),
+    onSubmitReview: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const reviewStorageService = { submitReview: jest.fn(), saveDraft: jest.fn() };
+  const controller = createReviewValidationController({
+    view,
+    summaryView: { clear: jest.fn(), setErrors: jest.fn() },
+    formId: 'form_session',
+    sessionState: { getCurrentUser: () => ({ email: 'session@example.com' }) },
+    validationRulesService: {
+      getRules: () => ({ ok: true, rules: { requiredFields: [], maxLengths: {}, invalidCharacterPolicy: 'allow_all' } }),
+    },
+    reviewValidationService: { validate: () => ({ ok: true }) },
+    reviewStorageService,
+  });
+
+  controller.init();
+  const submitHandler = view.onSubmitReview.mock.calls.at(-1)[0];
+  submitHandler({ preventDefault: () => {} });
+  expect(reviewStorageService.submitReview).toHaveBeenCalledWith(expect.objectContaining({
+    reviewerEmail: 'session@example.com',
+  }));
+});
+
+test('review validation controller handles null summaryView and view for rules unavailable', () => {
+  const view = {
+    clearErrors: jest.fn(),
+    setStatus: jest.fn(),
+    getValues: () => ({ summary: '' }),
+    setFieldError: jest.fn(),
+    onSaveDraft: jest.fn(),
+    onSubmitReview: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const controller = createReviewValidationController({
+    view,
+    summaryView: null,
+    formId: 'form_rules_null',
+    validationRulesService: { getRules: jest.fn(() => ({ ok: false })) },
+    reviewValidationService: { validate: jest.fn() },
+    reviewStorageService: { saveDraft: jest.fn(), submitReview: jest.fn() },
+  });
+
+  controller.init();
+  const saveHandler = view.onSaveDraft.mock.calls.at(-1)[0];
+  saveHandler({ preventDefault: () => {} });
+  expect(view.setStatus).toHaveBeenCalledWith('Validation rules are unavailable. Please try again later.', true);
+});
 test('review validation controller clears view and handles storage failure', () => {
   const view = {
     clearErrors: jest.fn(),

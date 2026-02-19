@@ -40,9 +40,9 @@ import { createReviewSubmissionView } from '../../src/views/review-submission-vi
 import { createReviewFormValidationView } from '../../src/views/review-form-validation-view.js';
 import { createReviewFormErrorSummaryView } from '../../src/views/review-form-error-summary-view.js';
 
-import { createPaper } from '../../src/models/paper.js';
+import { createPaper, assignReferees } from '../../src/models/paper.js';
 import { createReviewForm } from '../../src/models/review-form.js';
-import { createRefereeAssignment } from '../../src/models/referee-assignment.js';
+import { createRefereeAssignment, isNonDeclinedRefereeAssignment } from '../../src/models/referee-assignment.js';
 import { validateManuscript, isManuscriptAvailable } from '../../src/models/manuscript.js';
 
 import { adminFlagService } from '../../src/services/admin-flag-service.js';
@@ -789,6 +789,34 @@ test('reviewer assignments controller covers alert and open branches', () => {
   onOpenHandler({ paperId: 'p1' });
 });
 
+test('reviewer assignments controller can be constructed with defaults', () => {
+  const controller = createReviewerAssignmentsController();
+  expect(typeof controller.init).toBe('function');
+});
+
+test('reviewer assignments controller handles onOpen callback', () => {
+  const onOpenPaper = jest.fn();
+  const view = {
+    setStatus: jest.fn(),
+    setAssignments: jest.fn(),
+    onRefresh: jest.fn(),
+    onOpen: jest.fn(),
+  };
+  const controller = createReviewerAssignmentsController({
+    view,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    reviewerAssignments: { listAcceptedAssignments: () => ({ ok: true, assignments: [] }) },
+    overassignmentCheck: { evaluate: () => ({ ok: false }) },
+    errorLog: null,
+    onOpenPaper,
+  });
+
+  controller.init();
+  const openHandler = view.onOpen.mock.calls.at(-1)[0];
+  openHandler({ paperId: 'paper_open' });
+  expect(onOpenPaper).toHaveBeenCalledWith({ paperId: 'paper_open' });
+});
+
 test('referee assignment controller covers missing summary and update failure branches', () => {
   const view = {
     setStatus: jest.fn(),
@@ -831,6 +859,11 @@ test('reviewer paper controller covers auth and default branches', () => {
   }).init();
 });
 
+test('reviewer paper controller can be constructed with defaults', () => {
+  const controller = createReviewerPaperController();
+  expect(typeof controller.init).toBe('function');
+});
+
 test('manuscript availability covers removed and missing file branches', () => {
   const manuscript = validateManuscript({
     title: 't',
@@ -845,10 +878,22 @@ test('manuscript availability covers removed and missing file branches', () => {
 
   expect(isManuscriptAvailable({ status: 'removed', file: {} })).toBe(false);
   expect(isManuscriptAvailable({ status: 'submitted', fileStatus: 'missing', file: {} })).toBe(false);
+  expect(isManuscriptAvailable(null)).toBe(false);
 });
 
 test('model defaults cover fallback branches', () => {
   createPaper({ id: null, paperId: null, assignedRefereeEmails: 'bad', assignmentVersion: 'nope' });
   createReviewForm({ maxLengths: null });
   createRefereeAssignment({ refereeEmail: 'a@example.com', createdAt: null, updatedAt: null });
+});
+
+test('referee assignment non-declined status and assignReferees non-array input', () => {
+  expect(isNonDeclinedRefereeAssignment(null)).toBe(false);
+  expect(isNonDeclinedRefereeAssignment({ status: 'pending' })).toBe(true);
+  expect(isNonDeclinedRefereeAssignment({ status: 'declined' })).toBe(false);
+
+  const paper = createPaper({ id: 'paper_assign', assignmentVersion: 1 });
+  const updated = assignReferees(paper, 'not-an-array');
+  expect(updated.assignedRefereeEmails).toEqual([]);
+  expect(updated.assignmentVersion).toBe(2);
 });

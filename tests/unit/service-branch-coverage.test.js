@@ -115,6 +115,11 @@ test('referee readiness handles count failure with error message', () => {
   }));
 });
 
+test('referee readiness can be evaluated with defaults', () => {
+  const result = refereeReadiness.evaluate();
+  expect(result).toHaveProperty('ok');
+});
+
 test('referee invitation check filters invitations by status and decision', () => {
   const result = refereeInvitationCheck.getMissingInvitations({
     paperId: 'paper_1',
@@ -175,6 +180,11 @@ test('referee invitation check includes sent invitations as invited', () => {
   expect(result).toEqual([]);
 });
 
+test('referee invitation check returns list with default services', () => {
+  const result = refereeInvitationCheck.getMissingInvitations();
+  expect(Array.isArray(result)).toBe(true);
+});
+
 test('assignment rules skip blank entries', () => {
   const evaluation = assignmentRules.evaluate({
     paperId: 'paper_1',
@@ -187,6 +197,33 @@ test('assignment rules skip blank entries', () => {
 
   expect(evaluation.candidates).toEqual(['valid@example.com']);
   expect(evaluation.violations).toHaveLength(0);
+});
+
+test('assignment rules handle null reviewer emails list', () => {
+  const evaluation = assignmentRules.evaluate({
+    paperId: 'paper_null',
+    reviewerEmails: null,
+    assignmentStore: {
+      hasActiveAssignment: () => false,
+      getActiveCountForReviewer: () => 0,
+    },
+  });
+
+  expect(evaluation.candidates).toEqual([]);
+  expect(evaluation.violations).toEqual([]);
+});
+
+test('assignment rules handle undefined reviewer emails list', () => {
+  const evaluation = assignmentRules.evaluate({
+    paperId: 'paper_undef',
+    assignmentStore: {
+      hasActiveAssignment: () => false,
+      getActiveCountForReviewer: () => 0,
+    },
+  });
+
+  expect(evaluation.candidates).toEqual([]);
+  expect(evaluation.violations).toEqual([]);
 });
 
 test('review delivery service handles empty storage and non-array editor list', () => {
@@ -391,6 +428,26 @@ test('review form access normalizes null reviewer email to empty string', () => 
   expect(result.reason).toBe('unauthorized');
 });
 
+test('review form access normalizes reviewer email casing', () => {
+  const result = reviewFormAccess.getForm({
+    paperId: 'paper_9',
+    reviewerEmail: 'REV@EXAMPLE.COM',
+    assignmentStore: {
+      getAssignments: () => [
+        { paperId: 'paper_9', reviewerEmail: 'rev@example.com', status: 'accepted' },
+      ],
+    },
+    reviewFormStore: { getForm: () => ({ paperId: 'paper_9', status: 'active' }) },
+    reviewDraftStore: { getDraft: () => null },
+  });
+  expect(result.ok).toBe(true);
+});
+
+test('review form access handles missing parameters', () => {
+  const result = reviewFormAccess.getForm();
+  expect(result.reason).toBe('unauthorized');
+});
+
 test('review form store loads cached forms from storage', () => {
   localStorage.setItem('cms.review_forms', JSON.stringify([{ paperId: 'paper_x' }]));
   expect(reviewFormStore.getForm('paper_x')).toEqual({ paperId: 'paper_x' });
@@ -453,6 +510,11 @@ test('validation rules service returns rules when form data is available', () =>
   expect(result.rules.requiredFields).toContain('summary');
 });
 
+test('validation rules service can be called with defaults', () => {
+  const result = validationRulesService.getRules();
+  expect(result.ok).toBe(false);
+});
+
 test('assignment service reports guard evaluation failures', () => {
   const result = assignmentService.submitAssignments({
     paperId: 'paper_guard',
@@ -467,6 +529,11 @@ test('assignment service reports guard evaluation failures', () => {
 test('overassignment alert uses default guidance when null provided', () => {
   const result = overassignmentAlert.build({ count: 3, blocked: [], guidanceAction: null });
   expect(result.message).toContain('Remove/unassign');
+});
+
+test('overassignment alert builds message with defaults', () => {
+  const result = overassignmentAlert.build();
+  expect(result.message).toContain('Over-assignment blocked');
 });
 
 test('assignment storage rejects concurrent updates', () => {
