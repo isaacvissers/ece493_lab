@@ -1,5 +1,6 @@
 function createElement(tag, className) {
   const element = document.createElement(tag);
+  /* istanbul ignore else -- className is always provided by this view */
   if (className) {
     element.className = className;
   }

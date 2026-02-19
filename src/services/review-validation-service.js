@@ -29,10 +29,8 @@ export const reviewValidationService = {
   } = {}) {
     const errors = {};
     const messages = {};
-    const fields = Array.from(new Set([
-      ...REQUIRED_REVIEW_FIELDS,
-      ...(Array.isArray(requiredFields) ? requiredFields : []),
-    ]));
+    const required = Array.isArray(requiredFields) ? requiredFields : [];
+    const fields = required.length ? required : REQUIRED_REVIEW_FIELDS;
 
     if (action === 'submit_review') {
       fields.forEach((field) => {

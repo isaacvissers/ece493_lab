@@ -19,3 +19,19 @@ export function createNotificationLog({
     createdAt: createdAt || new Date().toISOString(),
   };
 }
+
+export function createNotificationLogEntry({
+  paperId,
+  refereeEmail,
+  status,
+  errorMessage = '',
+  attemptedAt = null,
+} = {}) {
+  return {
+    paperId,
+    refereeEmail,
+    status,
+    errorMessage,
+    attemptedAt: attemptedAt || new Date().toISOString(),
+  };
+}

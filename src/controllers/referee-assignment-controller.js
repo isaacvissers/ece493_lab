@@ -98,6 +98,8 @@ export function createRefereeAssignmentController({
     }
 
     const seen = new Set();
+    const validEmails = [];
+    const invalidEntries = [];
     rawEmails.forEach((email, index) => {
       const trimmed = (email || '').trim();
       if (!trimmed) {
@@ -105,14 +107,17 @@ export function createRefereeAssignmentController({
       }
       if (!validationService.isEmailValid(trimmed)) {
         view.setFieldError(index, 'Referee email format is invalid.');
+        invalidEntries.push({ email: trimmed, reason: 'invalid_email' });
         return;
       }
       const normalized = normalizeRefereeEmail(trimmed);
       if (seen.has(normalized)) {
         view.setFieldError(index, 'Duplicate referee email.');
+        invalidEntries.push({ email: normalized, reason: 'duplicate_entry' });
         return;
       }
       seen.add(normalized);
+      validEmails.push(normalized);
     });
 
     const countCheck = overassignmentCheck.evaluate({
@@ -120,12 +125,19 @@ export function createRefereeAssignmentController({
       errorLog,
     });
     if (!countCheck.ok) {
-      view.setStatus('Reviewer count could not be determined. Please try again.', true);
+      view.setStatus('Assignments cannot be completed. Reviewer count could not be determined. Please try again.', true);
+      if (violationLog) {
+        violationLog.logFailure({
+          errorType: 'evaluation_failed',
+          message: 'assignment_evaluation_failed',
+          context: currentPaper.id,
+        });
+      }
       return;
     }
 
     const { allowed, blocked, remaining } = reviewerBatchAssign.split({
-      reviewerEmails: rawEmails,
+      reviewerEmails: validEmails,
       currentCount: countCheck.count,
       max: 3,
     });
@@ -160,7 +172,7 @@ export function createRefereeAssignmentController({
 
     const summary = {
       accepted: assignmentResult.accepted,
-      blocked: assignmentResult.blocked.map((entry) => {
+      blocked: assignmentResult.blocked.concat(invalidEntries).map((entry) => {
         const reasonMap = {
           limit_reached: LIMIT_MESSAGE,
           lookup_failed: LOOKUP_MESSAGE,

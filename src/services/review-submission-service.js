@@ -158,7 +158,13 @@ export const reviewSubmissionService = {
 
     return { ok: true, notified: false };
   },
-  preserveDraft({ paperId, reviewerEmail, content, errors } = {}) {
+  preserveDraft({
+    paperId,
+    reviewerEmail,
+    content,
+    errors,
+    reviewDraftStore = defaultReviewDraftStore,
+  } = {}) {
     try {
       reviewDraftStore.saveDraft({
         paperId,

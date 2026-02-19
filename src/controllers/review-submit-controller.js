@@ -26,11 +26,15 @@ export function createReviewSubmitController({
       editorId: paper.editorId,
     });
 
-    auditLogService.log({
-      eventType: 'delivery',
-      relatedId: review.reviewId,
-      details: delivery,
-    });
+    try {
+      auditLogService.log({
+        eventType: 'delivery',
+        relatedId: review.reviewId,
+        details: delivery,
+      });
+    } catch (error) {
+      // Do not block delivery on audit failure.
+    }
 
     if (notificationsEnabled) {
       const notify = notificationService.sendReviewNotifications({
@@ -38,11 +42,15 @@ export function createReviewSubmitController({
         editorId: paper.editorId,
         channels: ['email', 'in_app'],
       });
-      auditLogService.log({
-        eventType: 'notification',
-        relatedId: review.reviewId,
-        details: notify,
-      });
+      try {
+        auditLogService.log({
+          eventType: 'notification',
+          relatedId: review.reviewId,
+          details: notify,
+        });
+      } catch (error) {
+        // Do not block notification flow on audit failure.
+      }
       return { ok: delivery.ok, delivery, notify };
     }
 

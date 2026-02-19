@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { createReviewStatusController } from '../../src/controllers/review-status-controller.js';
 import { reviewSubmissionService } from '../../src/services/review-submission-service.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';

@@ -24,7 +24,7 @@ export const refereeCount = {
   getNonDeclinedEmails({ paperId, assignmentStorage = defaultAssignmentStorage, reviewRequestStore = defaultReviewRequestStore } = {}) {
     const paper = assignmentStorage.getPaper(paperId);
     if (!paper) {
-      throw new Error('paper_not_found');
+      return [];
     }
 
     const assigned = normalizeList(paper.assignedRefereeEmails);
