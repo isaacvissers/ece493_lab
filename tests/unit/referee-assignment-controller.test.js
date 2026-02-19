@@ -259,6 +259,211 @@ test('falls back when summary UI fails without logger', () => {
   expect(view.setFallbackSummary).toHaveBeenCalled();
 });
 
+test('addReferees returns unauthorized when not authenticated', () => {
+  const { view } = createViewStub();
+  const mocks = createMocks({
+    sessionState: { isAuthenticated: jest.fn(() => false) },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+  });
+  const result = controller.addReferees(['a@example.com']);
+  expect(result).toEqual({ ok: false, reason: 'unauthorized' });
+});
+
+test('addReferees returns paper_not_found when paper is missing', () => {
+  const { view } = createViewStub();
+  const mocks = createMocks({
+    assignmentStorage: { getPaper: jest.fn(() => null) },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'missing',
+  });
+  const result = controller.addReferees(['a@example.com']);
+  expect(result).toEqual({ ok: false, reason: 'paper_not_found' });
+});
+
+test('removeReferees updates assignments successfully', () => {
+  const { view } = createViewStub();
+  const paper = {
+    id: 'paper_1',
+    title: 'Paper',
+    status: 'Submitted',
+    assignedRefereeEmails: ['a@example.com', 'b@example.com'],
+    assignmentVersion: 2,
+  };
+  const updated = { ...paper, assignedRefereeEmails: ['a@example.com'], assignmentVersion: 3 };
+  const mocks = createMocks({
+    assignmentStorage: {
+      getPaper: jest.fn(() => paper),
+      saveAssignments: jest.fn(() => updated),
+    },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+  });
+  const result = controller.removeReferees(['b@example.com']);
+  expect(result.ok).toBe(true);
+  expect(view.setStatus).toHaveBeenCalledWith('Referee assignments updated.', false);
+});
+
+test('removeReferees handles update failures', () => {
+  const { view } = createViewStub();
+  const paper = {
+    id: 'paper_2',
+    title: 'Paper',
+    status: 'Submitted',
+    assignedRefereeEmails: ['a@example.com'],
+    assignmentVersion: 1,
+  };
+  const mocks = createMocks({
+    assignmentStorage: {
+      getPaper: jest.fn(() => paper),
+      saveAssignments: jest.fn(() => {
+        throw new Error('concurrent_change');
+      }),
+    },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_2',
+  });
+  const result = controller.removeReferees(['a@example.com']);
+  expect(result).toEqual({ ok: false, reason: 'concurrent_change' });
+  expect(view.setStatus).toHaveBeenCalledWith('Assignment update failed. Try again.', true);
+});
+
+test('addReferees submits assignments when authorized', () => {
+  const { view } = createViewStub();
+  const submitAssignments = jest.fn(() => ({ ok: true, accepted: ['a@example.com'], blocked: [] }));
+  const mocks = createMocks({
+    assignmentService: { submitAssignments },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+  });
+  const result = controller.addReferees(['a@example.com']);
+  expect(result.ok).toBe(true);
+  expect(submitAssignments).toHaveBeenCalledWith({ paperId: 'paper_1', reviewerEmails: ['a@example.com'] });
+});
+
+test('removeReferees returns unauthorized when not authenticated', () => {
+  const { view } = createViewStub();
+  const mocks = createMocks({
+    sessionState: { isAuthenticated: jest.fn(() => false) },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+  });
+  const result = controller.removeReferees(['a@example.com']);
+  expect(result).toEqual({ ok: false, reason: 'unauthorized' });
+});
+
+test('removeReferees returns paper_not_found when missing', () => {
+  const { view } = createViewStub();
+  const mocks = createMocks({
+    assignmentStorage: { getPaper: jest.fn(() => null) },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'missing',
+  });
+  const result = controller.removeReferees(['a@example.com']);
+  expect(result).toEqual({ ok: false, reason: 'paper_not_found' });
+});
+
+test('removeReferees handles missing assignment list', () => {
+  const { view } = createViewStub();
+  const paper = {
+    id: 'paper_3',
+    title: 'Paper',
+    status: 'Submitted',
+    assignedRefereeEmails: null,
+    assignmentVersion: 0,
+  };
+  const updated = { ...paper, assignedRefereeEmails: [], assignmentVersion: 1 };
+  const mocks = createMocks({
+    assignmentStorage: {
+      getPaper: jest.fn(() => paper),
+      saveAssignments: jest.fn(() => updated),
+    },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_3',
+  });
+  const result = controller.removeReferees(['a@example.com']);
+  expect(result.ok).toBe(true);
+  expect(view.setStatus).toHaveBeenCalledWith('Referee assignments updated.', false);
+});
+
+test('removeReferees reports update failures without error message', () => {
+  const { view } = createViewStub();
+  const paper = {
+    id: 'paper_4',
+    title: 'Paper',
+    status: 'Submitted',
+    assignedRefereeEmails: ['a@example.com'],
+    assignmentVersion: 0,
+  };
+  const mocks = createMocks({
+    assignmentStorage: {
+      getPaper: jest.fn(() => paper),
+      saveAssignments: jest.fn(() => {
+        throw {};
+      }),
+    },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_4',
+  });
+  const result = controller.removeReferees(['a@example.com']);
+  expect(result).toEqual({ ok: false, reason: 'update_failed' });
+  expect(view.setStatus).toHaveBeenCalledWith('Assignment update failed. Try again.', true);
+});
+
 test('shows confirmation when all requests sent', () => {
   const { view, submit } = createViewStub();
   const mocks = createMocks({
