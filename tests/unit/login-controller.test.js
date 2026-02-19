@@ -129,6 +129,55 @@ test('authenticates and redirects on success', () => {
   expect(onLoginSuccess).toHaveBeenCalled();
 });
 
+test('allows hardcoded admin login', () => {
+  const ensureAccount = jest.fn((account) => account);
+  const { view, sessionState, onLoginSuccess, storage } = setupController({
+    storage: {
+      findByEmail: jest.fn(() => null),
+      normalizeEmail: (value) => (value || '').trim().toLowerCase(),
+      ensureAccount,
+    },
+  });
+  submitForm(view, 'admin@example.com', 'admin');
+  const status = view.element.querySelector('.status').textContent;
+  expect(status).toContain(UI_MESSAGES.loginSuccess.title);
+  expect(sessionState.authenticate).toHaveBeenCalled();
+  expect(onLoginSuccess).toHaveBeenCalled();
+  expect(storage.ensureAccount).toHaveBeenCalled();
+});
+
+test('allows admin login without storage helpers', () => {
+  const sessionState = {
+    authenticate: jest.fn(),
+    isAuthenticated: jest.fn(() => false),
+    getCurrentUser: jest.fn(() => null),
+    clear: jest.fn(),
+  };
+  const { view, onLoginSuccess } = setupController({
+    storage: { findByEmail: jest.fn(() => null) },
+    sessionState,
+  });
+  submitForm(view, 'ADMIN@EXAMPLE.COM', 'admin');
+  expect(sessionState.authenticate).toHaveBeenCalled();
+  expect(onLoginSuccess).toHaveBeenCalled();
+});
+
+test('admin login works without onLoginSuccess callback', () => {
+  const sessionState = {
+    authenticate: jest.fn(),
+    isAuthenticated: jest.fn(() => false),
+    getCurrentUser: jest.fn(() => null),
+    clear: jest.fn(),
+  };
+  const { view } = setupController({
+    onLoginSuccess: null,
+    storage: { findByEmail: jest.fn(() => null) },
+    sessionState,
+  });
+  submitForm(view, 'admin@example.com', 'admin');
+  expect(sessionState.authenticate).toHaveBeenCalled();
+});
+
 test('logs invalid credentials and clears session', () => {
   const sessionState = {
     authenticate: jest.fn(),

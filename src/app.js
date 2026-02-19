@@ -9,6 +9,7 @@ import { createSubmitManuscriptView } from './views/submit-manuscript-view.js';
 import { createManuscriptSubmissionController } from './controllers/manuscript-submission-controller.js';
 import { createRefereeAssignmentView } from './views/referee-assignment-view.js';
 import { createRefereeAssignmentController } from './controllers/referee-assignment-controller.js';
+import { isEligibleStatus } from './models/paper.js';
 import { storageService } from './services/storage-service.js';
 import { sessionState } from './models/session-state.js';
 import { loginLogging } from './services/login-logging.js';
@@ -146,9 +147,12 @@ function showDashboard() {
         ? manuscript.submittedBy === userEmail || manuscript.contactEmail === userEmail
         : false
     ));
-  const dashboardView = createDashboardView(currentUser, manuscripts);
+  const assignablePapers = assignmentStorage.getPapers()
+    .filter((paper) => isEligibleStatus(paper.status));
+  const dashboardView = createDashboardView(currentUser, manuscripts, assignablePapers);
   dashboardView.onChangePassword(showAccountSettings);
   dashboardView.onSubmitPaper(showSubmitManuscript);
+  dashboardView.onAssignReferees(showRefereeAssignment);
   render(dashboardView.element);
 }
 
@@ -178,6 +182,14 @@ function showRefereeAssignment(paperId) {
 }
 
 function bootstrap() {
+  storageService.ensureAccount({
+    id: 'acct_admin',
+    email: 'admin@example.com',
+    password: 'admin',
+    createdAt: new Date().toISOString(),
+    role: 'Editor',
+    roles: ['admin', 'editor'],
+  });
   showLogin();
 }
 

@@ -26,7 +26,7 @@ function formatStatus(status) {
     .join(' ');
 }
 
-export function createDashboardView(user, manuscripts = []) {
+export function createDashboardView(user, manuscripts = [], assignablePapers = []) {
   const container = createElement('section', 'card');
   const title = createElement('h1');
   title.textContent = 'Dashboard';
@@ -66,6 +66,39 @@ export function createDashboardView(user, manuscripts = []) {
   }
   submissionsSection.append(submissionsTitle, submissionsBody);
 
+  const assignmentSection = createElement('div', 'assignment-list');
+  const assignmentTitle = createElement('h2');
+  assignmentTitle.textContent = 'Papers awaiting reviewer assignment';
+  const assignmentBody = createElement('div');
+  const isEditor = user && user.role && user.role.toLowerCase() === 'editor';
+  if (isEditor) {
+    if (!assignablePapers.length) {
+      const emptyAssignments = createElement('p', 'helper');
+      emptyAssignments.textContent = 'No papers awaiting reviewer assignment.';
+      assignmentBody.append(emptyAssignments);
+    } else {
+      const list = document.createElement('ul');
+      list.className = 'assignment-items';
+      assignablePapers.forEach((paper) => {
+        const item = document.createElement('li');
+        item.className = 'assignment-item';
+        const itemTitle = createElement('span', 'submission-title');
+        itemTitle.textContent = paper.title || `Paper ${paper.id}`;
+        const itemStatus = createElement('span', 'submission-status');
+        itemStatus.textContent = `Status: ${formatStatus(paper.status)}`;
+        const assignButton = document.createElement('button');
+        assignButton.type = 'button';
+        assignButton.className = 'button secondary';
+        assignButton.textContent = 'Assign reviewers';
+        assignButton.dataset.paperId = paper.id;
+        item.append(itemTitle, itemStatus, assignButton);
+        list.append(item);
+      });
+      assignmentBody.append(list);
+    }
+    assignmentSection.append(assignmentTitle, assignmentBody);
+  }
+
   const actions = createElement('div', 'form-row');
   const submitButton = document.createElement('button');
   submitButton.type = 'button';
@@ -79,7 +112,7 @@ export function createDashboardView(user, manuscripts = []) {
   changePasswordButton.textContent = 'Change password';
   actions.append(submitButton, changePasswordButton);
 
-  container.append(title, status, message, submissionsSection, actions);
+  container.append(title, status, message, submissionsSection, assignmentSection, actions);
   return {
     element: container,
     onChangePassword(handler) {
@@ -87,6 +120,17 @@ export function createDashboardView(user, manuscripts = []) {
     },
     onSubmitPaper(handler) {
       submitButton.addEventListener('click', handler);
+    },
+    onAssignReferees(handler) {
+      if (!isEditor) {
+        return;
+      }
+      const buttons = assignmentSection.querySelectorAll('button[data-paper-id]');
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          handler(button.dataset.paperId);
+        });
+      });
     },
   };
 }

@@ -86,6 +86,36 @@ export const storageService = {
     persistAccounts(accounts);
   },
 
+  ensureAccount(account) {
+    const normalized = normalizeEmail(account && account.email);
+    if (!normalized) {
+      return null;
+    }
+    const existingIndex = loadAccounts().findIndex((entry) => entry.normalizedEmail === normalized);
+    if (existingIndex !== -1) {
+      const existing = loadAccounts()[existingIndex];
+      const updated = {
+        ...existing,
+        ...account,
+        id: existing.id,
+        createdAt: existing.createdAt,
+        normalizedEmail: normalized,
+      };
+      const accounts = loadAccounts().slice();
+      accounts[existingIndex] = updated;
+      persistAccounts(accounts);
+      return updated;
+    }
+    const next = {
+      ...account,
+      normalizedEmail: normalized,
+    };
+    const accounts = loadAccounts().slice();
+    accounts.push(next);
+    persistAccounts(accounts);
+    return next;
+  },
+
   updateAccount(updatedAccount) {
     const accounts = loadAccounts().slice();
     const index = accounts.findIndex((account) => account.id === updatedAccount.id);

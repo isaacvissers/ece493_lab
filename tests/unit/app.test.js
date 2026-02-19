@@ -107,6 +107,22 @@ test('app routes to submit manuscript from dashboard', async () => {
   expect(appRoot.querySelector('#title')).toBeTruthy();
 });
 
+test('dashboard shows assignable papers for editors', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  const { assignmentStorage } = await import('../../src/services/assignment-storage.js');
+  assignmentStorage.reset();
+  assignmentStorage.seedPaper({ paperId: 'paper_assign', title: 'Assign Me', status: 'submitted' });
+  sessionState.authenticate({ id: 'acct_editor', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowDashboard();
+  const assignButton = appRoot.querySelector('.assignment-item button');
+  expect(assignButton).toBeTruthy();
+  assignButton.click();
+  expect(appRoot.querySelector('#paper-meta').textContent).toContain('paper_assign');
+});
+
 test('dashboard filters submissions by current user email', async () => {
   await setupApp();
   const { submissionStorage } = await import('../../src/services/submission-storage.js');

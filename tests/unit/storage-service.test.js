@@ -5,6 +5,37 @@ test('normalizes email for lookup', () => {
   expect(storageService.normalizeEmail(null)).toBe('');
 });
 
+test('ensureAccount creates and updates admin accounts', () => {
+  storageService.reset();
+  const created = storageService.ensureAccount({
+    id: 'acct_admin',
+    email: 'admin@example.com',
+    password: 'admin',
+    role: 'Editor',
+    roles: ['admin', 'editor'],
+    createdAt: new Date().toISOString(),
+  });
+  expect(created).toBeTruthy();
+  expect(storageService.findByEmail('admin@example.com')).toBeTruthy();
+
+  const updated = storageService.ensureAccount({
+    id: 'acct_admin',
+    email: 'admin@example.com',
+    password: 'new',
+    role: 'Editor',
+    roles: ['admin', 'editor'],
+  });
+  expect(updated.password).toBe('new');
+  expect(storageService.findByEmail('admin@example.com').password).toBe('new');
+});
+
+test('ensureAccount ignores missing email', () => {
+  storageService.reset();
+  const result = storageService.ensureAccount({ email: '' });
+  expect(result).toBe(null);
+  expect(storageService.getAccounts()).toEqual([]);
+});
+
 test('saves and finds accounts case-insensitively', () => {
   storageService.reset();
   storageService.saveAccount({

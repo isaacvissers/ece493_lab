@@ -104,6 +104,41 @@ test('dashboard view defaults submissions list when omitted', () => {
   expect(view.element.querySelector('.submission-list').textContent).toContain('No uploaded papers yet');
 });
 
+test('dashboard view lists assignable papers for editors', () => {
+  const view = createDashboardView(
+    { email: 'editor@example.com', role: 'Editor' },
+    [],
+    [{ id: 'paper_1', title: 'Paper One', status: 'submitted' }],
+  );
+  document.body.appendChild(view.element);
+  const assignButton = view.element.querySelector('.assignment-item button');
+  expect(assignButton).toBeTruthy();
+  const onAssign = jest.fn();
+  view.onAssignReferees(onAssign);
+  assignButton.click();
+  expect(onAssign).toHaveBeenCalledWith('paper_1');
+});
+
+test('dashboard view falls back to paper id when title missing', () => {
+  const view = createDashboardView(
+    { email: 'editor@example.com', role: 'Editor' },
+    [],
+    [{ id: 'paper_2', title: '', status: 'submitted' }],
+  );
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('.assignment-item').textContent).toContain('Paper paper_2');
+});
+
+test('dashboard view shows empty assignment state for editors', () => {
+  const view = createDashboardView(
+    { email: 'editor@example.com', role: 'Editor' },
+    [],
+    [],
+  );
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('.assignment-list').textContent).toContain('No papers awaiting reviewer assignment.');
+});
+
 test('account settings view exposes fields and helpers', () => {
   const view = createAccountSettingsView();
   document.body.appendChild(view.element);
