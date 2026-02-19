@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { createAdminNotificationResendController } from '../../src/controllers/adminNotificationResendController.js';
+import { createAdminNotificationResendController, __adminNotificationResendControllerModule } from '../../src/controllers/adminNotificationResendController.js';
+import { createAdminNotificationResendController as createAdminNotificationResendControllerImpl } from '../../src/controllers/admin-notification-resend-controller.js';
 import { notificationService } from '../../src/services/notification-service.js';
 import { adminFlagService } from '../../src/services/admin-flag-service.js';
 
@@ -22,6 +23,11 @@ test('resend resolves flag on success and forwards editorId', () => {
   });
   expect(adminFlagService.resolveFlag).toHaveBeenCalledWith('flag_1');
   expect(result).toEqual({ ok: true, queued: 1 });
+});
+
+test('wrapper module re-exports implementation', () => {
+  expect(createAdminNotificationResendController).toBe(createAdminNotificationResendControllerImpl);
+  expect(__adminNotificationResendControllerModule).toBe(true);
 });
 
 test('resend does not resolve flag on failure and defaults editorId to null', () => {
