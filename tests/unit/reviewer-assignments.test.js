@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { reviewerAssignments } from '../../src/services/reviewer-assignments.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';
 import { assignmentStorage } from '../../src/services/assignment-storage.js';
@@ -50,4 +51,92 @@ test('returns empty list when none accepted', () => {
   }));
   const result = reviewerAssignments.listAcceptedAssignments({ reviewerEmail: 'reviewer@example.com' });
   expect(result.assignments).toHaveLength(0);
+});
+
+test('returns ok with empty list when reviewer email missing', () => {
+  assignmentStore.addAssignment(createAssignment({
+    paperId: 'paper_3',
+    reviewerEmail: 'reviewer@example.com',
+    status: 'accepted',
+  }));
+  const result = reviewerAssignments.listAcceptedAssignments({ reviewerEmail: null });
+  expect(result.ok).toBe(true);
+  expect(result.assignments).toHaveLength(0);
+});
+
+test('uses manuscript title when paper is missing', () => {
+  const manuscript = createManuscript({
+    title: 'Manuscript Title',
+    authorNames: 'A',
+    affiliations: 'B',
+    contactEmail: 'a@example.com',
+    abstract: 'Abstract',
+    keywords: 'key',
+    mainSource: 'upload',
+  }, { originalName: 'paper.pdf' }, 'author@example.com');
+  manuscript.id = 'paper_4';
+  submissionStorage.saveSubmission(manuscript);
+  assignmentStore.addAssignment(createAssignment({
+    paperId: 'paper_4',
+    reviewerEmail: 'reviewer@example.com',
+    status: 'accepted',
+  }));
+
+  const result = reviewerAssignments.listAcceptedAssignments({ reviewerEmail: 'reviewer@example.com' });
+  expect(result.assignments[0].title).toBe('Manuscript Title');
+});
+
+test('falls back to unavailable title when paper and manuscript missing', () => {
+  assignmentStore.addAssignment(createAssignment({
+    paperId: 'paper_5',
+    reviewerEmail: 'reviewer@example.com',
+    status: 'accepted',
+  }));
+
+  const result = reviewerAssignments.listAcceptedAssignments({ reviewerEmail: 'reviewer@example.com' });
+  expect(result.assignments[0].title).toBe('Unavailable paper');
+});
+
+test('returns retrieval_failed when assignment store throws and logs failure', () => {
+  const errorLog = { logFailure: jest.fn() };
+  const failingStore = { getAssignments: () => { throw new Error('boom'); } };
+  const result = reviewerAssignments.listAcceptedAssignments({
+    reviewerEmail: 'reviewer@example.com',
+    assignmentStore: failingStore,
+    errorLog,
+  });
+  expect(result.ok).toBe(false);
+  expect(result.reason).toBe('retrieval_failed');
+  expect(errorLog.logFailure).toHaveBeenCalled();
+});
+
+test('returns retrieval_failed without logging when errorLog missing', () => {
+  const failingStore = { getAssignments: () => { throw new Error('boom'); } };
+  const result = reviewerAssignments.listAcceptedAssignments({
+    reviewerEmail: 'reviewer@example.com',
+    assignmentStore: failingStore,
+    errorLog: null,
+  });
+  expect(result.ok).toBe(false);
+  expect(result.reason).toBe('retrieval_failed');
+});
+
+test('uses default parameters when called with no args', () => {
+  const result = reviewerAssignments.listAcceptedAssignments();
+  expect(result.ok).toBe(true);
+  expect(result.assignments).toEqual([]);
+});
+
+test('logs fallback message when error has no message', () => {
+  const errorLog = { logFailure: jest.fn() };
+  const failingStore = { getAssignments: () => { throw {}; } };
+  const result = reviewerAssignments.listAcceptedAssignments({
+    reviewerEmail: 'reviewer@example.com',
+    assignmentStore: failingStore,
+    errorLog,
+  });
+  expect(result.ok).toBe(false);
+  expect(errorLog.logFailure).toHaveBeenCalledWith(
+    expect.objectContaining({ message: 'assignment_retrieval_failed' }),
+  );
 });

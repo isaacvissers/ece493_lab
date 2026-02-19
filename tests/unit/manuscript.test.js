@@ -1,4 +1,4 @@
-import { createManuscript, validateManuscript } from '../../src/models/manuscript.js';
+import { createManuscript, isManuscriptAvailable, validateManuscript } from '../../src/models/manuscript.js';
 
 function buildValues(overrides = {}) {
   return {
@@ -75,4 +75,16 @@ test('creates manuscript with null submittedBy when omitted', () => {
     fileSizeBytes: 1024,
   });
   expect(manuscript.submittedBy).toBe(null);
+});
+
+test('manuscript availability respects status and file flags', () => {
+  expect(isManuscriptAvailable(null)).toBe(false);
+  const base = createManuscript(buildValues(), { originalName: 'paper.pdf' });
+  expect(isManuscriptAvailable(base)).toBe(true);
+  const withdrawn = { ...base, status: 'withdrawn' };
+  expect(isManuscriptAvailable(withdrawn)).toBe(false);
+  const missingFile = { ...base, fileStatus: 'missing' };
+  expect(isManuscriptAvailable(missingFile)).toBe(false);
+  const noFile = { ...base, file: null };
+  expect(isManuscriptAvailable(noFile)).toBe(false);
 });
