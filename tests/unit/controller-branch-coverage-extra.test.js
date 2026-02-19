@@ -498,6 +498,78 @@ test('review submission controller explicitly hits confirm, validation, and clos
   expect(formViewClosed.setViewOnly).toHaveBeenCalledWith(true, 'Review period is closed. View-only access.');
 });
 
+test('review submission controller covers performance start time and key branches', () => {
+  const submissionView = { setStatus: jest.fn(), setFinalityMessage: jest.fn(), setNotificationWarning: jest.fn() };
+  const performanceSpy = jest.spyOn(global.performance, 'now').mockReturnValue(0);
+
+  const formViewConfirm = {
+    isConfirmed: () => false,
+    onSubmit: jest.fn(),
+    getValues: () => ({ summary: 'ok' }),
+    setViewOnly: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const controllerConfirm = createReviewSubmissionController({
+    formView: formViewConfirm,
+    submissionView,
+    validationView: null,
+    errorSummaryView: null,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    paperId: 'paper_perf',
+    reviewValidationService: { validate: () => ({ ok: true }) },
+    reviewSubmissionService: { submit: () => ({ ok: true }) },
+  });
+  controllerConfirm.init();
+  formViewConfirm.onSubmit.mock.calls.at(-1)[0]({ preventDefault: () => {} });
+  expect(submissionView.setStatus).toHaveBeenCalledWith('Please confirm your submission is final.', true);
+
+  const formViewValidation = {
+    isConfirmed: () => true,
+    onSubmit: jest.fn(),
+    getValues: () => ({ summary: '' }),
+    setViewOnly: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const validationView = { clear: jest.fn(), setFieldError: jest.fn() };
+  const errorSummaryView = { clear: jest.fn(), setErrors: jest.fn() };
+  const controllerValidation = createReviewSubmissionController({
+    formView: formViewValidation,
+    submissionView,
+    validationView,
+    errorSummaryView,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    paperId: 'paper_perf2',
+    reviewValidationService: { validate: () => ({ ok: false, errors: { summary: 'required' } }) },
+    reviewSubmissionService: { preserveDraft: jest.fn() },
+  });
+  controllerValidation.init();
+  formViewValidation.onSubmit.mock.calls.at(-1)[0]({ preventDefault: () => {} });
+  expect(validationView.setFieldError).toHaveBeenCalled();
+
+  const formViewClosed = {
+    isConfirmed: () => true,
+    onSubmit: jest.fn(),
+    getValues: () => ({ summary: 'ok' }),
+    setViewOnly: jest.fn(),
+    element: document.createElement('form'),
+  };
+  const controllerClosed = createReviewSubmissionController({
+    formView: formViewClosed,
+    submissionView,
+    validationView: null,
+    errorSummaryView: null,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    paperId: 'paper_perf3',
+    reviewValidationService: { validate: () => ({ ok: true }) },
+    reviewSubmissionService: { submit: () => ({ ok: false, reason: 'closed' }) },
+  });
+  controllerClosed.init();
+  formViewClosed.onSubmit.mock.calls.at(-1)[0]({ preventDefault: () => {} });
+  expect(formViewClosed.setViewOnly).toHaveBeenCalledWith(true, 'Review period is closed. View-only access.');
+
+  performanceSpy.mockRestore();
+});
+
 test('review submission controller handles duplicate and validation_failed branches', () => {
   const submissionView = { setStatus: jest.fn(), setFinalityMessage: jest.fn(), setNotificationWarning: jest.fn() };
   const formView = {

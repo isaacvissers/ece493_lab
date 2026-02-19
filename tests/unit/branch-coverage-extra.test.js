@@ -789,6 +789,26 @@ test('reviewer assignments controller covers alert and open branches', () => {
   onOpenHandler({ paperId: 'p1' });
 });
 
+test('reviewer assignments controller does nothing when onOpenPaper is missing', () => {
+  const view = {
+    setStatus: jest.fn(),
+    setAssignments: jest.fn(),
+    onRefresh: jest.fn(),
+    onOpen: jest.fn(),
+  };
+  const controller = createReviewerAssignmentsController({
+    view,
+    sessionState: { isAuthenticated: () => true, getCurrentUser: () => ({ email: 'rev@example.com' }) },
+    reviewerAssignments: { listAcceptedAssignments: () => ({ ok: true, assignments: [] }) },
+    overassignmentCheck: { evaluate: () => ({ ok: false }) },
+    errorLog: null,
+  });
+
+  controller.init();
+  const onOpenHandler = view.onOpen.mock.calls.at(-1)[0];
+  expect(() => onOpenHandler({ paperId: 'p2' })).not.toThrow();
+});
+
 test('reviewer assignments controller can be constructed with defaults', () => {
   const controller = createReviewerAssignmentsController();
   expect(typeof controller.init).toBe('function');
@@ -896,4 +916,11 @@ test('referee assignment non-declined status and assignReferees non-array input'
   const updated = assignReferees(paper, 'not-an-array');
   expect(updated.assignedRefereeEmails).toEqual([]);
   expect(updated.assignmentVersion).toBe(2);
+});
+
+test('assignReferees handles null email list', () => {
+  const paper = createPaper({ id: 'paper_assign_2', assignmentVersion: 0 });
+  const updated = assignReferees(paper, null);
+  expect(updated.assignedRefereeEmails).toEqual([]);
+  expect(updated.assignmentVersion).toBe(1);
 });
