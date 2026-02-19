@@ -82,3 +82,17 @@ test('throws when failure mode enabled', () => {
     expectedVersion: 0,
   })).toThrow('assignment_storage_failure');
 });
+
+test('updatePaperStatus throws when paper is missing', () => {
+  expect(() => assignmentStorage.updatePaperStatus({ paperId: 'missing', status: 'in_review' }))
+    .toThrow('paper_not_found');
+});
+
+test('updatePaperStatus throws on concurrent change', () => {
+  assignmentStorage.seedPaper({ id: 'paper_6', title: 'Paper', status: 'Submitted', assignmentVersion: 1 });
+  expect(() => assignmentStorage.updatePaperStatus({
+    paperId: 'paper_6',
+    status: 'in_review',
+    expectedVersion: 0,
+  })).toThrow('concurrent_change');
+});

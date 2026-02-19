@@ -154,15 +154,33 @@ test('submitAssignments returns evaluation failure on lookup error', () => {
   const result = assignmentService.submitAssignments({
     paperId: 'paper_9',
     reviewerEmails: ['a@example.com'],
+    assignmentGuard: null,
   });
   expect(result.ok).toBe(false);
   assignmentStore.setLookupFailureMode(false);
+});
+
+test('submitAssignments returns evaluation failure when guard throws', () => {
+  const result = assignmentService.submitAssignments({
+    paperId: 'paper_guard',
+    reviewerEmails: ['a@example.com'],
+    assignmentGuard: { canAssign: () => { throw new Error('guard_failed'); } },
+  });
+  expect(result.ok).toBe(false);
+  expect(result.failure).toBe('evaluation_failed');
+});
+
+test('submitAssignments handles defaults with no args', () => {
+  const result = assignmentService.submitAssignments();
+  expect(result.ok).toBe(false);
+  expect(result.failure).toBe('evaluation_failed');
 });
 
 test('submitAssignments sends review requests for valid entries', () => {
   const result = assignmentService.submitAssignments({
     paperId: 'paper_10',
     reviewerEmails: ['a@example.com'],
+    assignmentGuard: { canAssign: () => ({ ok: true }) },
   });
   expect(result.ok).toBe(true);
   expect(result.accepted).toEqual(['a@example.com']);
@@ -173,6 +191,7 @@ test('submitAssignments handles empty input', () => {
   const result = assignmentService.submitAssignments({
     paperId: 'paper_10',
     reviewerEmails: [],
+    assignmentGuard: { canAssign: () => ({ ok: true }) },
   });
   expect(result.ok).toBe(true);
   expect(result.accepted).toHaveLength(0);
@@ -180,7 +199,7 @@ test('submitAssignments handles empty input', () => {
 });
 
 test('submitAssignments handles missing args', () => {
-  const result = assignmentService.submitAssignments();
+  const result = assignmentService.submitAssignments({ assignmentGuard: null });
   expect(result.ok).toBe(true);
   expect(result.accepted).toHaveLength(0);
 });
@@ -190,6 +209,7 @@ test('submitAssignments reports delivery failures', () => {
   const result = assignmentService.submitAssignments({
     paperId: 'paper_11',
     reviewerEmails: ['a@example.com'],
+    assignmentGuard: { canAssign: () => ({ ok: true }) },
   });
   expect(result.ok).toBe(true);
   expect(result.accepted).toHaveLength(0);
@@ -200,10 +220,12 @@ test('submitAssignments reports duplicate requests', () => {
   assignmentService.submitAssignments({
     paperId: 'paper_12',
     reviewerEmails: ['a@example.com'],
+    assignmentGuard: { canAssign: () => ({ ok: true }) },
   });
   const result = assignmentService.submitAssignments({
     paperId: 'paper_12',
     reviewerEmails: ['a@example.com'],
+    assignmentGuard: { canAssign: () => ({ ok: true }) },
   });
   expect(result.blocked[0].reason).toBe('duplicate_request');
 });
@@ -214,6 +236,7 @@ test('submitAssignments defaults missing failure reason', () => {
   const result = assignmentService.submitAssignments({
     paperId: 'paper_13',
     reviewerEmails: ['a@example.com'],
+    assignmentGuard: { canAssign: () => ({ ok: true }) },
   });
   expect(result.blocked[0].reason).toBe('request_failed');
   reviewRequestService.sendReviewRequests = original;

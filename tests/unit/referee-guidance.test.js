@@ -16,3 +16,7 @@ test('returns null guidance when count is exactly three', () => {
   const guidance = refereeGuidance.getGuidance({ count: 3 });
   expect(guidance).toBeNull();
 });
+
+test('returns null guidance when count is missing', () => {
+  expect(refereeGuidance.getGuidance()).toBeNull();
+});
