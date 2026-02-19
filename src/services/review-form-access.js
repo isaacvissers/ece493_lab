@@ -18,7 +18,8 @@ export const reviewFormAccess = {
     reviewDraftStore = defaultReviewDraftStore,
     errorLog = defaultErrorLog,
   } = {}) {
-    if (!paperId || !reviewerEmail) {
+    const normalized = normalizeEmail(reviewerEmail);
+    if (!paperId || !normalized) {
       return { ok: false, reason: 'unauthorized' };
     }
 
@@ -36,7 +37,6 @@ export const reviewFormAccess = {
       return { ok: false, reason: 'assignment_lookup_failed' };
     }
 
-    const normalized = normalizeEmail(reviewerEmail);
     const assignment = assignments.find((entry) => (
       entry && entry.paperId === paperId && entry.reviewerEmail === normalized
     ));

@@ -4,11 +4,11 @@ let cachedForms = null;
 let failureMode = false;
 
 function loadForms() {
-  if (failureMode) {
-    throw new Error('form_store_failure');
-  }
   if (cachedForms) {
     return cachedForms;
+  }
+  if (failureMode) {
+    throw new Error('form_store_failure');
   }
   const raw = localStorage.getItem(FORMS_KEY);
   cachedForms = raw ? JSON.parse(raw) : [];

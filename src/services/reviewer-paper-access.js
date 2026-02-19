@@ -56,7 +56,7 @@ export const reviewerPaperAccess = {
       return { ok: false, reason: 'unavailable' };
     }
 
-    const manuscriptLink = manuscript.file ? manuscript.file.originalName : null;
+    const manuscriptLink = manuscript.file.originalName ?? null;
     return {
       ok: true,
       assignment,

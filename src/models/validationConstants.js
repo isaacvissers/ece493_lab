@@ -1,7 +1,13 @@
-export {
-  VALIDATION_FIELDS,
+import { VALIDATION_FIELDS,
   TEXT_VALIDATION_FIELDS,
   VALIDATION_TYPES,
   FIELD_LABELS,
-  INVALID_CHAR_PATTERN,
-} from './validation-constants.js';
+  INVALID_CHAR_PATTERN, } from './validation-constants.js';
+
+export { VALIDATION_FIELDS,
+  TEXT_VALIDATION_FIELDS,
+  VALIDATION_TYPES,
+  FIELD_LABELS,
+  INVALID_CHAR_PATTERN, };
+
+const _reexport_marker = true;

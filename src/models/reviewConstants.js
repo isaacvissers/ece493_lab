@@ -1,6 +1,11 @@
-export {
-  REVIEW_FIELDS,
+import { REVIEW_FIELDS,
   REQUIRED_REVIEW_FIELDS,
   RECOMMENDATION_OPTIONS,
-  CONFIDENCE_RANGE,
-} from './review-constants.js';
+  CONFIDENCE_RANGE, } from './review-constants.js';
+
+export { REVIEW_FIELDS,
+  REQUIRED_REVIEW_FIELDS,
+  RECOMMENDATION_OPTIONS,
+  CONFIDENCE_RANGE, };
+
+const _reexport_marker = true;
