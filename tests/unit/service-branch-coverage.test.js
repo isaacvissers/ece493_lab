@@ -11,6 +11,8 @@ import { reviewDraftLoad } from '../../src/services/review-draft-load.js';
 import { reviewDraftStore } from '../../src/services/review-draft-store.js';
 import { reviewFormAccess } from '../../src/services/review-form-access.js';
 import { reviewFormStore } from '../../src/services/review-form-store.js';
+import { validationRulesService } from '../../src/services/validation-rules-service.js';
+import { overassignmentAlert } from '../../src/services/overassignment-alert.js';
 
 beforeEach(() => {
   if (typeof localStorage !== 'undefined') {
@@ -74,6 +76,45 @@ test('referee readiness records audit on ready path', () => {
   }));
 });
 
+test('referee readiness records audit on blocked count path', () => {
+  const readinessAudit = { record: jest.fn() };
+  const result = refereeReadiness.evaluate({
+    paperId: 'paper_blocked',
+    refereeCount: { getCount: () => 1 },
+    readinessAudit,
+  });
+
+  expect(result.ok).toBe(true);
+  expect(result.ready).toBe(false);
+  expect(readinessAudit.record).toHaveBeenCalledWith(expect.objectContaining({
+    result: 'blocked',
+    reason: 'count_low',
+  }));
+});
+
+test('referee readiness handles missing inputs with default options', () => {
+  const result = refereeReadiness.evaluate();
+  expect(result.ok).toBe(true);
+  expect(result.ready).toBe(false);
+});
+
+test('referee readiness handles count failure with error message', () => {
+  const errorLog = { logFailure: jest.fn() };
+  const readinessAudit = { record: jest.fn() };
+  const result = refereeReadiness.evaluate({
+    paperId: 'paper_error',
+    refereeCount: { getCount: () => { throw new Error('count_boom'); } },
+    errorLog,
+    readinessAudit,
+  });
+
+  expect(result.ok).toBe(false);
+  expect(result.reason).toBe('count_failure');
+  expect(errorLog.logFailure).toHaveBeenCalledWith(expect.objectContaining({
+    message: 'count_boom',
+  }));
+});
+
 test('referee invitation check filters invitations by status and decision', () => {
   const result = refereeInvitationCheck.getMissingInvitations({
     paperId: 'paper_1',
@@ -90,6 +131,48 @@ test('referee invitation check filters invitations by status and decision', () =
   });
 
   expect(result).toEqual(['a@example.com']);
+});
+
+test('referee invitation check includes pending requests without decision or sent', () => {
+  const result = refereeInvitationCheck.getMissingInvitations({
+    paperId: 'paper_2',
+    refereeCount: { getNonDeclinedEmails: () => ['x@example.com'] },
+    assignmentStorage: {},
+    reviewRequestStore: {
+      getRequests: () => [
+        { paperId: 'paper_2', reviewerEmail: 'x@example.com', status: 'pending' },
+      ],
+    },
+  });
+
+  expect(result).toEqual(['x@example.com']);
+});
+
+test('referee invitation check ignores invitations when disabled', () => {
+  const result = refereeInvitationCheck.getMissingInvitations({
+    paperId: 'paper_3',
+    invitationsEnabled: false,
+    refereeCount: { getNonDeclinedEmails: () => ['y@example.com'] },
+    assignmentStorage: {},
+    reviewRequestStore: { getRequests: () => [] },
+  });
+
+  expect(result).toEqual([]);
+});
+
+test('referee invitation check includes sent invitations as invited', () => {
+  const result = refereeInvitationCheck.getMissingInvitations({
+    paperId: 'paper_4',
+    refereeCount: { getNonDeclinedEmails: () => ['z@example.com'] },
+    assignmentStorage: {},
+    reviewRequestStore: {
+      getRequests: () => [
+        { paperId: 'paper_4', reviewerEmail: 'z@example.com', status: 'sent' },
+      ],
+    },
+  });
+
+  expect(result).toEqual([]);
 });
 
 test('assignment rules skip blank entries', () => {
@@ -259,6 +342,55 @@ test('review form access normalizes email and logs fallback failure messages', (
   expect(noLog.reason).toBe('assignment_lookup_failed');
 });
 
+test('review form access handles blank reviewer email string and error log null paths', () => {
+  const assignmentStore = {
+    getAssignments: () => [],
+  };
+  const blankEmailResult = reviewFormAccess.getForm({
+    paperId: 'paper_blank',
+    reviewerEmail: '   ',
+    assignmentStore,
+    reviewFormStore: { getForm: () => ({ paperId: 'paper_blank', status: 'active' }) },
+    reviewDraftStore: { getDraft: () => null },
+  });
+  expect(blankEmailResult.reason).toBe('not_assigned');
+
+  const formFailNoLog = reviewFormAccess.getForm({
+    paperId: 'paper_6',
+    reviewerEmail: 'rev@example.com',
+    assignmentStore: {
+      getAssignments: () => [
+        { paperId: 'paper_6', reviewerEmail: 'rev@example.com', status: 'accepted' },
+      ],
+    },
+    reviewFormStore: { getForm: () => { throw new Error('boom'); } },
+    errorLog: null,
+  });
+  expect(formFailNoLog.reason).toBe('form_failure');
+
+  const draftFailNoLog = reviewFormAccess.getForm({
+    paperId: 'paper_7',
+    reviewerEmail: 'rev@example.com',
+    assignmentStore: {
+      getAssignments: () => [
+        { paperId: 'paper_7', reviewerEmail: 'rev@example.com', status: 'accepted' },
+      ],
+    },
+    reviewFormStore: { getForm: () => ({ paperId: 'paper_7', status: 'active' }) },
+    reviewDraftStore: { getDraft: () => { throw new Error('boom'); } },
+    errorLog: null,
+  });
+  expect(draftFailNoLog.reason).toBe('draft_failure');
+});
+
+test('review form access normalizes null reviewer email to empty string', () => {
+  const result = reviewFormAccess.getForm({
+    paperId: 'paper_8',
+    reviewerEmail: null,
+  });
+  expect(result.reason).toBe('unauthorized');
+});
+
 test('review form store loads cached forms from storage', () => {
   localStorage.setItem('cms.review_forms', JSON.stringify([{ paperId: 'paper_x' }]));
   expect(reviewFormStore.getForm('paper_x')).toEqual({ paperId: 'paper_x' });
@@ -280,6 +412,47 @@ test('review form store can fail during persistence', () => {
   }
 });
 
+test('validation rules service logs fallback error when exception lacks message', () => {
+  const errorLog = { logFailure: jest.fn() };
+  const result = validationRulesService.getRules({
+    formId: 'form_1',
+    reviewFormStore: { getForm: () => { throw {}; } },
+    errorLog,
+  });
+
+  expect(result.ok).toBe(false);
+  expect(errorLog.logFailure).toHaveBeenCalledWith(expect.objectContaining({
+    message: 'validation_rules_error',
+  }));
+});
+
+test('validation rules service handles error message and missing error log', () => {
+  const resultWithMessage = validationRulesService.getRules({
+    formId: 'form_2',
+    reviewFormStore: { getForm: () => { throw new Error('rules_boom'); } },
+    errorLog: { logFailure: jest.fn() },
+  });
+  expect(resultWithMessage.ok).toBe(false);
+
+  const resultNoLog = validationRulesService.getRules({
+    formId: 'form_3',
+    reviewFormStore: { getForm: () => null },
+    errorLog: null,
+  });
+  expect(resultNoLog.ok).toBe(false);
+});
+
+test('validation rules service returns rules when form data is available', () => {
+  const result = validationRulesService.getRules({
+    formId: 'form_4',
+    reviewFormStore: { getForm: () => ({ requiredFields: ['summary'], maxLengths: {}, allowedCharactersRule: 'allow_all' }) },
+    errorLog: null,
+  });
+
+  expect(result.ok).toBe(true);
+  expect(result.rules.requiredFields).toContain('summary');
+});
+
 test('assignment service reports guard evaluation failures', () => {
   const result = assignmentService.submitAssignments({
     paperId: 'paper_guard',
@@ -289,6 +462,11 @@ test('assignment service reports guard evaluation failures', () => {
 
   expect(result.ok).toBe(false);
   expect(result.failure).toBe('evaluation_failed');
+});
+
+test('overassignment alert uses default guidance when null provided', () => {
+  const result = overassignmentAlert.build({ count: 3, blocked: [], guidanceAction: null });
+  expect(result.message).toContain('Remove/unassign');
 });
 
 test('assignment storage rejects concurrent updates', () => {

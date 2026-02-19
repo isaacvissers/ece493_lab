@@ -29,3 +29,25 @@ test('reviewerPaperAccess returns retrieval_failed when store fails', () => {
   expect(result.ok).toBe(false);
   expect(result.reason).toBe('retrieval_failed');
 });
+
+test('reviewerAssignments returns empty list when reviewer email missing', () => {
+  const result = reviewerAssignments.listAcceptedAssignments();
+  expect(result.ok).toBe(true);
+  expect(result.assignments).toEqual([]);
+});
+
+test('reviewerAssignments logs fallback message when retrieval error lacks detail', () => {
+  const errorLog = { logFailure: jest.fn() };
+  const result = reviewerAssignments.listAcceptedAssignments({
+    reviewerEmail: 'reviewer@example.com',
+    assignmentStore: { getAssignments: () => { throw {}; } },
+    assignmentStorage: { getPaper: () => null },
+    submissionStorage: { getManuscripts: () => [] },
+    errorLog,
+  });
+  expect(result.ok).toBe(false);
+  expect(result.reason).toBe('retrieval_failed');
+  expect(errorLog.logFailure).toHaveBeenCalledWith(expect.objectContaining({
+    message: 'assignment_retrieval_failed',
+  }));
+});

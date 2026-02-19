@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { reviewSubmissionService } from '../../src/services/review-submission-service.js';
 import { assignmentStore } from '../../src/services/assignment-store.js';
 import { reviewFormStore } from '../../src/services/review-form-store.js';
@@ -76,4 +77,118 @@ test('logs notification when enabled', () => {
   const raw = localStorage.getItem('cms.notification_log');
   const entries = raw ? JSON.parse(raw) : [];
   expect(entries).toHaveLength(1);
+});
+
+test('uses cached notification log on subsequent notifications', () => {
+  assignmentStore.addAssignment(createAssignment({
+    paperId: 'paper_3',
+    reviewerEmail: 'rev@example.com',
+    status: 'accepted',
+  }));
+  assignmentStore.addAssignment(createAssignment({
+    paperId: 'paper_4',
+    reviewerEmail: 'rev@example.com',
+    status: 'accepted',
+  }));
+  reviewFormStore.saveForm(createReviewForm({
+    paperId: 'paper_3',
+    status: 'active',
+    requiredFields: REQUIRED_REVIEW_FIELDS,
+  }));
+  reviewFormStore.saveForm(createReviewForm({
+    paperId: 'paper_4',
+    status: 'active',
+    requiredFields: REQUIRED_REVIEW_FIELDS,
+  }));
+
+  const first = reviewSubmissionService.submit({
+    paperId: 'paper_3',
+    reviewerEmail: 'rev@example.com',
+    content,
+    notificationsEnabled: true,
+  });
+  expect(first.ok).toBe(true);
+
+  const second = reviewSubmissionService.submit({
+    paperId: 'paper_4',
+    reviewerEmail: 'rev@example.com',
+    content,
+    notificationsEnabled: true,
+  });
+  expect(second.ok).toBe(true);
+
+  const raw = localStorage.getItem('cms.notification_log');
+  const entries = raw ? JSON.parse(raw) : [];
+  expect(entries).toHaveLength(2);
+});
+
+test('uses cached submission list and fallback error message on save failure', () => {
+  assignmentStore.addAssignment(createAssignment({
+    paperId: 'paper_cache',
+    reviewerEmail: 'rev@example.com',
+    status: 'accepted',
+  }));
+  reviewFormStore.saveForm(createReviewForm({
+    paperId: 'paper_cache',
+    status: 'active',
+    requiredFields: REQUIRED_REVIEW_FIELDS,
+  }));
+
+  const first = reviewSubmissionService.submit({
+    paperId: 'paper_cache',
+    reviewerEmail: 'rev@example.com',
+    content,
+  });
+  expect(first.ok).toBe(true);
+
+  const errorLog = { logFailure: jest.fn() };
+  assignmentStore.addAssignment(createAssignment({
+    paperId: 'paper_cache_2',
+    reviewerEmail: 'rev@example.com',
+    status: 'accepted',
+  }));
+  reviewFormStore.saveForm(createReviewForm({
+    paperId: 'paper_cache_2',
+    status: 'active',
+    requiredFields: REQUIRED_REVIEW_FIELDS,
+  }));
+
+  reviewSubmissionService.setSubmissionFailureMode(true);
+  const result = reviewSubmissionService.submit({
+    paperId: 'paper_cache_2',
+    reviewerEmail: 'rev@example.com',
+    content,
+    errorLog,
+  });
+  reviewSubmissionService.setSubmissionFailureMode(false);
+
+  expect(result.ok).toBe(false);
+  expect(errorLog.logFailure).toHaveBeenCalledWith(expect.objectContaining({
+    message: 'submission_save_failed',
+  }));
+});
+
+test('returns cached status after first submission', () => {
+  assignmentStore.addAssignment(createAssignment({
+    paperId: 'paper_status',
+    reviewerEmail: 'rev@example.com',
+    status: 'accepted',
+  }));
+  reviewFormStore.saveForm(createReviewForm({
+    paperId: 'paper_status',
+    status: 'active',
+    requiredFields: REQUIRED_REVIEW_FIELDS,
+  }));
+
+  reviewSubmissionService.submit({
+    paperId: 'paper_status',
+    reviewerEmail: 'rev@example.com',
+    content,
+  });
+
+  const status = reviewSubmissionService.getSubmissionStatus({
+    paperId: 'paper_status',
+    reviewerEmail: 'rev@example.com',
+  });
+  expect(status.ok).toBe(true);
 });

@@ -437,6 +437,7 @@ test('notification services branches', () => {
   expect(sent.ok).toBe(true);
   notificationService.setGroupingEnabled(true);
   notificationConfigService.setGroupingEnabled(true);
+  expect(notificationConfigService.isGroupingEnabled()).toBe(true);
   expect(notificationService.shouldBatch(Date.now())).toBe(true);
   expect(notificationService.getReviewNotificationsByEditor('ed')).toHaveLength(2);
 });

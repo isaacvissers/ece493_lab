@@ -6,6 +6,7 @@ test('review form closed state', () => {
   const closedForm = createReviewForm({ paperId: 'paper_2', status: 'closed' });
   expect(isFormClosed(activeForm)).toBe(false);
   expect(isFormClosed(closedForm)).toBe(true);
+  expect(isFormClosed({ status: null })).toBe(false);
 });
 
 test('submitted review is final when status submitted', () => {
