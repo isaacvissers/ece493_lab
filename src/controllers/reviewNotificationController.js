@@ -2,4 +2,5 @@ import { createReviewNotificationController } from './review-notification-contro
 
 export { createReviewNotificationController };
 
+export const __reviewNotificationControllerModule = true;
 const _reexport_marker = true;

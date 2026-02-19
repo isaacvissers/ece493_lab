@@ -2,4 +2,5 @@ import { createReviewValidationController } from './review-validation-controller
 
 export { createReviewValidationController };
 
+export const __reviewValidationControllerModule = true;
 const _reexport_marker = true;

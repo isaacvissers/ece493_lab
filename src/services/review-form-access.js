@@ -18,9 +18,16 @@ export const reviewFormAccess = {
     reviewDraftStore = defaultReviewDraftStore,
     errorLog = defaultErrorLog,
   } = {}) {
+    const hasReviewerEmail = reviewerEmail !== null && reviewerEmail !== undefined;
     const normalized = normalizeEmail(reviewerEmail);
-    if (!paperId || !normalized) {
+    if (!paperId) {
       return { ok: false, reason: 'unauthorized' };
+    }
+    if (!hasReviewerEmail) {
+      return { ok: false, reason: 'unauthorized' };
+    }
+    if (!normalized) {
+      return { ok: false, reason: 'not_assigned' };
     }
 
     let assignments = [];

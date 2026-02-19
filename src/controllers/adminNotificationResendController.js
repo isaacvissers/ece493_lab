@@ -2,4 +2,5 @@ import { createAdminNotificationResendController } from './admin-notification-re
 
 export { createAdminNotificationResendController };
 
+export const __adminNotificationResendControllerModule = true;
 const _reexport_marker = true;
