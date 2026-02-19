@@ -1,2 +1,5 @@
-export { createNotification } from './notification.js';
-export const __notificationModule = true;
+import { createNotification } from './notification.js';
+
+export { createNotification };
+
+const _reexport_marker = true;

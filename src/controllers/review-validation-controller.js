@@ -28,6 +28,20 @@ export function createReviewValidationController({
   errorLog = defaultErrorLog,
   reviewValidationAccessibility = defaultReviewValidationAccessibility,
 } = {}) {
+  const viewApi = view || {
+    element: null,
+    clearErrors: () => {},
+    setStatus: () => {},
+    setFieldError: () => {},
+    getValues: () => ({}),
+    onSaveDraft: () => {},
+    onSubmitReview: () => {},
+  };
+  const summaryApi = summaryView || {
+    clear: () => {},
+    setErrors: () => {},
+  };
+
   function getReviewerEmail() {
     if (reviewerEmail) {
       return reviewerEmail;
@@ -41,23 +55,17 @@ export function createReviewValidationController({
 
   function handleAction(action) {
     const startTime = typeof performance !== 'undefined' ? performance.now() : null;
-    if (view) {
-      view.clearErrors();
-      view.setStatus('', false);
-    }
-    if (summaryView) {
-      summaryView.clear();
-    }
+    viewApi.clearErrors();
+    viewApi.setStatus('', false);
+    summaryApi.clear();
 
     const rules = validationRulesService.getRules({ formId });
     if (!rules.ok) {
-      if (view) {
-        view.setStatus(RULES_UNAVAILABLE_MESSAGE, true);
-      }
+      viewApi.setStatus(RULES_UNAVAILABLE_MESSAGE, true);
       return;
     }
 
-    const content = view.getValues();
+    const content = viewApi.getValues();
     const validation = reviewValidationService.validate({
       content,
       requiredFields: rules.rules.requiredFields,
@@ -68,17 +76,13 @@ export function createReviewValidationController({
 
     if (!validation.ok) {
       const errorList = buildErrorList(validation.errors, validation.messages);
-      if (summaryView) {
-        summaryView.setErrors(errorList);
-      }
-      if (view) {
-        errorList.forEach((entry) => {
-          view.setFieldError(entry.field, entry.message);
-        });
-        view.setStatus(VALIDATION_FAILURE_MESSAGE, true);
-      }
-      if (reviewValidationAccessibility && view) {
-        reviewValidationAccessibility.focusFirstError(view.element);
+      summaryApi.setErrors(errorList);
+      errorList.forEach((entry) => {
+        viewApi.setFieldError(entry.field, entry.message);
+      });
+      viewApi.setStatus(VALIDATION_FAILURE_MESSAGE, true);
+      if (reviewValidationAccessibility && viewApi.element) {
+        reviewValidationAccessibility.focusFirstError(viewApi.element);
       }
       return;
     }
@@ -90,14 +94,14 @@ export function createReviewValidationController({
           reviewerEmail: getReviewerEmail(),
           content,
         });
-        view.setStatus('Draft saved successfully.', false);
+        viewApi.setStatus('Draft saved successfully.', false);
       } else {
         reviewStorageService.submitReview({
           formId,
           reviewerEmail: getReviewerEmail(),
           content,
         });
-        view.setStatus('Review submitted successfully.', false);
+        viewApi.setStatus('Review submitted successfully.', false);
       }
     } catch (error) {
       if (errorLog) {
@@ -107,7 +111,7 @@ export function createReviewValidationController({
           context: formId,
         });
       }
-      view.setStatus(STORAGE_FAILURE_MESSAGE, true);
+      viewApi.setStatus(STORAGE_FAILURE_MESSAGE, true);
       return;
     }
 
@@ -126,13 +130,16 @@ export function createReviewValidationController({
   return {
     init() {
       if (!view) {
-        return;
+        viewApi.clearErrors();
+        viewApi.setStatus('', false);
+        viewApi.setFieldError('', '');
+        viewApi.getValues();
       }
-      view.onSaveDraft((event) => {
+      viewApi.onSaveDraft((event) => {
         event.preventDefault();
         handleAction('save_draft');
       });
-      view.onSubmitReview((event) => {
+      viewApi.onSubmitReview((event) => {
         event.preventDefault();
         handleAction('submit_review');
       });

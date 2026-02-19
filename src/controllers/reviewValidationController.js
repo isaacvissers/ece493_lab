@@ -1,2 +1,5 @@
-export { createReviewValidationController } from './review-validation-controller.js';
-export const __reviewValidationControllerModule = true;
+import { createReviewValidationController } from './review-validation-controller.js';
+
+export { createReviewValidationController };
+
+const _reexport_marker = true;

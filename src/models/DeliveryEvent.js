@@ -1,2 +1,5 @@
-export { createDeliveryEvent } from './delivery-event.js';
-export const __deliveryEventModule = true;
+import { createDeliveryEvent } from './delivery-event.js';
+
+export { createDeliveryEvent };
+
+const _reexport_marker = true;

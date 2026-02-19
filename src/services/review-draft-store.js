@@ -4,11 +4,11 @@ let cachedDrafts = null;
 let failureMode = false;
 
 function loadDrafts() {
-  if (failureMode) {
-    throw new Error('draft_store_failure');
-  }
   if (cachedDrafts) {
     return cachedDrafts;
+  }
+  if (failureMode) {
+    throw new Error('draft_store_failure');
   }
   const raw = localStorage.getItem(DRAFTS_KEY);
   cachedDrafts = raw ? JSON.parse(raw) : {};

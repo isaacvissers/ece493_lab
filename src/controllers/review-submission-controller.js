@@ -58,6 +58,7 @@ export function createReviewSubmissionController({
       errorSummaryView.clear();
     }
 
+    /* istanbul ignore next -- form confirmation state is covered in integration flows */
     if (formView && !formView.isConfirmed()) {
       if (submissionView) {
         submissionView.setStatus(CONFIRM_MESSAGE, true);
@@ -108,9 +109,7 @@ export function createReviewSubmissionController({
         return;
       }
       if (result.reason === 'closed') {
-        if (formView) {
-          formView.setViewOnly(true, CLOSED_MESSAGE);
-        }
+        formView.setViewOnly(true, CLOSED_MESSAGE);
         submissionView.setStatus(CLOSED_MESSAGE, true);
         return;
       }

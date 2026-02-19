@@ -3,7 +3,7 @@ import { refereeInvitationCheck as defaultInvitationCheck } from './referee-invi
 import { readinessAudit as defaultReadinessAudit } from './readiness-audit.js';
 import { errorLog as defaultErrorLog } from './error-log.js';
 
-function buildResult({ ok, ready, count = null, reason = '', missingInvitations = [] } = {}) {
+export function buildReadinessResult({ ok, ready, count = null, reason = '', missingInvitations = [] } = {}) {
   return {
     ok,
     ready,
@@ -42,7 +42,7 @@ export const refereeReadiness = {
           reason: 'count_failure',
         });
       }
-      return buildResult({ ok: false, ready: false, reason: 'count_failure' });
+      return buildReadinessResult({ ok: false, ready: false, reason: 'count_failure' });
     }
 
     if (count === 3) {
@@ -57,7 +57,7 @@ export const refereeReadiness = {
           reason: 'count_ok',
         });
       }
-      return buildResult({ ok: true, ready: true, count, reason: 'count_ok', missingInvitations });
+      return buildReadinessResult({ ok: true, ready: true, count, reason: 'count_ok', missingInvitations });
     }
 
     const reason = count < 3 ? 'count_low' : 'count_high';
@@ -69,6 +69,6 @@ export const refereeReadiness = {
         reason,
       });
     }
-    return buildResult({ ok: true, ready: false, count, reason, missingInvitations: [] });
+    return buildReadinessResult({ ok: true, ready: false, count, reason, missingInvitations: [] });
   },
 };

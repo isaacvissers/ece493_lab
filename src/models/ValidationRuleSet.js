@@ -1,5 +1,7 @@
-export {
-  createValidationRuleSet,
-  loadValidationRuleSet,
-} from './validation-rule-set.js';
-export const __validationRuleSetModule = true;
+import { createValidationRuleSet,
+  loadValidationRuleSet, } from './validation-rule-set.js';
+
+export { createValidationRuleSet,
+  loadValidationRuleSet, };
+
+const _reexport_marker = true;

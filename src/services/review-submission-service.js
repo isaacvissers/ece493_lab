@@ -164,6 +164,7 @@ export const reviewSubmissionService = {
     content,
     errors,
     reviewDraftStore = defaultReviewDraftStore,
+    errorLog = defaultErrorLog,
   } = {}) {
     try {
       reviewDraftStore.saveDraft({
@@ -174,8 +175,8 @@ export const reviewSubmissionService = {
       });
       return { ok: true };
     } catch (error) {
-      if (defaultErrorLog) {
-        defaultErrorLog.logFailure({
+      if (errorLog) {
+        errorLog.logFailure({
           errorType: 'review_draft_preserve_failed',
           message: error && error.message ? error.message : 'draft_preserve_failed',
           context: paperId,
