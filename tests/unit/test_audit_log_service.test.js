@@ -29,3 +29,23 @@ test('audit log service keeps entries with invalid dates', () => {
   const pruned = auditLogService.pruneOlderThan(1, Date.now());
   expect(pruned).toHaveLength(1);
 });
+
+test('audit log service records schedule-specific events', () => {
+  auditLogService.logScheduleViewDenied({ conferenceId: 'conf_1', userId: 'user_1' });
+  auditLogService.logScheduleRenderFailed({ conferenceId: 'conf_2', message: 'fail' });
+  auditLogService.logScheduleTimeout({ conferenceId: 'conf_3', durationMs: 2500 });
+  const logs = auditLogService.getLogs();
+  expect(logs[0].eventType).toBe('schedule_view_denied');
+  expect(logs[1].eventType).toBe('schedule_render_failed');
+  expect(logs[2].eventType).toBe('schedule_timeout');
+});
+
+test('schedule log helpers use default values when missing', () => {
+  auditLogService.logScheduleViewDenied();
+  auditLogService.logScheduleRenderFailed();
+  auditLogService.logScheduleTimeout();
+  const logs = auditLogService.getLogs();
+  expect(logs[0].relatedId).toBe('schedule');
+  expect(logs[1].details.message).toBeUndefined();
+  expect(logs[2].details.durationMs).toBeUndefined();
+});

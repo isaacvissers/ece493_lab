@@ -56,6 +56,48 @@ test('router registers schedule routes when controller provided', () => {
   expect(controller.init).toHaveBeenCalled();
 });
 
+test('router registers schedule HTML routes when controller provided', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  controller.view.element.textContent = 'Schedule HTML';
+  router.registerScheduleHtmlRoutes({ controller });
+  const result = router.navigate('schedule-html', { conferenceId: 'conf_1' });
+  expect(result).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith('conf_1');
+  expect(root.textContent).toContain('Schedule HTML');
+});
+
+test('router handles schedule HTML route without payload or show method', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+  };
+  controller.view.element.textContent = 'Schedule HTML';
+  router.registerScheduleHtmlRoutes({ controller });
+  const result = router.navigate('schedule-html');
+  expect(result).toBe(true);
+  expect(root.textContent).toContain('Schedule HTML');
+});
+
+test('router passes null conferenceId when payload missing', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  controller.view.element.textContent = 'Schedule HTML';
+  router.registerScheduleHtmlRoutes({ controller });
+  const result = router.navigate('schedule-html');
+  expect(result).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith(null);
+});
+
 test('router renders empty schedule view when controller view missing', () => {
   const root = document.getElementById('root');
   router.setRoot(root);
@@ -74,4 +116,24 @@ test('router ignores schedule registration when controller missing', () => {
   router.registerScheduleRoutes();
   const result = router.navigate('schedule');
   expect(result).toBe(false);
+});
+
+test('router ignores schedule HTML registration when controller missing', () => {
+  router.registerScheduleHtmlRoutes();
+  const result = router.navigate('schedule-html');
+  expect(result).toBe(false);
+});
+
+test('router renders empty content when schedule HTML view missing', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: null,
+    show: jest.fn(),
+  };
+  router.registerScheduleHtmlRoutes({ controller });
+  const result = router.navigate('schedule-html', { conferenceId: 'conf_none' });
+  expect(result).toBe(true);
+  expect(root.textContent).toBe('');
+  expect(controller.show).toHaveBeenCalledWith('conf_none');
 });

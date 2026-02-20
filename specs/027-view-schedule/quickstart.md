@@ -6,7 +6,8 @@
 ## Run Tests
 
 ```bash
-npm test && npm run lint
+npm test
+# npm run lint (if available)
 ```
 
 ## Feature Validation Checklist

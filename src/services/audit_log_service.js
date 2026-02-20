@@ -18,6 +18,27 @@ export const auditLogService = {
     logs.push(createAuditLog({ eventType, relatedId, details, createdAt }));
     persistLogs(logs);
   },
+  logScheduleViewDenied({ conferenceId, userId } = {}) {
+    auditLogService.log({
+      eventType: 'schedule_view_denied',
+      relatedId: conferenceId || 'schedule',
+      details: { userId },
+    });
+  },
+  logScheduleRenderFailed({ conferenceId, message } = {}) {
+    auditLogService.log({
+      eventType: 'schedule_render_failed',
+      relatedId: conferenceId || 'schedule',
+      details: { message },
+    });
+  },
+  logScheduleTimeout({ conferenceId, durationMs } = {}) {
+    auditLogService.log({
+      eventType: 'schedule_timeout',
+      relatedId: conferenceId || 'schedule',
+      details: { durationMs },
+    });
+  },
   getLogs() {
     return loadLogs().slice();
   },

@@ -3,6 +3,7 @@ module.exports = {
     '<rootDir>/tests/unit/**/*.test.js',
     '<rootDir>/tests/integration/**/*.test.js',
     '<rootDir>/tests/acceptance/**/*.test.js',
+    '<rootDir>/tests/performance/**/*.test.js',
   ],
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.js'],

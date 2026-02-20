@@ -18,9 +18,9 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Ensure MVC directories exist for schedule feature in src/models/ src/services/ src/controllers/ src/views/
-- [ ] T002 [P] Add schedule route placeholder in src/controllers/router.js
-- [ ] T003 [P] Create base HTML view shell for schedule in src/views/schedule_html_view.js
+- [x] T001 Ensure MVC directories exist for schedule feature in src/models/ src/services/ src/controllers/ src/views/
+- [x] T002 [P] Add schedule route placeholder in src/controllers/router.js
+- [x] T003 [P] Create base HTML view shell for schedule in src/views/schedule_html_view.js
 
 ---
 
@@ -30,15 +30,15 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Create Schedule model in src/models/schedule.js
-- [ ] T005 [P] Create ScheduleItem model in src/models/schedule_item.js
-- [ ] T006 [P] Create Conference model in src/models/conference.js
-- [ ] T007 [P] Create User model in src/models/user.js
-- [ ] T008 [P] Create AuditLog model in src/models/audit_log.js
-- [ ] T009 [P] Implement authorization helper for admin/editor in src/services/auth_service.js
-- [ ] T010 [P] Implement schedule retrieval service (published only) in src/services/schedule_service.js
-- [ ] T011 [P] Implement audit logging helper in src/services/audit_log_service.js
-- [ ] T012 [P] Add render performance timer utility in src/services/performance_service.js
+- [x] T004 [P] Create Schedule model in src/models/schedule.js
+- [x] T005 [P] Create ScheduleItem model in src/models/schedule_item.js
+- [x] T006 [P] Create Conference model in src/models/conference.js
+- [x] T007 [P] Create User model in src/models/user.js
+- [x] T008 [P] Create AuditLog model in src/models/audit_log.js
+- [x] T009 [P] Implement authorization helper for admin/editor in src/services/auth_service.js
+- [x] T010 [P] Implement schedule retrieval service (published only) in src/services/schedule_service.js
+- [x] T011 [P] Implement audit logging helper in src/services/audit_log_service.js
+- [x] T012 [P] Add render performance timer utility in src/services/performance_service.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -52,18 +52,18 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T013 [P] [US1] Acceptance test for AT-UC27-01 in tests/acceptance/uc27_view_schedule_html.test.js
-- [ ] T014 [P] [US1] Acceptance test for AT-UC27-02 in tests/acceptance/uc27_view_schedule_html.test.js
-- [ ] T015 [P] [US1] Integration test for schedule HTML endpoint in tests/integration/schedule_html_endpoint.test.js
-- [ ] T016 [P] [US1] Unit tests for schedule rendering helpers in tests/unit/schedule_renderer.test.js
+- [x] T013 [P] [US1] Acceptance test for AT-UC27-01 in tests/acceptance/uc27_view_schedule_html.test.js
+- [x] T014 [P] [US1] Acceptance test for AT-UC27-02 in tests/acceptance/uc27_view_schedule_html.test.js
+- [x] T015 [P] [US1] Integration test for schedule HTML endpoint in tests/integration/schedule_html_endpoint.test.js
+- [x] T016 [P] [US1] Unit tests for schedule rendering helpers in tests/unit/schedule_renderer.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Implement agenda list renderer (group by room, chronological) in src/services/schedule_renderer.js
-- [ ] T018 [US1] Implement schedule HTML controller action in src/controllers/schedule_html_controller.js
-- [ ] T019 [US1] Wire schedule HTML route to controller in src/controllers/router.js
-- [ ] T020 [US1] Render HTML view using renderer output in src/views/schedule_html_view.js
-- [ ] T021 [US1] Ensure schedule service uses published schedule only in src/services/schedule_service.js
+- [x] T017 [P] [US1] Implement agenda list renderer (group by room, chronological) in src/services/schedule_renderer.js
+- [x] T018 [US1] Implement schedule HTML controller action in src/controllers/schedule_html_controller.js
+- [x] T019 [US1] Wire schedule HTML route to controller in src/controllers/router.js
+- [x] T020 [US1] Render HTML view using renderer output in src/views/schedule_html_view.js
+- [x] T021 [US1] Ensure schedule service uses published schedule only in src/services/schedule_service.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -77,16 +77,16 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T022 [P] [US2] Acceptance test for AT-UC27-03 in tests/acceptance/uc27_empty_schedule.test.js
-- [ ] T023 [P] [US2] Acceptance test for AT-UC27-04 in tests/acceptance/uc27_unscheduled_items.test.js
-- [ ] T024 [P] [US2] Integration test for no-schedule response in tests/integration/schedule_html_no_schedule.test.js
-- [ ] T025 [P] [US2] Unit tests for unscheduled section logic in tests/unit/schedule_renderer_unscheduled.test.js
+- [x] T022 [P] [US2] Acceptance test for AT-UC27-03 in tests/acceptance/uc27_empty_schedule.test.js
+- [x] T023 [P] [US2] Acceptance test for AT-UC27-04 in tests/acceptance/uc27_unscheduled_items.test.js
+- [x] T024 [P] [US2] Integration test for no-schedule response in tests/integration/schedule_html_no_schedule.test.js
+- [x] T025 [P] [US2] Unit tests for unscheduled section logic in tests/unit/schedule_renderer_unscheduled.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T026 [US2] Add "No schedule available" handling in src/controllers/schedule_html_controller.js
-- [ ] T027 [US2] Render "Unscheduled" section for unscheduled items in src/services/schedule_renderer.js
-- [ ] T028 [US2] Add unscheduled labeling in src/views/schedule_html_view.js
+- [x] T026 [US2] Add "No schedule available" handling in src/controllers/schedule_html_controller.js
+- [x] T027 [US2] Render "Unscheduled" section for unscheduled items in src/services/schedule_renderer.js
+- [x] T028 [US2] Add unscheduled labeling in src/views/schedule_html_view.js
 
 **Checkpoint**: User Stories 1 and 2 independently functional
 
@@ -100,18 +100,18 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T029 [P] [US3] Acceptance test for AT-UC27-05 in tests/acceptance/uc27_auth_denied.test.js
-- [ ] T030 [P] [US3] Acceptance test for AT-UC27-06 in tests/acceptance/uc27_render_failure.test.js
-- [ ] T031 [P] [US3] Acceptance test for AT-UC27-07 in tests/acceptance/uc27_timeout_loading.test.js
-- [ ] T032 [P] [US3] Integration test for timeout response in tests/integration/schedule_html_timeout.test.js
-- [ ] T033 [P] [US3] Unit tests for auth and logging on denial in tests/unit/schedule_auth_logging.test.js
+- [x] T029 [P] [US3] Acceptance test for AT-UC27-05 in tests/acceptance/uc27_auth_denied.test.js
+- [x] T030 [P] [US3] Acceptance test for AT-UC27-06 in tests/acceptance/uc27_render_failure.test.js
+- [x] T031 [P] [US3] Acceptance test for AT-UC27-07 in tests/acceptance/uc27_timeout_loading.test.js
+- [x] T032 [P] [US3] Integration test for timeout response in tests/integration/schedule_html_timeout.test.js
+- [x] T033 [P] [US3] Unit tests for auth and logging on denial in tests/unit/schedule_auth_logging.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T034 [US3] Enforce authorization check and denial logging in src/controllers/schedule_html_controller.js
-- [ ] T035 [US3] Log render failures and timeouts in src/services/audit_log_service.js
-- [ ] T036 [US3] Add loading indicator + timeout handling in src/views/schedule_html_view.js
-- [ ] T037 [US3] Add render timeout enforcement in src/services/performance_service.js
+- [x] T034 [US3] Enforce authorization check and denial logging in src/controllers/schedule_html_controller.js
+- [x] T035 [US3] Log render failures and timeouts in src/services/audit_log_service.js
+- [x] T036 [US3] Add loading indicator + timeout handling in src/views/schedule_html_view.js
+- [x] T037 [US3] Add render timeout enforcement in src/services/performance_service.js
 
 **Checkpoint**: All user stories independently functional
 
@@ -121,11 +121,11 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T038 [P] Add performance validation for 200 ms interaction target in tests/performance/schedule_view_perf.test.js
-- [ ] T039 [P] Add rendering time validation for 300 items in tests/performance/schedule_render_perf.test.js
-- [ ] T040 [P] Add accessibility checklist verification for WCAG 2.1 AA in tests/integration/schedule_a11y.test.js
-- [ ] T041 [P] Update quickstart verification steps in specs/027-view-schedule/quickstart.md
-- [ ] T042 [P] Add log retention validation for 90-day audit logs in tests/integration/audit_log_retention.test.js
+- [x] T038 [P] Add performance validation for 200 ms interaction target in tests/performance/schedule_view_perf.test.js
+- [x] T039 [P] Add rendering time validation for 300 items in tests/performance/schedule_render_perf.test.js
+- [x] T040 [P] Add accessibility checklist verification for WCAG 2.1 AA in tests/integration/schedule_a11y.test.js
+- [x] T041 [P] Update quickstart verification steps in specs/027-view-schedule/quickstart.md
+- [x] T042 [P] Add log retention validation for 90-day audit logs in tests/integration/audit_log_retention.test.js
 
 ---
 
