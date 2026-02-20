@@ -22,9 +22,11 @@ function buildFileMeta(file) {
 export function createManuscriptSubmissionController({
   view,
   storage,
+  assignmentStorage,
   draftStorage,
   sessionState,
   errorLogger,
+  assignmentErrorLogger,
   draftErrorLogger,
   onSubmitSuccess,
   onAuthRequired,
@@ -157,6 +159,29 @@ export function createManuscriptSubmissionController({
       });
       view.setStatus(UI_MESSAGES.errors.submissionUnavailable.message, true);
       return;
+    }
+
+    if (assignmentStorage) {
+      try {
+        const existing = assignmentStorage.getPaper(manuscript.id);
+        if (!existing) {
+          const authorId = manuscript.submittedBy || manuscript.contactEmail;
+          assignmentStorage.seedPaper({
+            id: manuscript.id,
+            title: manuscript.title,
+            status: manuscript.status,
+            authorIds: authorId ? [authorId] : [],
+          });
+        }
+      } catch (error) {
+        if (assignmentErrorLogger) {
+          assignmentErrorLogger.logFailure({
+            errorType: 'seed',
+            message: error && error.message ? error.message : 'assignment_seed_failed',
+            context: manuscript.id,
+          });
+        }
+      }
     }
 
     view.setStatus(`${UI_MESSAGES.submissionSuccess.title}. ${UI_MESSAGES.submissionSuccess.body}`, false);

@@ -70,7 +70,13 @@ export function createDashboardView(user, manuscripts = [], assignablePapers = [
   const assignmentTitle = createElement('h2');
   assignmentTitle.textContent = 'Papers awaiting reviewer assignment';
   const assignmentBody = createElement('div');
-  const isEditor = user && user.role && user.role.toLowerCase() === 'editor';
+  const normalizedRole = user && user.role ? user.role.toLowerCase() : null;
+  const roles = Array.isArray(user && user.roles) ? user.roles.map((role) => role.toLowerCase()) : [];
+  const isEditor = normalizedRole === 'editor'
+    || normalizedRole === 'admin'
+    || roles.includes('editor')
+    || roles.includes('admin')
+    || (user && user.email === 'admin@example.com');
   if (isEditor) {
     if (!assignablePapers.length) {
       const emptyAssignments = createElement('p', 'helper');

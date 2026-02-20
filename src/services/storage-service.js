@@ -146,6 +146,7 @@ export const storageService = {
       email: account.email,
       createdAt: account.createdAt,
       role: account.role || null,
+      roles: Array.isArray(account.roles) ? account.roles.slice() : [],
     };
     persistSession(session);
   },

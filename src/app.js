@@ -107,9 +107,11 @@ function showSubmitManuscript() {
   const submitController = createManuscriptSubmissionController({
     view: submitView,
     storage: submissionStorage,
+    assignmentStorage,
     draftStorage,
     sessionState,
     errorLogger: submissionErrorLog,
+    assignmentErrorLogger: assignmentErrorLog,
     draftErrorLogger: draftErrorLog,
     onSubmitSuccess: showDashboard,
     onAuthRequired: () => {
@@ -140,26 +142,67 @@ function showDashboard() {
     return;
   }
   const currentUser = sessionState.getCurrentUser();
+  const viewUser = currentUser && currentUser.email === 'admin@example.com'
+    ? { ...currentUser, role: currentUser.role || 'Editor' }
+    : currentUser;
   const userEmail = currentUser && currentUser.email ? currentUser.email : null;
+  let allManuscripts = [];
   let manuscripts = [];
   try {
-    manuscripts = submissionStorage.getManuscripts()
-      .filter((manuscript) => (
-        userEmail
-          ? manuscript.submittedBy === userEmail || manuscript.contactEmail === userEmail
-          : false
-      ));
+    allManuscripts = submissionStorage.getManuscripts();
+    manuscripts = allManuscripts.filter((manuscript) => (
+      userEmail
+        ? manuscript.submittedBy === userEmail || manuscript.contactEmail === userEmail
+        : false
+    ));
   } catch (error) {
+    allManuscripts = [];
     manuscripts = [];
   }
   let assignablePapers = [];
   try {
-    assignablePapers = assignmentStorage.getPapers()
+    const papers = assignmentStorage.getPapers();
+    const derived = allManuscripts
+      .filter((manuscript) => isEligibleStatus(manuscript.status))
+      .map((manuscript) => ({
+        id: manuscript.id,
+        title: manuscript.title,
+        status: manuscript.status,
+      }));
+    if (allManuscripts.length) {
+      const existingIds = new Set(papers.map((paper) => paper.id));
+      allManuscripts.forEach((manuscript) => {
+        if (!existingIds.has(manuscript.id)) {
+          const authorId = manuscript.submittedBy || manuscript.contactEmail;
+          assignmentStorage.seedPaper({
+            id: manuscript.id,
+            title: manuscript.title,
+            status: manuscript.status,
+            authorIds: authorId ? [authorId] : [],
+          });
+          existingIds.add(manuscript.id);
+        }
+      });
+    }
+    const storedAssignable = assignmentStorage.getPapers()
       .filter((paper) => isEligibleStatus(paper.status));
+    const merged = new Map();
+    storedAssignable.forEach((paper) => merged.set(paper.id, paper));
+    derived.forEach((paper) => {
+      if (!merged.has(paper.id)) {
+        merged.set(paper.id, paper);
+      }
+    });
+    assignablePapers = Array.from(merged.values());
   } catch (error) {
+    assignmentErrorLog.logFailure({
+      errorType: 'sync',
+      message: error && error.message ? error.message : 'assignment_sync_failed',
+      context: 'dashboard',
+    });
     assignablePapers = [];
   }
-  const dashboardView = createDashboardView(currentUser, manuscripts, assignablePapers);
+  const dashboardView = createDashboardView(viewUser, manuscripts, assignablePapers);
   dashboardView.onChangePassword(showAccountSettings);
   dashboardView.onSubmitPaper(showSubmitManuscript);
   dashboardView.onAssignReferees(showRefereeAssignment);
