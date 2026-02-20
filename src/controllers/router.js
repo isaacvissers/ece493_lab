@@ -73,6 +73,17 @@ export const router = {
       return controller.view ? controller.view.element : null;
     });
   },
+  registerPublicScheduleRoutes({ controller } = {}) {
+    if (!controller) {
+      return;
+    }
+    routes.set('public-schedule', (payload) => {
+      if (controller.show) {
+        controller.show(payload && payload.conferenceId ? payload.conferenceId : null);
+      }
+      return controller.view ? controller.view.element : null;
+    });
+  },
   register(path, handler) {
     routes.set(path, handler);
   },

@@ -14,6 +14,9 @@ export function createLoginView() {
   const helper = createElement('p', 'helper');
   helper.textContent = 'Use your email and password to access the CMS.';
 
+  const announcementSlot = createElement('div', 'announcement-slot');
+  announcementSlot.id = 'schedule-announcement-slot';
+
   const form = document.createElement('form');
   form.noValidate = true;
 
@@ -61,7 +64,7 @@ export function createLoginView() {
   registerRow.append(registerButton);
 
   form.append(emailRow, passwordRow, button, status, registerRow);
-  container.append(title, helper, form);
+  container.append(title, helper, announcementSlot, form);
 
   function clearErrors() {
     emailError.textContent = '';
@@ -110,6 +113,14 @@ export function createLoginView() {
     },
     onRegister(handler) {
       registerButton.addEventListener('click', handler);
+    },
+    setAnnouncement(viewElement) {
+      if (!viewElement) {
+        announcementSlot.innerHTML = '';
+        return;
+      }
+      announcementSlot.innerHTML = '';
+      announcementSlot.appendChild(viewElement);
     },
   };
 }

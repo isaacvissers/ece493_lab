@@ -398,6 +398,29 @@ test('publish failure without message uses fallback', () => {
   expect(auditLogService.getLogs()[0].details.message).toBe('publish_failed');
 });
 
+test('publish failure skips publication log when service missing', () => {
+  const scheduleRepositoryStub = {
+    publishSchedule: () => { throw new Error('publish_failed'); },
+    getAcceptedPapers: () => [],
+    saveConference: () => {},
+    saveDraft: () => {},
+  };
+  sessionState.authenticate({ id: 'acct_admin', email: 'admin@example.com', role: 'Admin' });
+  const view = createScheduleDraftView();
+  document.body.appendChild(view.element);
+  const controller = createScheduleController({
+    view,
+    sessionState,
+    scheduleRepository: scheduleRepositoryStub,
+    auditLogService,
+    publicationLogService: null,
+  });
+  controller.init();
+  view.element.querySelector('#conferenceId').value = 'conf_fail';
+  view.element.querySelector('#schedule-publish').click();
+  expect(auditLogService.getLogs()[0].eventType).toBe('schedule_publish_failed');
+});
+
 test('loadDraft returns items for existing schedule', () => {
   scheduleRepository.saveDraft({
     conferenceId: 'conf_load',

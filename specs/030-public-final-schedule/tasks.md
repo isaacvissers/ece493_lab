@@ -17,10 +17,10 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Ensure MVC directories exist for public schedule delivery in src/models/ src/services/ src/controllers/ src/views/
-- [ ] T002 [P] Add public schedule route placeholder in src/controllers/router.js
-- [ ] T003 [P] Create base public schedule view shell in src/views/public_schedule_view.js
-- [ ] T004 [P] Create announcement banner view shell in src/views/schedule_announcement_view.js
+- [x] T001 Ensure MVC directories exist for public schedule delivery in src/models/ src/services/ src/controllers/ src/views/
+- [x] T002 [P] Add public schedule route placeholder in src/controllers/router.js
+- [x] T003 [P] Create base public schedule view shell in src/views/public_schedule_view.js
+- [x] T004 [P] Create announcement banner view shell in src/views/schedule_announcement_view.js
 
 ---
 
@@ -30,13 +30,13 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 [P] Create PublicSchedule model in src/models/public_schedule.js
-- [ ] T006 [P] Create ScheduleEntry model in src/models/schedule_entry.js
-- [ ] T007 [P] Create Announcement model in src/models/announcement.js
-- [ ] T008 [P] Create PublicationLog model in src/models/publication_log.js
-- [ ] T009 [P] Implement public schedule retrieval service in src/services/public_schedule_service.js
-- [ ] T010 [P] Implement announcement retrieval service in src/services/announcement_service.js
-- [ ] T011 [P] Implement publication/render logging helper in src/services/publication_log_service.js
+- [x] T005 [P] Create PublicSchedule model in src/models/public_schedule.js
+- [x] T006 [P] Create ScheduleEntry model in src/models/schedule_entry.js
+- [x] T007 [P] Create Announcement model in src/models/announcement.js
+- [x] T008 [P] Create PublicationLog model in src/models/publication_log.js
+- [x] T009 [P] Implement public schedule retrieval service in src/services/public_schedule_service.js
+- [x] T010 [P] Implement announcement retrieval service in src/services/announcement_service.js
+- [x] T011 [P] Implement publication/render logging helper in src/services/publication_log_service.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -50,19 +50,19 @@
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T012 [P] [US1] Acceptance test for AT-UC30-01 in tests/acceptance/uc30_public_schedule_view.test.js
-- [ ] T013 [P] [US1] Acceptance test for AT-UC30-02 in tests/acceptance/uc30_readable_listings.test.js
-- [ ] T014 [P] [US1] Integration test for /public/schedule response in tests/integration/public_schedule_endpoint.test.js
-- [ ] T015 [P] [US1] Integration test for announcement link placement in tests/integration/schedule_announcement_link.test.js
-- [ ] T016 [P] [US1] Unit tests for public schedule service in tests/unit/public_schedule_service.test.js
+- [x] T012 [P] [US1] Acceptance test for AT-UC30-01 in tests/acceptance/uc30_public_schedule_view.test.js
+- [x] T013 [P] [US1] Acceptance test for AT-UC30-02 in tests/acceptance/uc30_readable_listings.test.js
+- [x] T014 [P] [US1] Integration test for /public/schedule response in tests/integration/public_schedule_endpoint.test.js
+- [x] T015 [P] [US1] Integration test for announcement link placement in tests/integration/schedule_announcement_link.test.js
+- [x] T016 [P] [US1] Unit tests for public schedule service in tests/unit/public_schedule_service.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Render schedule listing layout in src/views/public_schedule_view.js
-- [ ] T018 [US1] Implement public schedule controller action in src/controllers/public_schedule_controller.js
-- [ ] T019 [US1] Wire public schedule route in src/controllers/router.js
-- [ ] T020 [US1] Return day/time/room/session + titles/authors/abstracts in src/services/public_schedule_service.js
-- [ ] T021 [US1] Render schedule announcement banner with link in src/views/schedule_announcement_view.js
+- [x] T017 [P] [US1] Render schedule listing layout in src/views/public_schedule_view.js
+- [x] T018 [US1] Implement public schedule controller action in src/controllers/public_schedule_controller.js
+- [x] T019 [US1] Wire public schedule route in src/controllers/router.js
+- [x] T020 [US1] Return day/time/room/session + titles/authors/abstracts in src/services/public_schedule_service.js
+- [x] T021 [US1] Render schedule announcement banner with link in src/views/schedule_announcement_view.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -76,15 +76,15 @@
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T022 [P] [US2] Acceptance test for AT-UC30-03 in tests/acceptance/uc30_schedule_not_available.test.js
-- [ ] T023 [P] [US2] Integration test for unpublished schedule response in tests/integration/public_schedule_unpublished.test.js
-- [ ] T024 [P] [US2] Unit tests for pending-state logic in tests/unit/public_schedule_pending.test.js
+- [x] T022 [P] [US2] Acceptance test for AT-UC30-03 in tests/acceptance/uc30_schedule_not_available.test.js
+- [x] T023 [P] [US2] Integration test for unpublished schedule response in tests/integration/public_schedule_unpublished.test.js
+- [x] T024 [P] [US2] Unit tests for pending-state logic in tests/unit/public_schedule_pending.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T025 [US2] Show “Schedule not available yet” in src/views/public_schedule_view.js
-- [ ] T026 [US2] Hide or disable schedule link pre-publication in src/views/schedule_announcement_view.js
-- [ ] T027 [US2] Block schedule details when not published in src/services/public_schedule_service.js
+- [x] T025 [US2] Show “Schedule not available yet” in src/views/public_schedule_view.js
+- [x] T026 [US2] Hide or disable schedule link pre-publication in src/views/schedule_announcement_view.js
+- [x] T027 [US2] Block schedule details when not published in src/services/public_schedule_service.js
 
 **Checkpoint**: User Stories 1 and 2 independently functional
 
@@ -98,17 +98,17 @@
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T028 [P] [US3] Acceptance test for AT-UC30-04 in tests/acceptance/uc30_publication_failure.test.js
-- [ ] T029 [P] [US3] Acceptance test for AT-UC30-05 in tests/acceptance/uc30_render_failure.test.js
-- [ ] T030 [P] [US3] Integration test for publish-failure behavior in tests/integration/public_schedule_publish_failure.test.js
-- [ ] T031 [P] [US3] Integration test for render-failure behavior in tests/integration/public_schedule_render_failure.test.js
-- [ ] T032 [P] [US3] Unit tests for publication log service in tests/unit/publication_log_service.test.js
+- [x] T028 [P] [US3] Acceptance test for AT-UC30-04 in tests/acceptance/uc30_publication_failure.test.js
+- [x] T029 [P] [US3] Acceptance test for AT-UC30-05 in tests/acceptance/uc30_render_failure.test.js
+- [x] T030 [P] [US3] Integration test for publish-failure behavior in tests/integration/public_schedule_publish_failure.test.js
+- [x] T031 [P] [US3] Integration test for render-failure behavior in tests/integration/public_schedule_render_failure.test.js
+- [x] T032 [P] [US3] Unit tests for publication log service in tests/unit/publication_log_service.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T033 [US3] Log publication failures in src/services/publication_log_service.js
-- [ ] T034 [US3] Return friendly render error in src/views/public_schedule_view.js
-- [ ] T035 [US3] Prevent exposure of partial schedule on publish failure in src/services/public_schedule_service.js
+- [x] T033 [US3] Log publication failures in src/services/publication_log_service.js
+- [x] T034 [US3] Return friendly render error in src/views/public_schedule_view.js
+- [x] T035 [US3] Prevent exposure of partial schedule on publish failure in src/services/public_schedule_service.js
 
 **Checkpoint**: All user stories independently functional
 
@@ -118,12 +118,12 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T036 [P] Add performance validation for 3s public page load in tests/performance/public_schedule_perf.test.js
-- [ ] T037 [P] Add high-traffic timeout/loader validation in tests/integration/public_schedule_timeout.test.js
-- [ ] T038 [P] Add accessibility checks for public schedule page in tests/integration/public_schedule_a11y.test.js
-- [ ] T039 [P] Add log retention validation for 90-day publication/render logs in tests/integration/public_schedule_log_retention.test.js
-- [ ] T040 [P] Add “Last updated” timestamp rendering in src/views/public_schedule_view.js
-- [ ] T041 [P] Update quickstart verification steps in specs/030-public-final-schedule/quickstart.md
+- [x] T036 [P] Add performance validation for 3s public page load in tests/performance/public_schedule_perf.test.js
+- [x] T037 [P] Add high-traffic timeout/loader validation in tests/integration/public_schedule_timeout.test.js
+- [x] T038 [P] Add accessibility checks for public schedule page in tests/integration/public_schedule_a11y.test.js
+- [x] T039 [P] Add log retention validation for 90-day publication/render logs in tests/integration/public_schedule_log_retention.test.js
+- [x] T040 [P] Add “Last updated” timestamp rendering in src/views/public_schedule_view.js
+- [x] T041 [P] Update quickstart verification steps in specs/030-public-final-schedule/quickstart.md
 
 ---
 

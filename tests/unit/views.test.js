@@ -34,6 +34,13 @@ test('login view exposes fields and status helpers', () => {
 
   view.clearErrors();
   expect(view.element.querySelector('#login-email-error').textContent).toBe('');
+
+  const announcement = document.createElement('div');
+  announcement.textContent = 'Announcement';
+  view.setAnnouncement(announcement);
+  expect(view.element.querySelector('#schedule-announcement-slot').textContent).toContain('Announcement');
+  view.setAnnouncement(null);
+  expect(view.element.querySelector('#schedule-announcement-slot').textContent).toBe('');
 });
 
 test('registration view exposes fields and helpers', () => {
