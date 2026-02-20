@@ -28,6 +28,15 @@ export const router = {
       return controller.detailView ? controller.detailView.element : null;
     });
   },
+  registerScheduleRoutes({ controller } = {}) {
+    if (!controller) {
+      return;
+    }
+    routes.set('schedule', () => {
+      controller.init();
+      return controller.view ? controller.view.element : null;
+    });
+  },
   register(path, handler) {
     routes.set(path, handler);
   },

@@ -22,3 +22,10 @@ test('createPaper generates an id when missing', () => {
   const nonArray = createPaper({ assignedRefereeEmails: 'not-an-array' });
   expect(nonArray.assignedRefereeEmails).toEqual([]);
 });
+
+test('createPaper defaults required metadata to true', () => {
+  const paper = createPaper({ id: 'paper_meta' });
+  expect(paper.requiredMetadataComplete).toBe(true);
+  const explicit = createPaper({ id: 'paper_meta2', requiredMetadataComplete: false });
+  expect(explicit.requiredMetadataComplete).toBe(false);
+});

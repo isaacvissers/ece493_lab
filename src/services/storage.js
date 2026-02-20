@@ -30,3 +30,10 @@ export const decisionStorage = {
   remove,
   clearAll,
 };
+
+export const scheduleStorage = {
+  read,
+  write,
+  remove,
+  clearAll,
+};

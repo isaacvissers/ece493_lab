@@ -40,3 +40,38 @@ test('router registers decision routes when controller provided', () => {
   expect(detailResult).toBe(true);
   expect(controller.showDecision).toHaveBeenCalledWith('paper_1');
 });
+
+test('router registers schedule routes when controller provided', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    init: jest.fn(),
+  };
+  controller.view.element.textContent = 'Schedule';
+  router.registerScheduleRoutes({ controller });
+  const result = router.navigate('schedule');
+  expect(result).toBe(true);
+  expect(root.textContent).toContain('Schedule');
+  expect(controller.init).toHaveBeenCalled();
+});
+
+test('router renders empty schedule view when controller view missing', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: null,
+    init: jest.fn(),
+  };
+  router.registerScheduleRoutes({ controller });
+  const result = router.navigate('schedule');
+  expect(result).toBe(true);
+  expect(root.textContent).toBe('');
+  expect(controller.init).toHaveBeenCalled();
+});
+
+test('router ignores schedule registration when controller missing', () => {
+  router.registerScheduleRoutes();
+  const result = router.navigate('schedule');
+  expect(result).toBe(false);
+});
