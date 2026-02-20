@@ -89,6 +89,25 @@ test('persists and clears session', () => {
   expect(storageService.getCurrentUser()).toBe(null);
 });
 
+test('stores roles when present and defaults to empty array', () => {
+  storageService.reset();
+  storageService.setCurrentUser({
+    id: 'acct_roles',
+    email: 'roles@example.com',
+    createdAt: new Date().toISOString(),
+    roles: ['admin', 'editor'],
+  });
+  expect(storageService.getCurrentUser().roles).toEqual(['admin', 'editor']);
+
+  storageService.setCurrentUser({
+    id: 'acct_no_roles',
+    email: 'noroles@example.com',
+    createdAt: new Date().toISOString(),
+    roles: null,
+  });
+  expect(storageService.getCurrentUser().roles).toEqual([]);
+});
+
 test('loads cached data from storage when present', () => {
   storageService.reset();
   const cachedAccounts = [{

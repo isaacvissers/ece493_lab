@@ -118,6 +118,24 @@ test('blocks users without role', () => {
   expect(view.setAuthorizationMessage).toHaveBeenCalledWith('You do not have permission to assign referees.');
 });
 
+test('blocks when current user is missing', () => {
+  const { view, submit } = createViewStub();
+  const mocks = createMocks({
+    sessionState: { isAuthenticated: jest.fn(() => true), getCurrentUser: jest.fn(() => null) },
+  });
+  const controller = createRefereeAssignmentController({
+    view,
+    assignmentStorage: mocks.assignmentStorage,
+    assignmentService: mocks.assignmentService,
+    violationLog: mocks.violationLog,
+    sessionState: mocks.sessionState,
+    paperId: 'paper_1',
+  });
+  controller.init();
+  submit();
+  expect(view.setAuthorizationMessage).toHaveBeenCalledWith('You do not have permission to assign referees.');
+});
+
 test('handles missing paper on init', () => {
   const { view } = createViewStub();
   const mocks = createMocks({ assignmentStorage: { getPaper: jest.fn(() => null) } });

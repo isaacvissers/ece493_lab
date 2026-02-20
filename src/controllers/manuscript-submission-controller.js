@@ -165,12 +165,11 @@ export function createManuscriptSubmissionController({
       try {
         const existing = assignmentStorage.getPaper(manuscript.id);
         if (!existing) {
-          const authorId = manuscript.submittedBy || manuscript.contactEmail;
           assignmentStorage.seedPaper({
             id: manuscript.id,
             title: manuscript.title,
             status: manuscript.status,
-            authorIds: authorId ? [authorId] : [],
+            authorIds: [manuscript.submittedBy || manuscript.contactEmail].filter(Boolean),
           });
         }
       } catch (error) {

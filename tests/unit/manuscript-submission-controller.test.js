@@ -36,9 +36,11 @@ function setupController(overrides = {}) {
   const controller = createManuscriptSubmissionController({
     view,
     storage: overrides.storage || mocks.storage,
+    assignmentStorage: overrides.assignmentStorage,
     draftStorage: overrides.draftStorage || mocks.draftStorage,
     sessionState: overrides.sessionState || mocks.sessionState,
     errorLogger: overrides.errorLogger || mocks.errorLogger,
+    assignmentErrorLogger: overrides.assignmentErrorLogger,
     draftErrorLogger: Object.prototype.hasOwnProperty.call(overrides, 'draftErrorLogger')
       ? overrides.draftErrorLogger
       : mocks.draftErrorLogger,
@@ -198,6 +200,101 @@ test('logs storage failure on submit', () => {
   submit(view);
   expect(view.element.querySelector('.status').textContent).toContain('unavailable');
   expect(errorLogger.logFailure).toHaveBeenCalled();
+});
+
+test('seeds assignment paper after successful submission', () => {
+  const assignmentStorage = {
+    getPaper: jest.fn(() => null),
+    seedPaper: jest.fn(),
+  };
+  const { view } = setupController({ assignmentStorage });
+  setValues(view);
+  setFile(view, makeFile('paper.pdf', 1000, 'application/pdf'));
+  submit(view);
+  expect(assignmentStorage.seedPaper).toHaveBeenCalledWith(expect.objectContaining({
+    id: expect.any(String),
+    title: 'Paper title',
+    status: 'submitted',
+  }));
+});
+
+test('uses contact email when submittedBy is missing', () => {
+  const assignmentStorage = {
+    getPaper: jest.fn(() => null),
+    seedPaper: jest.fn(),
+  };
+  const sessionState = {
+    isAuthenticated: jest.fn(() => true),
+    getCurrentUser: jest.fn(() => null),
+  };
+  const { view } = setupController({ assignmentStorage, sessionState });
+  setValues(view, { contactEmail: 'contact@example.com' });
+  setFile(view, makeFile('paper.pdf', 1000, 'application/pdf'));
+  submit(view);
+  expect(assignmentStorage.seedPaper).toHaveBeenCalledWith(expect.objectContaining({
+    authorIds: ['contact@example.com'],
+  }));
+});
+
+test('skips seeding when assignment paper already exists', () => {
+  const assignmentStorage = {
+    getPaper: jest.fn(() => ({ id: 'existing' })),
+    seedPaper: jest.fn(),
+  };
+  const { view } = setupController({ assignmentStorage });
+  setValues(view);
+  setFile(view, makeFile('paper.pdf', 1000, 'application/pdf'));
+  submit(view);
+  expect(assignmentStorage.seedPaper).not.toHaveBeenCalled();
+});
+
+test('logs assignment seed failure without blocking submission', () => {
+  const assignmentStorage = {
+    getPaper: jest.fn(() => {
+      throw new Error('assignment_failure');
+    }),
+    seedPaper: jest.fn(),
+  };
+  const assignmentErrorLogger = { logFailure: jest.fn() };
+  const { view, onSubmitSuccess } = setupController({ assignmentStorage, assignmentErrorLogger });
+  setValues(view);
+  setFile(view, makeFile('paper.pdf', 1000, 'application/pdf'));
+  submit(view);
+  expect(assignmentErrorLogger.logFailure).toHaveBeenCalled();
+  expect(view.element.querySelector('.status').textContent).toContain('Submission');
+  expect(onSubmitSuccess).toHaveBeenCalled();
+});
+
+test('logs default assignment seed failure message when error lacks message', () => {
+  const assignmentStorage = {
+    getPaper: jest.fn(() => {
+      throw {};
+    }),
+    seedPaper: jest.fn(),
+  };
+  const assignmentErrorLogger = { logFailure: jest.fn() };
+  const { view } = setupController({ assignmentStorage, assignmentErrorLogger });
+  setValues(view);
+  setFile(view, makeFile('paper.pdf', 1000, 'application/pdf'));
+  submit(view);
+  expect(assignmentErrorLogger.logFailure).toHaveBeenCalledWith(expect.objectContaining({
+    message: 'assignment_seed_failed',
+  }));
+  expect(view.element.querySelector('.status').textContent).toContain('Submission');
+});
+
+test('ignores assignment seed failure when logger is missing', () => {
+  const assignmentStorage = {
+    getPaper: jest.fn(() => {
+      throw new Error('assignment_failure');
+    }),
+    seedPaper: jest.fn(),
+  };
+  const { view } = setupController({ assignmentStorage, assignmentErrorLogger: null });
+  setValues(view);
+  setFile(view, makeFile('paper.pdf', 1000, 'application/pdf'));
+  submit(view);
+  expect(view.element.querySelector('.status').textContent).toContain('Submission');
 });
 
 test('skips draft clearing when user key missing', () => {

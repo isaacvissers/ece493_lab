@@ -123,6 +123,77 @@ test('dashboard shows assignable papers for editors', async () => {
   expect(appRoot.querySelector('#paper-meta').textContent).toContain('paper_assign');
 });
 
+test('dashboard treats admin as editor when role is missing', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  const { assignmentStorage } = await import('../../src/services/assignment-storage.js');
+  assignmentStorage.reset();
+  assignmentStorage.seedPaper({ paperId: 'paper_admin', title: 'Admin Paper', status: 'submitted' });
+  sessionState.authenticate({ id: 'acct_admin', email: 'admin@example.com', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowDashboard();
+  expect(appRoot.querySelector('.assignment-item').textContent).toContain('Admin Paper');
+});
+
+test('dashboard falls back to manuscript-derived assignments when stored paper is ineligible', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  const { assignmentStorage } = await import('../../src/services/assignment-storage.js');
+  const { submissionStorage } = await import('../../src/services/submission-storage.js');
+  assignmentStorage.reset();
+  submissionStorage.reset();
+  assignmentStorage.seedPaper({ paperId: 'ms_derived', title: 'Old title', status: 'rejected' });
+  submissionStorage.saveSubmission({
+    id: 'ms_derived',
+    title: 'Derived title',
+    contactEmail: 'author@example.com',
+    submittedBy: 'author@example.com',
+    status: 'submitted',
+  });
+  sessionState.authenticate({ id: 'acct_admin', email: 'admin@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowDashboard();
+  expect(appRoot.querySelector('.assignment-item').textContent).toContain('Derived title');
+});
+
+test('dashboard seeds papers without author ids when metadata is missing', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  const { assignmentStorage } = await import('../../src/services/assignment-storage.js');
+  const { submissionStorage } = await import('../../src/services/submission-storage.js');
+  assignmentStorage.reset();
+  submissionStorage.reset();
+  submissionStorage.saveSubmission({
+    id: 'ms_no_author',
+    title: 'No Author',
+    status: 'submitted',
+  });
+  sessionState.authenticate({ id: 'acct_admin', email: 'admin@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  module.__testShowDashboard();
+  const seeded = assignmentStorage.getPapers().find((paper) => paper.id === 'ms_no_author');
+  expect(seeded.authorIds).toEqual([]);
+});
+
+test('dashboard logs assignment sync failures without error message', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  const { assignmentStorage } = await import('../../src/services/assignment-storage.js');
+  const { assignmentErrorLog } = await import('../../src/services/assignment-error-log.js');
+  assignmentStorage.reset();
+  assignmentErrorLog.clear();
+  sessionState.authenticate({ id: 'acct_admin', email: 'admin@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const getPapersSpy = jest.spyOn(assignmentStorage, 'getPapers').mockImplementation(() => {
+    throw {};
+  });
+  const module = await import('../../src/app.js');
+  module.__testShowDashboard();
+  getPapersSpy.mockRestore();
+  expect(assignmentErrorLog.getFailures()[0].message).toBe('assignment_sync_failed');
+});
+
 test('dashboard filters submissions by current user email', async () => {
   await setupApp();
   const { submissionStorage } = await import('../../src/services/submission-storage.js');
