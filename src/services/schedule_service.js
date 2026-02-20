@@ -2,6 +2,15 @@ import { scheduleRepository } from './schedule_repository.js';
 import { scheduleValidationService as defaultScheduleValidationService } from './schedule_validation_service.js';
 import { auditLogService as defaultAuditLogService } from './audit_log_service.js';
 import { notificationService as defaultNotificationService } from './notification_service.js';
+import { authorAccessService as defaultAuthorAccessService } from './author_access_service.js';
+
+function isScheduledEntry(entry) {
+  return entry
+    && (entry.status === undefined || entry.status === 'scheduled')
+    && (entry.roomName || entry.roomId)
+    && entry.startTime
+    && entry.endTime;
+}
 
 export const scheduleService = {
   getDraftSchedule(conferenceId) {
@@ -20,6 +29,46 @@ export const scheduleService = {
     }
     const items = scheduleRepository.getScheduleItems(schedule.scheduleId);
     return { schedule, items };
+  },
+  getPublishedScheduleForAuthor({
+    conferenceId,
+    authorId,
+    authorAccessService = defaultAuthorAccessService,
+  } = {}) {
+    const access = authorAccessService.getAcceptedPapersForAuthor({ authorId, conferenceId });
+    if (!access.ok) {
+      return { ok: false, reason: access.reason || 'access_denied' };
+    }
+    const schedule = scheduleRepository.getSchedule(conferenceId);
+    if (!schedule || schedule.status !== 'published') {
+      return { ok: false, reason: 'not_published', papers: access.papers };
+    }
+    const entries = scheduleRepository.getScheduleItems(schedule.scheduleId);
+    const scheduled = [];
+    const unscheduled = [];
+
+    access.papers.forEach((paper) => {
+      const paperId = paper.paperId || paper.id;
+      const match = entries.find((entry) => entry && entry.paperId === paperId);
+      if (match && isScheduledEntry(match)) {
+        scheduled.push({
+          paperId,
+          paperTitle: match.paperTitle || paper.title || 'Untitled paper',
+          roomName: match.roomName || match.roomId,
+          startTime: match.startTime,
+          endTime: match.endTime,
+        });
+      } else {
+        const reason = match && match.reason ? match.reason : null;
+        unscheduled.push({
+          paperId,
+          paperTitle: paper.title || match?.paperTitle || 'Untitled paper',
+          reason,
+        });
+      }
+    });
+
+    return { ok: true, schedule, scheduled, unscheduled };
   },
   updateScheduleEntry({
     conferenceId,

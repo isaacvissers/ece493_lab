@@ -229,6 +229,87 @@ test('save and publish succeed with valid schedule', () => {
   expect(view.element.querySelector('#schedule-status').textContent).toContain('published');
 });
 
+test('publish skips notification delivery when service missing', () => {
+  scheduleRepository.savePapers([
+    { paperId: 'p1', status: 'accepted', requiredMetadataComplete: true, conferenceId: 'conf_notify_skip' },
+  ]);
+  sessionState.authenticate({ id: 'acct_admin', email: 'admin@example.com', role: 'Admin' });
+  const view = createScheduleDraftView();
+  document.body.appendChild(view.element);
+  const controller = createScheduleController({
+    view,
+    sessionState,
+    notificationService: null,
+  });
+  controller.init();
+  view.element.querySelector('#conferenceId').value = 'conf_notify_skip';
+  view.element.querySelector('#startDate').value = '2026-05-01T09:00';
+  view.element.querySelector('#endDate').value = '2026-05-01T09:30';
+  view.element.querySelector('#slotDurationMinutes').value = '30';
+  view.element.querySelector('#rooms').value = 'Room A | 100';
+  submit(view);
+  view.element.querySelector('#schedule-publish').click();
+  const schedule = scheduleRepository.getSchedule('conf_notify_skip');
+  expect(schedule.status).toBe('published');
+});
+
+test('publish logs notification errors without blocking publish', () => {
+  scheduleRepository.savePapers([
+    { paperId: 'p1', status: 'accepted', requiredMetadataComplete: true, conferenceId: 'conf_notify_fail' },
+  ]);
+  sessionState.authenticate({ id: 'acct_admin', email: 'admin@example.com', role: 'Admin' });
+  const view = createScheduleDraftView();
+  document.body.appendChild(view.element);
+  const notificationService = {
+    sendFinalScheduleNotifications: () => { throw new Error('notify_fail'); },
+  };
+  const controller = createScheduleController({
+    view,
+    sessionState,
+    notificationService,
+    auditLogService,
+  });
+  controller.init();
+  view.element.querySelector('#conferenceId').value = 'conf_notify_fail';
+  view.element.querySelector('#startDate').value = '2026-05-01T09:00';
+  view.element.querySelector('#endDate').value = '2026-05-01T09:30';
+  view.element.querySelector('#slotDurationMinutes').value = '30';
+  view.element.querySelector('#rooms').value = 'Room A | 100';
+  submit(view);
+  view.element.querySelector('#schedule-publish').click();
+  const schedule = scheduleRepository.getSchedule('conf_notify_fail');
+  expect(schedule.status).toBe('published');
+  expect(auditLogService.getLogs().some((log) => log.eventType === 'schedule_notification_failed')).toBe(true);
+});
+
+test('publish notification failure without message uses fallback', () => {
+  scheduleRepository.savePapers([
+    { paperId: 'p1', status: 'accepted', requiredMetadataComplete: true, conferenceId: 'conf_notify_fallback' },
+  ]);
+  sessionState.authenticate({ id: 'acct_admin', email: 'admin@example.com', role: 'Admin' });
+  const view = createScheduleDraftView();
+  document.body.appendChild(view.element);
+  const notificationService = {
+    sendFinalScheduleNotifications: () => { throw {}; },
+  };
+  const controller = createScheduleController({
+    view,
+    sessionState,
+    notificationService,
+    auditLogService,
+  });
+  controller.init();
+  view.element.querySelector('#conferenceId').value = 'conf_notify_fallback';
+  view.element.querySelector('#startDate').value = '2026-05-01T09:00';
+  view.element.querySelector('#endDate').value = '2026-05-01T09:30';
+  view.element.querySelector('#slotDurationMinutes').value = '30';
+  view.element.querySelector('#rooms').value = 'Room A | 100';
+  submit(view);
+  view.element.querySelector('#schedule-publish').click();
+  const log = auditLogService.getLogs().find((entry) => entry.eventType === 'schedule_notification_failed');
+  expect(log.details.message).toBe('notification_failed');
+});
+
 test('save failure logs audit entry', () => {
   const scheduleRepositoryStub = {
     saveSchedule: () => { throw new Error('save_failed'); },

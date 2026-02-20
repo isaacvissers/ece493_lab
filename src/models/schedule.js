@@ -7,6 +7,7 @@ export function createSchedule({
   conferenceId,
   status = 'draft',
   version = 1,
+  publishedAt = null,
   createdAt = null,
   updatedAt = null,
 } = {}) {
@@ -17,6 +18,7 @@ export function createSchedule({
     conferenceId,
     status,
     version,
+    publishedAt,
     createdAt: created,
     updatedAt: updatedAt || created,
   };

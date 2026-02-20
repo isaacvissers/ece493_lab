@@ -25,6 +25,13 @@ export const auditLogService = {
       details: { userId },
     });
   },
+  logScheduleAccessDenied({ conferenceId, authorId } = {}) {
+    auditLogService.log({
+      eventType: 'schedule_access_denied',
+      relatedId: conferenceId || 'schedule',
+      details: { authorId },
+    });
+  },
   logScheduleRenderFailed({ conferenceId, message } = {}) {
     auditLogService.log({
       eventType: 'schedule_render_failed',

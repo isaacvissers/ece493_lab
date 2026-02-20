@@ -80,6 +80,93 @@ export const notificationService = {
     persistScheduleNotifications(entries);
     return { ok: true };
   },
+  sendFinalScheduleNotifications({ schedule, papers = [], auditLogService } = {}) {
+    if (!schedule || schedule.status !== 'published') {
+      return { ok: false, reason: 'schedule_not_published' };
+    }
+    const results = [];
+    let failed = false;
+
+    const accepted = Array.isArray(papers) ? papers : [];
+    accepted.forEach((paper) => {
+      const paperId = paper.paperId || paper.id;
+      const authorIds = Array.isArray(paper.authorIds) ? paper.authorIds : [];
+      authorIds.forEach((authorId) => {
+        const email = paper.authorEmailMap && paper.authorEmailMap[authorId]
+          ? paper.authorEmailMap[authorId]
+          : paper.email;
+        const emailValid = isValidEmail(email);
+
+        if (!emailValid || failureMode.email) {
+          pushNotification(createNotification({
+            paperId,
+            recipientId: authorId,
+            channel: 'email',
+            status: 'failed',
+            reason: !emailValid ? 'invalid_email' : 'email_failure',
+          }));
+          results.push({ paperId, authorId, channel: 'email', status: 'failed' });
+          failed = true;
+          if (auditLogService) {
+            auditLogService.log({
+              eventType: 'schedule_notification_failed',
+              relatedId: schedule.scheduleId || schedule.conferenceId || 'schedule',
+              details: {
+                paperId,
+                authorId,
+                channel: 'email',
+                reason: !emailValid ? 'invalid_email' : 'email_failure',
+              },
+            });
+          }
+        } else {
+          pushNotification(createNotification({
+            paperId,
+            recipientId: authorId,
+            channel: 'email',
+            status: 'sent',
+            reason: 'schedule_delivery',
+          }));
+          results.push({ paperId, authorId, channel: 'email', status: 'sent' });
+        }
+
+        if (failureMode.inApp) {
+          pushNotification(createNotification({
+            paperId,
+            recipientId: authorId,
+            channel: 'in_app',
+            status: 'failed',
+            reason: 'in_app_failure',
+          }));
+          results.push({ paperId, authorId, channel: 'in_app', status: 'failed' });
+          failed = true;
+          if (auditLogService) {
+            auditLogService.log({
+              eventType: 'schedule_notification_failed',
+              relatedId: schedule.scheduleId || schedule.conferenceId || 'schedule',
+              details: {
+                paperId,
+                authorId,
+                channel: 'in_app',
+                reason: 'in_app_failure',
+              },
+            });
+          }
+        } else {
+          pushNotification(createNotification({
+            paperId,
+            recipientId: authorId,
+            channel: 'in_app',
+            status: 'sent',
+            reason: 'schedule_delivery',
+          }));
+          results.push({ paperId, authorId, channel: 'in_app', status: 'sent' });
+        }
+      });
+    });
+
+    return { ok: !failed, results };
+  },
   sendDecisionNotifications({ paper, decision, authors = [], auditLogService } = {}) {
     if (!paper || !decision) {
       return { ok: false, reason: 'missing_payload' };

@@ -118,6 +118,7 @@ export const scheduleRepository = {
         createdAt: now,
         updatedAt: now,
         version: Number.isFinite(version) ? version : undefined,
+        publishedAt: null,
       });
       schedules.push(schedule);
     } else {
@@ -128,6 +129,7 @@ export const scheduleRepository = {
         version: Number.isFinite(version)
           ? version
           : (Number.isFinite(schedules[index].version) ? schedules[index].version : 1),
+        publishedAt: null,
       };
       schedules[index] = schedule;
     }
@@ -147,7 +149,12 @@ export const scheduleRepository = {
     if (index === -1) {
       throw new Error('schedule_not_found');
     }
-    const schedule = { ...schedules[index], status, updatedAt: now };
+    const schedule = {
+      ...schedules[index],
+      status,
+      updatedAt: now,
+      publishedAt: status === 'published' ? (schedules[index].publishedAt || now) : null,
+    };
     schedules[index] = schedule;
     persistSchedules(schedules);
     return schedule;

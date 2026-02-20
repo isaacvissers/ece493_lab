@@ -6,6 +6,7 @@ import { scheduleRepository as defaultScheduleRepository } from '../services/sch
 import { scheduleGenerator as defaultScheduleGenerator } from '../services/schedule_generator.js';
 import { scheduleValidation as defaultScheduleValidation } from '../services/schedule_validation.js';
 import { auditLogService as defaultAuditLogService } from '../services/audit_log_service.js';
+import { notificationService as defaultNotificationService } from '../services/notification_service.js';
 
 const ACCESS_DENIED_MESSAGE = 'You do not have permission to generate schedules.';
 
@@ -18,6 +19,7 @@ export function createScheduleController({
   scheduleGenerator = defaultScheduleGenerator,
   scheduleValidation = defaultScheduleValidation,
   auditLogService = defaultAuditLogService,
+  notificationService = defaultNotificationService,
   onAuthRequired = null,
 } = {}) {
   function requireAuth() {
@@ -150,7 +152,23 @@ export function createScheduleController({
       return;
     }
     try {
-      scheduleRepository.publishSchedule({ conferenceId });
+      const published = scheduleRepository.publishSchedule({ conferenceId });
+      if (notificationService && notificationService.sendFinalScheduleNotifications) {
+        try {
+          const papers = scheduleRepository.getAcceptedPapers(conferenceId);
+          notificationService.sendFinalScheduleNotifications({
+            schedule: published,
+            papers,
+            auditLogService,
+          });
+        } catch (error) {
+          auditLogService.log({
+            eventType: 'schedule_notification_failed',
+            relatedId: conferenceId,
+            details: { message: error && error.message ? error.message : 'notification_failed' },
+          });
+        }
+      }
       view.setStatus('Schedule published.', false);
     } catch (error) {
       auditLogService.log({

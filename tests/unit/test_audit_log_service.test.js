@@ -32,22 +32,26 @@ test('audit log service keeps entries with invalid dates', () => {
 
 test('audit log service records schedule-specific events', () => {
   auditLogService.logScheduleViewDenied({ conferenceId: 'conf_1', userId: 'user_1' });
+  auditLogService.logScheduleAccessDenied({ conferenceId: 'conf_a', authorId: 'author_1' });
   auditLogService.logScheduleRenderFailed({ conferenceId: 'conf_2', message: 'fail' });
   auditLogService.logScheduleTimeout({ conferenceId: 'conf_3', durationMs: 2500 });
   const logs = auditLogService.getLogs();
   expect(logs[0].eventType).toBe('schedule_view_denied');
-  expect(logs[1].eventType).toBe('schedule_render_failed');
-  expect(logs[2].eventType).toBe('schedule_timeout');
+  expect(logs[1].eventType).toBe('schedule_access_denied');
+  expect(logs[2].eventType).toBe('schedule_render_failed');
+  expect(logs[3].eventType).toBe('schedule_timeout');
 });
 
 test('schedule log helpers use default values when missing', () => {
   auditLogService.logScheduleViewDenied();
+  auditLogService.logScheduleAccessDenied();
   auditLogService.logScheduleRenderFailed();
   auditLogService.logScheduleTimeout();
   const logs = auditLogService.getLogs();
   expect(logs[0].relatedId).toBe('schedule');
-  expect(logs[1].details.message).toBeUndefined();
-  expect(logs[2].details.durationMs).toBeUndefined();
+  expect(logs[1].relatedId).toBe('schedule');
+  expect(logs[2].details.message).toBeUndefined();
+  expect(logs[3].details.durationMs).toBeUndefined();
 });
 
 test('schedule edit log helpers record events', () => {

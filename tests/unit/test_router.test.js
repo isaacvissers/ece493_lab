@@ -88,6 +88,21 @@ test('router registers schedule edit routes when controller provided', () => {
   expect(root.textContent).toContain('Schedule Edit');
 });
 
+test('router registers author schedule routes when controller provided', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  controller.view.element.textContent = 'Author Schedule';
+  router.registerAuthorScheduleRoutes({ controller });
+  const result = router.navigate('author-schedule', { conferenceId: 'conf_1' });
+  expect(result).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith('conf_1');
+  expect(root.textContent).toContain('Author Schedule');
+});
+
 test('router handles schedule HTML route without payload or show method', () => {
   const root = document.getElementById('root');
   router.setRoot(root);
@@ -147,6 +162,12 @@ test('router ignores schedule edit registration when controller missing', () => 
   expect(result).toBe(false);
 });
 
+test('router ignores author schedule registration when controller missing', () => {
+  router.registerAuthorScheduleRoutes();
+  const result = router.navigate('author-schedule');
+  expect(result).toBe(false);
+});
+
 test('router handles schedule edit route without init or show', () => {
   const root = document.getElementById('root');
   router.setRoot(root);
@@ -158,6 +179,47 @@ test('router handles schedule edit route without init or show', () => {
   const result = router.navigate('schedule-edit');
   expect(result).toBe(true);
   expect(root.textContent).toContain('Schedule Edit');
+});
+
+test('router handles author schedule route without show', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+  };
+  controller.view.element.textContent = 'Author Schedule';
+  router.registerAuthorScheduleRoutes({ controller });
+  const result = router.navigate('author-schedule');
+  expect(result).toBe(true);
+  expect(root.textContent).toContain('Author Schedule');
+});
+
+test('router passes null conferenceId for author schedule when payload missing', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  controller.view.element.textContent = 'Author Schedule';
+  router.registerAuthorScheduleRoutes({ controller });
+  const result = router.navigate('author-schedule');
+  expect(result).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith(null);
+});
+
+test('router renders empty author schedule view when view missing', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: null,
+    show: jest.fn(),
+  };
+  router.registerAuthorScheduleRoutes({ controller });
+  const result = router.navigate('author-schedule', { conferenceId: 'conf_none' });
+  expect(result).toBe(true);
+  expect(root.textContent).toBe('');
+  expect(controller.show).toHaveBeenCalledWith('conf_none');
 });
 
 test('router passes null conferenceId for schedule edit when payload missing', () => {

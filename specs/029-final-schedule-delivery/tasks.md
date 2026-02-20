@@ -18,9 +18,9 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Ensure MVC directories exist for author schedule delivery in src/models/ src/services/ src/controllers/ src/views/
-- [ ] T002 [P] Add author schedule route placeholder in src/controllers/router.js
-- [ ] T003 [P] Create base author schedule view shell in src/views/author_schedule_view.js
+- [x] T001 Ensure MVC directories exist for author schedule delivery in src/models/ src/services/ src/controllers/ src/views/
+- [x] T002 [P] Add author schedule route placeholder in src/controllers/router.js
+- [x] T003 [P] Create base author schedule view shell in src/views/author_schedule_view.js
 
 ---
 
@@ -30,16 +30,16 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Create Schedule model in src/models/schedule.js
-- [ ] T005 [P] Create ScheduleEntry model in src/models/schedule_entry.js
-- [ ] T006 [P] Create Paper model in src/models/paper.js
-- [ ] T007 [P] Create Author model in src/models/author.js
-- [ ] T008 [P] Create Notification model in src/models/notification.js
-- [ ] T009 [P] Create AuditLog model in src/models/audit_log.js
-- [ ] T010 [P] Implement author access helper in src/services/author_access_service.js
-- [ ] T011 [P] Implement schedule retrieval service (published-only) in src/services/schedule_service.js
-- [ ] T012 [P] Implement notification delivery service (email + in-app) in src/services/notification_service.js
-- [ ] T013 [P] Implement audit logging helper in src/services/audit_log_service.js
+- [x] T004 [P] Create Schedule model in src/models/schedule.js
+- [x] T005 [P] Create ScheduleEntry model in src/models/schedule_entry.js
+- [x] T006 [P] Create Paper model in src/models/paper.js
+- [x] T007 [P] Create Author model in src/models/author.js
+- [x] T008 [P] Create Notification model in src/models/notification.js
+- [x] T009 [P] Create AuditLog model in src/models/audit_log.js
+- [x] T010 [P] Implement author access helper in src/services/author_access_service.js
+- [x] T011 [P] Implement schedule retrieval service (published-only) in src/services/schedule_service.js
+- [x] T012 [P] Implement notification delivery service (email + in-app) in src/services/notification_service.js
+- [x] T013 [P] Implement audit logging helper in src/services/audit_log_service.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -53,20 +53,20 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T014 [P] [US1] Acceptance test for AT-UC29-01 in tests/acceptance/uc29_view_schedule.test.js
-- [ ] T015 [P] [US1] Acceptance test for AT-UC29-02 in tests/acceptance/uc29_notification_delivery.test.js
-- [ ] T016 [P] [US1] Integration test for author schedule endpoint in tests/integration/author_schedule_endpoint.test.js
-- [ ] T017 [P] [US1] Unit tests for schedule retrieval in tests/unit/schedule_service_published.test.js
-- [ ] T018 [P] [US1] Unit tests for notification delivery in tests/unit/notification_delivery.test.js
+- [x] T014 [P] [US1] Acceptance test for AT-UC29-01 in tests/acceptance/uc29_view_schedule.test.js
+- [x] T015 [P] [US1] Acceptance test for AT-UC29-02 in tests/acceptance/uc29_notification_delivery.test.js
+- [x] T016 [P] [US1] Integration test for author schedule endpoint in tests/integration/author_schedule_endpoint.test.js
+- [x] T017 [P] [US1] Unit tests for schedule retrieval in tests/unit/schedule_service_published.test.js
+- [x] T018 [P] [US1] Unit tests for notification delivery in tests/unit/notification_delivery.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T019 [P] [US1] Implement author schedule view rendering in src/views/author_schedule_view.js
-- [ ] T020 [US1] Implement author schedule controller action in src/controllers/author_schedule_controller.js
-- [ ] T021 [US1] Wire author schedule route in src/controllers/router.js
-- [ ] T022 [US1] Return time/room details for accepted author in src/services/schedule_service.js
-- [ ] T023 [US1] Trigger email + in-app notifications after publish in src/services/notification_service.js
-- [ ] T024 [US1] Limit schedule details to time/room only in src/views/author_schedule_view.js
+- [x] T019 [P] [US1] Implement author schedule view rendering in src/views/author_schedule_view.js
+- [x] T020 [US1] Implement author schedule controller action in src/controllers/author_schedule_controller.js
+- [x] T021 [US1] Wire author schedule route in src/controllers/router.js
+- [x] T022 [US1] Return time/room details for accepted author in src/services/schedule_service.js
+- [x] T023 [US1] Trigger email + in-app notifications after publish in src/services/notification_service.js
+- [x] T024 [US1] Limit schedule details to time/room only in src/views/author_schedule_view.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -80,17 +80,17 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T025 [P] [US2] Acceptance test for AT-UC29-03 in tests/acceptance/uc29_pending_schedule.test.js
-- [ ] T026 [P] [US2] Integration test for unpublished schedule response in tests/integration/author_schedule_unpublished.test.js
-- [ ] T027 [P] [US2] Unit tests for pending state in tests/unit/schedule_service_pending.test.js
-- [ ] T028 [P] [US2] Acceptance test for AT-UC29-08 in tests/acceptance/uc29_publication_failure.test.js
-- [ ] T029 [P] [US2] Integration test for publication failure blocking details/notifications in tests/integration/author_schedule_publication_failed.test.js
+- [x] T025 [P] [US2] Acceptance test for AT-UC29-03 in tests/acceptance/uc29_pending_schedule.test.js
+- [x] T026 [P] [US2] Integration test for unpublished schedule response in tests/integration/author_schedule_unpublished.test.js
+- [x] T027 [P] [US2] Unit tests for pending state in tests/unit/schedule_service_pending.test.js
+- [x] T028 [P] [US2] Acceptance test for AT-UC29-08 in tests/acceptance/uc29_publication_failure.test.js
+- [x] T029 [P] [US2] Integration test for publication failure blocking details/notifications in tests/integration/author_schedule_publication_failed.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T030 [US2] Show “Schedule not available yet” in src/views/author_schedule_view.js
-- [ ] T031 [US2] Block schedule details when not published in src/services/schedule_service.js
-- [ ] T032 [US2] Prevent details/notifications when publication fails in src/services/schedule_service.js
+- [x] T030 [US2] Show “Schedule not available yet” in src/views/author_schedule_view.js
+- [x] T031 [US2] Block schedule details when not published in src/services/schedule_service.js
+- [x] T032 [US2] Prevent details/notifications when publication fails in src/services/schedule_service.js
 
 **Checkpoint**: User Stories 1 and 2 independently functional
 
@@ -104,19 +104,19 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T033 [P] [US3] Acceptance test for AT-UC29-04 in tests/acceptance/uc29_notification_failure.test.js
-- [ ] T034 [P] [US3] Acceptance test for AT-UC29-05 in tests/acceptance/uc29_login_redirect.test.js
-- [ ] T035 [P] [US3] Acceptance test for AT-UC29-06 in tests/acceptance/uc29_unauthorized_access.test.js
-- [ ] T036 [P] [US3] Acceptance test for AT-UC29-07 in tests/acceptance/uc29_unscheduled_paper.test.js
-- [ ] T037 [P] [US3] Integration test for access denial in tests/integration/author_schedule_access_denied.test.js
-- [ ] T038 [P] [US3] Unit tests for access checks in tests/unit/author_access_service.test.js
+- [x] T033 [P] [US3] Acceptance test for AT-UC29-04 in tests/acceptance/uc29_notification_failure.test.js
+- [x] T034 [P] [US3] Acceptance test for AT-UC29-05 in tests/acceptance/uc29_login_redirect.test.js
+- [x] T035 [P] [US3] Acceptance test for AT-UC29-06 in tests/acceptance/uc29_unauthorized_access.test.js
+- [x] T036 [P] [US3] Acceptance test for AT-UC29-07 in tests/acceptance/uc29_unscheduled_paper.test.js
+- [x] T037 [P] [US3] Integration test for access denial in tests/integration/author_schedule_access_denied.test.js
+- [x] T038 [P] [US3] Unit tests for access checks in tests/unit/author_access_service.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T039 [US3] Log notification failures and keep access available in src/services/notification_service.js
-- [ ] T040 [US3] Enforce author association and log denial in src/services/author_access_service.js
-- [ ] T041 [US3] Redirect unauthenticated authors to login and back in src/controllers/author_schedule_controller.js
-- [ ] T042 [US3] Show “Unscheduled” with guidance in src/views/author_schedule_view.js
+- [x] T039 [US3] Log notification failures and keep access available in src/services/notification_service.js
+- [x] T040 [US3] Enforce author association and log denial in src/services/author_access_service.js
+- [x] T041 [US3] Redirect unauthenticated authors to login and back in src/controllers/author_schedule_controller.js
+- [x] T042 [US3] Show “Unscheduled” with guidance in src/views/author_schedule_view.js
 
 **Checkpoint**: All user stories independently functional
 
@@ -126,11 +126,11 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T043 [P] Add performance validation for 200 ms interaction target in tests/performance/author_schedule_perf.test.js
-- [ ] T044 [P] Add retrieval time validation for 300 accepted papers in tests/performance/author_schedule_retrieval_perf.test.js
-- [ ] T045 [P] Add accessibility checks for author schedule view in tests/integration/author_schedule_a11y.test.js
-- [ ] T046 [P] Add log retention validation for 90-day audit logs in tests/integration/audit_log_retention.test.js
-- [ ] T047 [P] Update quickstart verification steps in specs/029-final-schedule-delivery/quickstart.md
+- [x] T043 [P] Add performance validation for 200 ms interaction target in tests/performance/author_schedule_perf.test.js
+- [x] T044 [P] Add retrieval time validation for 300 accepted papers in tests/performance/author_schedule_retrieval_perf.test.js
+- [x] T045 [P] Add accessibility checks for author schedule view in tests/integration/author_schedule_a11y.test.js
+- [x] T046 [P] Add log retention validation for 90-day audit logs in tests/integration/audit_log_retention.test.js
+- [x] T047 [P] Update quickstart verification steps in specs/029-final-schedule-delivery/quickstart.md
 
 ---
 

@@ -16,10 +16,12 @@
 
 1. Publish the schedule for a conference with accepted papers.
 2. Log in as an accepted author and view schedule details (time/room).
-3. Confirm “Schedule not available yet” appears before publication.
-4. Verify “Unscheduled” appears for accepted papers without assignments.
-5. Simulate notification failure; confirm in-app access still works and failure is logged.
-6. Attempt access as unauthorized author; confirm access denied and logged.
+3. Trigger schedule notifications; confirm email + in-app notifications are recorded for co-authors.
+4. Confirm “Schedule not available yet” appears before publication.
+5. Verify “Unscheduled” appears for accepted papers without assignments.
+6. Simulate notification failure; confirm in-app access still works and failure is logged.
+7. Attempt access as unauthorized author; confirm access denied and logged.
+8. Attempt access while logged out; confirm you are prompted to log in and returned to schedule view.
 
 ## Test Suite
 
