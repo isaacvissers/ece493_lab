@@ -23,10 +23,10 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create decision feature storage helpers in `src/services/storage.js`
-- [ ] T002 [P] Add decision layout container markup in `src/views/decision_layout.html`
-- [ ] T003 [P] Add decision/notification styles in `src/views/decision.css`
-- [ ] T004 Register decision routes in `src/controllers/router.js`
+- [x] T001 Create decision feature storage helpers in `src/services/storage.js`
+- [x] T002 [P] Add decision layout container markup in `src/views/decision_layout.html`
+- [x] T003 [P] Add decision/notification styles in `src/views/decision.css`
+- [x] T004 Register decision routes in `src/controllers/router.js`
 
 ---
 
@@ -36,14 +36,14 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Implement auth/session guard utility in `src/services/auth_service.js`
-- [ ] T006 [P] Implement Paper model in `src/models/paper.js`
-- [ ] T007 [P] Implement Author model with notification settings in `src/models/author.js`
-- [ ] T008 Implement Decision model in `src/models/decision.js`
-- [ ] T009 Implement decision repository in `src/services/decision_repository.js`
-- [ ] T010 Implement access control helper in `src/services/access_control.js`
-- [ ] T011 Implement audit log service in `src/services/audit_log_service.js`
-- [ ] T012 Implement notification preference storage in `src/services/notification_prefs.js`
+- [x] T005 Implement auth/session guard utility in `src/services/auth_service.js`
+- [x] T006 [P] Implement Paper model in `src/models/paper.js`
+- [x] T007 [P] Implement Author model with notification settings in `src/models/author.js`
+- [x] T008 Implement Decision model in `src/models/decision.js`
+- [x] T009 Implement decision repository in `src/services/decision_repository.js`
+- [x] T010 Implement access control helper in `src/services/access_control.js`
+- [x] T011 Implement audit log service in `src/services/audit_log_service.js`
+- [x] T012 Implement notification preference storage in `src/services/notification_prefs.js`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -57,18 +57,18 @@
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T013 [P] [US1] Acceptance test for decision view (AT-UC25-01) in `tests/acceptance/test_decision_view.js`
-- [ ] T014 [P] [US1] Acceptance test for login redirect (AT-UC25-05) in `tests/acceptance/test_decision_auth.js`
-- [ ] T015 [P] [US1] Integration test for decision detail view in `tests/integration/test_decision_view.js`
-- [ ] T016 [P] [US1] Unit tests for decision repository mapping in `tests/unit/test_decision_repository.js`
+- [x] T013 [P] [US1] Acceptance test for decision view (AT-UC25-01) in `tests/acceptance/test_decision_view.js`
+- [x] T014 [P] [US1] Acceptance test for login redirect (AT-UC25-05) in `tests/acceptance/test_decision_auth.js`
+- [x] T015 [P] [US1] Integration test for decision detail view in `tests/integration/test_decision_view.js`
+- [x] T016 [P] [US1] Unit tests for decision repository mapping in `tests/unit/test_decision_repository.js`
 
 ### Implementation for User Story 1
 
-- [ ] T017 [P] [US1] Implement decision list view in `src/views/decision_list_view.js`
-- [ ] T018 [P] [US1] Implement decision detail view in `src/views/decision_detail_view.js`
-- [ ] T019 [US1] Implement decision page controller in `src/controllers/decision_controller.js`
-- [ ] T020 [US1] Add notes rendering rules in `src/views/decision_detail_view.js`
-- [ ] T021 [US1] Wire My Submissions navigation to decision controller in `src/controllers/router.js`
+- [x] T017 [P] [US1] Implement decision list view in `src/views/decision_list_view.js`
+- [x] T018 [P] [US1] Implement decision detail view in `src/views/decision_detail_view.js`
+- [x] T019 [US1] Implement decision page controller in `src/controllers/decision_controller.js`
+- [x] T020 [US1] Add notes rendering rules in `src/views/decision_detail_view.js`
+- [x] T021 [US1] Wire My Submissions navigation to decision controller in `src/controllers/router.js`
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -82,20 +82,20 @@
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T022 [P] [US2] Acceptance test for notification delivery (AT-UC25-02) in `tests/acceptance/test_notifications.js`
-- [ ] T023 [P] [US2] Acceptance test for notification failure fallback (AT-UC25-03) in `tests/acceptance/test_notification_failures.js`
-- [ ] T024 [P] [US2] Acceptance test for invalid email fallback (AT-UC25-04) in `tests/acceptance/test_notification_invalid_email.js`
-- [ ] T025 [P] [US2] Acceptance test for disabled channels (AT-UC25-09) in `tests/acceptance/test_notification_disabled.js`
-- [ ] T026 [P] [US2] Integration test for release → notify flow in `tests/integration/test_decision_release_notify.js`
-- [ ] T027 [P] [US2] Unit tests for notification service in `tests/unit/test_notification_service.js`
+- [x] T022 [P] [US2] Acceptance test for notification delivery (AT-UC25-02) in `tests/acceptance/test_notifications.js`
+- [x] T023 [P] [US2] Acceptance test for notification failure fallback (AT-UC25-03) in `tests/acceptance/test_notification_failures.js`
+- [x] T024 [P] [US2] Acceptance test for invalid email fallback (AT-UC25-04) in `tests/acceptance/test_notification_invalid_email.js`
+- [x] T025 [P] [US2] Acceptance test for disabled channels (AT-UC25-09) in `tests/acceptance/test_notification_disabled.js`
+- [x] T026 [P] [US2] Integration test for release → notify flow in `tests/integration/test_decision_release_notify.js`
+- [x] T027 [P] [US2] Unit tests for notification service in `tests/unit/test_notification_service.js`
 
 ### Implementation for User Story 2
 
-- [ ] T028 [P] [US2] Implement Notification model in `src/models/notification.js`
-- [ ] T029 [US2] Implement notification delivery service in `src/services/notification_service.js`
-- [ ] T030 [US2] Implement notification settings UI in `src/views/notification_settings_view.js`
-- [ ] T031 [US2] Implement notification settings controller in `src/controllers/notification_settings_controller.js`
-- [ ] T032 [US2] Add in-app notification rendering in `src/views/notification_inbox_view.js`
+- [x] T028 [P] [US2] Implement Notification model in `src/models/notification.js`
+- [x] T029 [US2] Implement notification delivery service in `src/services/notification_service.js`
+- [x] T030 [US2] Implement notification settings UI in `src/views/notification_settings_view.js`
+- [x] T031 [US2] Implement notification settings controller in `src/controllers/notification_settings_controller.js`
+- [x] T032 [US2] Add in-app notification rendering in `src/views/notification_inbox_view.js`
 
 **Checkpoint**: User Stories 1 AND 2 work independently
 
@@ -109,20 +109,20 @@
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T033 [P] [US3] Acceptance test for non-author access (AT-UC25-06) in `tests/acceptance/test_access_control.js`
-- [ ] T034 [P] [US3] Acceptance test for staged release pending state (AT-UC25-07) in `tests/acceptance/test_staged_release.js`
-- [ ] T035 [P] [US3] Acceptance test for notes absent (AT-UC25-08) in `tests/acceptance/test_notes_absent.js`
-- [ ] T036 [P] [US3] Integration test for staged release timing in `tests/integration/test_release_timing.js`
-- [ ] T037 [P] [US3] Unit tests for access control in `tests/unit/test_access_control.js`
-- [ ] T038 [P] [US3] Contract test for decision release endpoint in `tests/integration/test_decision_release_contract.js`
+- [x] T033 [P] [US3] Acceptance test for non-author access (AT-UC25-06) in `tests/acceptance/test_access_control.js`
+- [x] T034 [P] [US3] Acceptance test for staged release pending state (AT-UC25-07) in `tests/acceptance/test_staged_release.js`
+- [x] T035 [P] [US3] Acceptance test for notes absent (AT-UC25-08) in `tests/acceptance/test_notes_absent.js`
+- [x] T036 [P] [US3] Integration test for staged release timing in `tests/integration/test_release_timing.js`
+- [x] T037 [P] [US3] Unit tests for access control in `tests/unit/test_access_control.js`
+- [x] T038 [P] [US3] Contract test for decision release endpoint in `tests/integration/test_decision_release_contract.js`
 
 ### Implementation for User Story 3
 
-- [ ] T039 [P] [US3] Implement AuditLog model in `src/models/audit_log.js`
-- [ ] T040 [US3] Implement release scheduler in `src/services/release_scheduler.js`
-- [ ] T041 [US3] Implement decision release controller action in `src/controllers/decision_release_controller.js`
-- [ ] T042 [US3] Enforce staged release in decision repository in `src/services/decision_repository.js`
-- [ ] T043 [US3] Log access denied and notification failures in `src/services/audit_log_service.js`
+- [x] T039 [P] [US3] Implement AuditLog model in `src/models/audit_log.js`
+- [x] T040 [US3] Implement release scheduler in `src/services/release_scheduler.js`
+- [x] T041 [US3] Implement decision release controller action in `src/controllers/decision_release_controller.js`
+- [x] T042 [US3] Enforce staged release in decision repository in `src/services/decision_repository.js`
+- [x] T043 [US3] Log access denied and notification failures in `src/services/audit_log_service.js`
 
 **Checkpoint**: All user stories independently functional
 
@@ -132,11 +132,11 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T044 [P] Update user-facing copy for pending/decision states in `src/views/decision_detail_view.js`
-- [ ] T045 [P] Add accessibility attributes for decision and notification UI in `src/views/decision_detail_view.js`
+- [x] T044 [P] Update user-facing copy for pending/decision states in `src/views/decision_detail_view.js`
+- [x] T045 [P] Add accessibility attributes for decision and notification UI in `src/views/decision_detail_view.js`
 - [ ] T046 Run quickstart validation steps from `specs/025-author-decision/quickstart.md`
-- [ ] T047 [P] Add release-time UI refresh timer and 1-minute validation in `src/controllers/decision_controller.js`
-- [ ] T048 [P] Implement audit log retention pruning in `src/services/audit_log_service.js`
+- [x] T047 [P] Add release-time UI refresh timer and 1-minute validation in `src/controllers/decision_controller.js`
+- [x] T048 [P] Implement audit log retention pruning in `src/services/audit_log_service.js`
 
 ---
 

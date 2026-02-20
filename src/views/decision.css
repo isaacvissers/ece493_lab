@@ -1,0 +1,44 @@
+:root {
+  --decision-bg: #f7f2ea;
+  --decision-card: #fffaf1;
+  --decision-text: #2f2a25;
+  --decision-accent: #c66b2f;
+  --decision-muted: #6f6257;
+}
+
+.decision-layout {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 2fr 1fr;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--decision-bg), #fdf8f0);
+  color: var(--decision-text);
+}
+
+.decision-header {
+  grid-column: 1 / -1;
+}
+
+.decision-subtitle {
+  color: var(--decision-muted);
+  margin: 0.25rem 0 0;
+}
+
+.decision-main,
+.decision-sidebar {
+  background: var(--decision-card);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 10px 30px rgba(47, 42, 37, 0.08);
+}
+
+.decision-status {
+  font-weight: 600;
+  color: var(--decision-accent);
+}
+
+@media (max-width: 900px) {
+  .decision-layout {
+    grid-template-columns: 1fr;
+  }
+}

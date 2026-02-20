@@ -7,9 +7,11 @@ export function createPaper({
   paperId = null,
   title = '',
   status = 'submitted',
+  authorIds = [],
   assignedRefereeEmails = [],
   assignmentVersion = 0,
   editorId = null,
+  decisionReleaseAt = null,
 } = {}) {
   const resolvedId = id || paperId || generatePaperId();
   return {
@@ -17,9 +19,11 @@ export function createPaper({
     paperId: resolvedId,
     title,
     status,
+    authorIds: Array.isArray(authorIds) ? authorIds : [],
     assignedRefereeEmails: Array.isArray(assignedRefereeEmails) ? assignedRefereeEmails : [],
     assignmentVersion: typeof assignmentVersion === 'number' ? assignmentVersion : 0,
     editorId,
+    decisionReleaseAt,
   };
 }
 

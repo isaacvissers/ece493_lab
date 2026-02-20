@@ -10,7 +10,9 @@ export function createDecision({
   editorId,
   value,
   comments = '',
+  notes = null,
   decidedAt = null,
+  releasedAt = null,
 } = {}) {
   const normalizedValue = value ? `${value}`.trim().toLowerCase() : '';
   const resolvedValue = DECISION_VALUES[normalizedValue] || normalizedValue;
@@ -20,6 +22,8 @@ export function createDecision({
     editorId,
     value: resolvedValue,
     comments,
+    notes,
     decidedAt: decidedAt || new Date().toISOString(),
+    releasedAt,
   };
 }
