@@ -141,14 +141,24 @@ function showDashboard() {
   }
   const currentUser = sessionState.getCurrentUser();
   const userEmail = currentUser && currentUser.email ? currentUser.email : null;
-  const manuscripts = submissionStorage.getManuscripts()
-    .filter((manuscript) => (
-      userEmail
-        ? manuscript.submittedBy === userEmail || manuscript.contactEmail === userEmail
-        : false
-    ));
-  const assignablePapers = assignmentStorage.getPapers()
-    .filter((paper) => isEligibleStatus(paper.status));
+  let manuscripts = [];
+  try {
+    manuscripts = submissionStorage.getManuscripts()
+      .filter((manuscript) => (
+        userEmail
+          ? manuscript.submittedBy === userEmail || manuscript.contactEmail === userEmail
+          : false
+      ));
+  } catch (error) {
+    manuscripts = [];
+  }
+  let assignablePapers = [];
+  try {
+    assignablePapers = assignmentStorage.getPapers()
+      .filter((paper) => isEligibleStatus(paper.status));
+  } catch (error) {
+    assignablePapers = [];
+  }
   const dashboardView = createDashboardView(currentUser, manuscripts, assignablePapers);
   dashboardView.onChangePassword(showAccountSettings);
   dashboardView.onSubmitPaper(showSubmitManuscript);

@@ -178,6 +178,38 @@ test('dashboard shows no submissions when user email missing', async () => {
   expect(appRoot.querySelector('.submission-list').textContent).toContain('No uploaded papers yet.');
 });
 
+test('dashboard renders even when submission storage fails', async () => {
+  await setupApp();
+  const { submissionStorage } = await import('../../src/services/submission-storage.js');
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_21', email: 'author@example.com', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  const original = submissionStorage.getManuscripts;
+  submissionStorage.getManuscripts = () => {
+    throw new Error('bad_storage');
+  };
+  module.__testShowDashboard();
+  submissionStorage.getManuscripts = original;
+  expect(appRoot.querySelector('h1').textContent).toContain('Dashboard');
+});
+
+test('dashboard renders even when assignment storage fails', async () => {
+  await setupApp();
+  const { assignmentStorage } = await import('../../src/services/assignment-storage.js');
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_22', email: 'editor@example.com', role: 'Editor', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  const original = assignmentStorage.getPapers;
+  assignmentStorage.getPapers = () => {
+    throw new Error('bad_storage');
+  };
+  module.__testShowDashboard();
+  assignmentStorage.getPapers = original;
+  expect(appRoot.querySelector('h1').textContent).toContain('Dashboard');
+});
+
 test('unauthenticated submit routes to login then back to submission', async () => {
   await setupApp();
   const { storageService } = await import('../../src/services/storage-service.js');

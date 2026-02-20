@@ -9,7 +9,7 @@
 
 - [ ] T001 Create feature folder structure per plan in src/ and tests/
 - [ ] T002 Add seed fixtures for Paper, Review, Decision, Notification in src/services/fixtures.js
-- [ ] T003 Add shared constants for decision statuses and review counts in src/models/decisionConstants.js
+- [X] T003 Add shared constants for decision statuses and review counts in src/models/decisionConstants.js
 
 ## Phase 2: Foundational
 
@@ -18,9 +18,9 @@
 - [ ] T006 Implement Decision model with finality guard in src/models/Decision.js
 - [ ] T007 Implement Notification model in src/models/Notification.js
 - [ ] T008 Implement AuditLog model in src/models/AuditLog.js
-- [ ] T009 Implement decision eligibility service (exactly 3 reviews) in src/services/decisionEligibilityService.js
-- [ ] T010 Implement decision persistence service (atomic save) in src/services/decisionService.js
-- [ ] T011 Implement notification service for author updates in src/services/authorNotificationService.js
+- [X] T009 Implement decision eligibility service (exactly 3 reviews) in src/services/decisionEligibilityService.js
+- [X] T010 Implement decision persistence service (atomic save) in src/services/decisionService.js
+- [X] T011 Implement notification service for author updates in src/services/authorNotificationService.js
 
 ## Phase 3: User Story 1 - Decide on eligible papers (P1)
 
@@ -30,9 +30,9 @@
 
 - [ ] T012 [P] [US1] Add unit tests for eligibility service in tests/unit/decisionEligibilityService.test.js
 - [ ] T013 [P] [US1] Add unit tests for decision persistence in tests/unit/decisionService.test.js
-- [ ] T014 [US1] Implement decision queue view in src/views/decisionQueueView.js
-- [ ] T015 [US1] Implement decision entry view in src/views/decisionEntryView.js
-- [ ] T016 [US1] Implement decision save controller in src/controllers/decisionController.js
+- [X] T014 [US1] Implement decision queue view in src/views/decisionQueueView.js
+- [X] T015 [US1] Implement decision entry view in src/views/decisionEntryView.js
+- [X] T016 [US1] Implement decision save controller in src/controllers/decisionController.js
 - [ ] T017 [US1] Add integration test for Accept decision save (AT-UC24-03) in tests/integration/decisionAcceptFlow.test.js
 - [ ] T018 [US1] Add integration test for Reject decision save (AT-UC24-04) in tests/integration/decisionRejectFlow.test.js
 - [ ] T034 [US1] Add integration test for decision queue eligibility list (AT-UC24-01) in tests/integration/decisionQueueEligibility.test.js
