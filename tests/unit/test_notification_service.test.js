@@ -46,3 +46,52 @@ test('records sent notifications for multiple authors', () => {
   expect(result.ok).toBe(true);
   expect(notificationService.getNotifications()).toHaveLength(2);
 });
+
+test('records schedule notifications on success', () => {
+  const result = notificationService.triggerScheduleNotifications({
+    schedule: { scheduleId: 'sched_1' },
+    entry: { entryId: 'entry_1' },
+  });
+  expect(result.ok).toBe(true);
+  const logs = notificationService.getScheduleNotifications();
+  expect(logs[0].status).toBe('sent');
+});
+
+test('returns error when schedule notification payload missing', () => {
+  const result = notificationService.triggerScheduleNotifications();
+  expect(result.ok).toBe(false);
+  expect(result.reason).toBe('missing_payload');
+});
+
+test('records schedule notification failure when delivery fails', () => {
+  notificationService.setFailureMode({ email: true });
+  const result = notificationService.triggerScheduleNotifications({
+    schedule: { scheduleId: 'sched_2' },
+    entry: { entryId: 'entry_2' },
+  });
+  expect(result.ok).toBe(false);
+  const logs = notificationService.getScheduleNotifications();
+  expect(logs[0].status).toBe('failed');
+});
+
+test('uses itemId when entryId missing in schedule notifications', () => {
+  notificationService.reset();
+  const result = notificationService.triggerScheduleNotifications({
+    schedule: { scheduleId: 'sched_3' },
+    entry: { itemId: 'item_3' },
+  });
+  expect(result.ok).toBe(true);
+  const logs = notificationService.getScheduleNotifications();
+  expect(logs[0].details.entryId).toBe('item_3');
+});
+
+test('records failed notifications with itemId fallback', () => {
+  notificationService.setFailureMode({ inApp: true });
+  const result = notificationService.triggerScheduleNotifications({
+    schedule: { scheduleId: 'sched_4' },
+    entry: { itemId: 'item_4' },
+  });
+  expect(result.ok).toBe(false);
+  const logs = notificationService.getScheduleNotifications();
+  expect(logs[0].details.entryId).toBe('item_4');
+});

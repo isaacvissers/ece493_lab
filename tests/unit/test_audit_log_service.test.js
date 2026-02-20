@@ -49,3 +49,31 @@ test('schedule log helpers use default values when missing', () => {
   expect(logs[1].details.message).toBeUndefined();
   expect(logs[2].details.durationMs).toBeUndefined();
 });
+
+test('schedule edit log helpers record events', () => {
+  auditLogService.logScheduleEditDenied({ conferenceId: 'conf_1', userId: 'user_1' });
+  auditLogService.logScheduleEditFailed({ conferenceId: 'conf_2', entryId: 'entry_2', message: 'fail' });
+  auditLogService.logScheduleConflict({ conferenceId: 'conf_3', entryId: 'entry_3', conflictEntryId: 'entry_4' });
+  auditLogService.logScheduleConcurrency({ conferenceId: 'conf_4', expectedVersion: 1, actualVersion: 2 });
+  auditLogService.logScheduleNotificationFailed({ conferenceId: 'conf_5', entryId: 'entry_5', message: 'notify_fail' });
+  const logs = auditLogService.getLogs();
+  expect(logs[0].eventType).toBe('schedule_edit_denied');
+  expect(logs[1].eventType).toBe('schedule_edit_failed');
+  expect(logs[2].eventType).toBe('schedule_conflict');
+  expect(logs[3].eventType).toBe('schedule_concurrency');
+  expect(logs[4].eventType).toBe('schedule_notification_failed');
+});
+
+test('schedule edit log helpers use default values when missing', () => {
+  auditLogService.logScheduleEditDenied();
+  auditLogService.logScheduleEditFailed();
+  auditLogService.logScheduleConflict();
+  auditLogService.logScheduleConcurrency();
+  auditLogService.logScheduleNotificationFailed();
+  const logs = auditLogService.getLogs();
+  expect(logs[0].relatedId).toBe('schedule');
+  expect(logs[1].details.entryId).toBeUndefined();
+  expect(logs[2].details.conflictEntryId).toBeUndefined();
+  expect(logs[3].details.expectedVersion).toBeUndefined();
+  expect(logs[4].details.message).toBeUndefined();
+});

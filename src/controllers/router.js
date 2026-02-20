@@ -48,6 +48,20 @@ export const router = {
       return controller.view ? controller.view.element : null;
     });
   },
+  registerScheduleEditRoutes({ controller } = {}) {
+    if (!controller) {
+      return;
+    }
+    routes.set('schedule-edit', (payload) => {
+      if (controller.init) {
+        controller.init();
+      }
+      if (controller.show) {
+        controller.show(payload && payload.conferenceId ? payload.conferenceId : null);
+      }
+      return controller.view ? controller.view.element : null;
+    });
+  },
   register(path, handler) {
     routes.set(path, handler);
   },

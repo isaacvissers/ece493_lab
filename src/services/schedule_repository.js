@@ -102,15 +102,33 @@ export const scheduleRepository = {
   getScheduleItems(scheduleId) {
     return loadItems().filter((item) => item.scheduleId === scheduleId);
   },
-  saveDraft({ conferenceId, items = [], now = new Date().toISOString() } = {}) {
+  saveDraft({
+    conferenceId,
+    items = [],
+    version = null,
+    now = new Date().toISOString(),
+  } = {}) {
     const schedules = loadSchedules().slice();
     const index = findScheduleIndex(schedules, conferenceId);
     let schedule;
     if (index === -1) {
-      schedule = createSchedule({ conferenceId, status: 'draft', createdAt: now, updatedAt: now });
+      schedule = createSchedule({
+        conferenceId,
+        status: 'draft',
+        createdAt: now,
+        updatedAt: now,
+        version: Number.isFinite(version) ? version : undefined,
+      });
       schedules.push(schedule);
     } else {
-      schedule = { ...schedules[index], status: 'draft', updatedAt: now };
+      schedule = {
+        ...schedules[index],
+        status: 'draft',
+        updatedAt: now,
+        version: Number.isFinite(version)
+          ? version
+          : (Number.isFinite(schedules[index].version) ? schedules[index].version : 1),
+      };
       schedules[index] = schedule;
     }
     persistSchedules(schedules);

@@ -5,7 +5,7 @@ function normalizeItems(items) {
 function isScheduled(item) {
   return item
     && item.status === 'scheduled'
-    && item.roomName
+    && (item.roomName || item.roomId)
     && item.startTime
     && item.endTime;
 }
@@ -39,7 +39,7 @@ export const scheduleRenderer = {
         unscheduled.push(item);
         return;
       }
-      const roomName = item.roomName;
+      const roomName = item.roomName || item.roomId;
       if (!roomsMap.has(roomName)) {
         roomsMap.set(roomName, []);
       }

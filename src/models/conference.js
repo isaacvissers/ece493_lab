@@ -5,6 +5,8 @@ function generateConferenceId() {
 export function createConference({
   conferenceId = null,
   dateRange = null,
+  timeWindowStart = null,
+  timeWindowEnd = null,
   rooms = [],
   slotDurationMinutes = 0,
   constraints = null,
@@ -12,6 +14,8 @@ export function createConference({
   return {
     conferenceId: conferenceId || generateConferenceId(),
     dateRange,
+    timeWindowStart,
+    timeWindowEnd,
     rooms: Array.isArray(rooms) ? rooms.slice() : [],
     slotDurationMinutes,
     constraints,

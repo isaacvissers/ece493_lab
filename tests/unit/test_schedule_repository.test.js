@@ -56,6 +56,20 @@ test('saves drafts with default items and timestamps', () => {
   expect(items).toEqual([]);
 });
 
+test('saveDraft respects explicit version updates', () => {
+  const schedule = scheduleRepository.saveDraft({ conferenceId: 'conf_versioned', version: 5 });
+  expect(schedule.version).toBe(5);
+  const updated = scheduleRepository.saveDraft({ conferenceId: 'conf_versioned', items: [], version: 6 });
+  expect(updated.version).toBe(6);
+});
+
+test('saveDraft assigns version when existing schedule missing version', () => {
+  const schedule = scheduleRepository.saveDraft({ conferenceId: 'conf_missing_version', items: [] });
+  __test__.persistSchedules([{ ...schedule, version: undefined }]);
+  const updated = scheduleRepository.saveDraft({ conferenceId: 'conf_missing_version', items: [] });
+  expect(updated.version).toBe(1);
+});
+
 test('saveDraft handles empty input object', () => {
   const schedule = scheduleRepository.saveDraft();
   expect(scheduleRepository.getSchedule(schedule.conferenceId)).toMatchObject(schedule);

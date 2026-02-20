@@ -23,6 +23,7 @@
 7. Simulate concurrent edit (version mismatch) and confirm refresh required.
 8. Simulate save failure; confirm schedule unchanged and error logged.
 9. Trigger notifications after save; confirm failure does not roll back schedule.
+10. Run `npm test` to verify unit/integration/acceptance/performance coverage.
 
 ## Test Suite
 

@@ -18,9 +18,9 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Ensure MVC directories exist for schedule editing in src/models/ src/services/ src/controllers/ src/views/
-- [ ] T002 [P] Add schedule edit route placeholder in src/controllers/router.js
-- [ ] T003 [P] Create base edit view shell in src/views/schedule_edit_view.js
+- [x] T001 Ensure MVC directories exist for schedule editing in src/models/ src/services/ src/controllers/ src/views/
+- [x] T002 [P] Add schedule edit route placeholder in src/controllers/router.js
+- [x] T003 [P] Create base edit view shell in src/views/schedule_edit_view.js
 
 ---
 
@@ -30,17 +30,17 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Create Schedule model with version in src/models/schedule.js
-- [ ] T005 [P] Create ScheduleEntry model in src/models/schedule_entry.js
-- [ ] T006 [P] Create Conference model (time window fields) in src/models/conference.js
-- [ ] T007 [P] Create User model (editor/admin role) in src/models/user.js
-- [ ] T008 [P] Create AuditLog model in src/models/audit_log.js
-- [ ] T009 [P] Create NotificationLog model in src/models/notification_log.js
-- [ ] T010 [P] Implement authorization helper for editor/admin in src/services/auth_service.js
-- [ ] T011 [P] Implement schedule retrieval/update service (draft only) in src/services/schedule_service.js
-- [ ] T012 [P] Implement conflict validation service in src/services/schedule_validation_service.js
-- [ ] T013 [P] Implement audit logging helper in src/services/audit_log_service.js
-- [ ] T014 [P] Implement notification trigger helper in src/services/notification_service.js
+- [x] T004 [P] Create Schedule model with version in src/models/schedule.js
+- [x] T005 [P] Create ScheduleEntry model in src/models/schedule_entry.js
+- [x] T006 [P] Create Conference model (time window fields) in src/models/conference.js
+- [x] T007 [P] Create User model (editor/admin role) in src/models/user.js
+- [x] T008 [P] Create AuditLog model in src/models/audit_log.js
+- [x] T009 [P] Create NotificationLog model in src/models/notification_log.js
+- [x] T010 [P] Implement authorization helper for editor/admin in src/services/auth_service.js
+- [x] T011 [P] Implement schedule retrieval/update service (draft only) in src/services/schedule_service.js
+- [x] T012 [P] Implement conflict validation service in src/services/schedule_validation_service.js
+- [x] T013 [P] Implement audit logging helper in src/services/audit_log_service.js
+- [x] T014 [P] Implement notification trigger helper in src/services/notification_service.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -54,22 +54,22 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T015 [P] [US1] Acceptance test for AT-UC28-01 in tests/acceptance/uc28_edit_schedule_success.test.js
-- [ ] T016 [P] [US1] Acceptance test for AT-UC28-02 in tests/acceptance/uc28_html_view_updates.test.js
-- [ ] T017 [P] [US1] Acceptance test for AT-UC28-03 in tests/acceptance/uc28_conflict_block.test.js
-- [ ] T018 [P] [US1] Acceptance test for AT-UC28-04 in tests/acceptance/uc28_timewindow_block.test.js
-- [ ] T019 [P] [US1] Integration test for edit endpoint in tests/integration/schedule_edit_endpoint.test.js
-- [ ] T020 [P] [US1] Unit tests for conflict rules in tests/unit/schedule_validation_conflict.test.js
-- [ ] T021 [P] [US1] Unit tests for time-window rules in tests/unit/schedule_validation_timewindow.test.js
+- [x] T015 [P] [US1] Acceptance test for AT-UC28-01 in tests/acceptance/uc28_edit_schedule_success.test.js
+- [x] T016 [P] [US1] Acceptance test for AT-UC28-02 in tests/acceptance/uc28_html_view_updates.test.js
+- [x] T017 [P] [US1] Acceptance test for AT-UC28-03 in tests/acceptance/uc28_conflict_block.test.js
+- [x] T018 [P] [US1] Acceptance test for AT-UC28-04 in tests/acceptance/uc28_timewindow_block.test.js
+- [x] T019 [P] [US1] Integration test for edit endpoint in tests/integration/schedule_edit_endpoint.test.js
+- [x] T020 [P] [US1] Unit tests for conflict rules in tests/unit/schedule_validation_conflict.test.js
+- [x] T021 [P] [US1] Unit tests for time-window rules in tests/unit/schedule_validation_timewindow.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T022 [P] [US1] Implement edit form rendering in src/views/schedule_edit_view.js
-- [ ] T023 [US1] Implement schedule edit controller action in src/controllers/schedule_edit_controller.js
-- [ ] T024 [US1] Wire edit routes to controller in src/controllers/router.js
-- [ ] T025 [US1] Enforce conflict + time-window validation in src/services/schedule_validation_service.js
-- [ ] T026 [US1] Save draft updates and confirm success in src/services/schedule_service.js
-- [ ] T027 [US1] Ensure HTML schedule view reflects draft after publish in src/services/schedule_service.js
+- [x] T022 [P] [US1] Implement edit form rendering in src/views/schedule_edit_view.js
+- [x] T023 [US1] Implement schedule edit controller action in src/controllers/schedule_edit_controller.js
+- [x] T024 [US1] Wire edit routes to controller in src/controllers/router.js
+- [x] T025 [US1] Enforce conflict + time-window validation in src/services/schedule_validation_service.js
+- [x] T026 [US1] Save draft updates and confirm success in src/services/schedule_service.js
+- [x] T027 [US1] Ensure HTML schedule view reflects draft after publish in src/services/schedule_service.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -83,17 +83,17 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T028 [P] [US2] Acceptance test for AT-UC28-05 in tests/acceptance/uc28_unschedule_block.test.js
-- [ ] T029 [P] [US2] Acceptance test for AT-UC28-06 in tests/acceptance/uc28_no_schedule_edit.test.js
-- [ ] T030 [P] [US2] Acceptance test for AT-UC28-07 in tests/acceptance/uc28_unauthorized_edit.test.js
-- [ ] T031 [P] [US2] Integration test for no-schedule response in tests/integration/schedule_edit_no_schedule.test.js
-- [ ] T032 [P] [US2] Unit tests for authorization checks in tests/unit/schedule_edit_auth.test.js
+- [x] T028 [P] [US2] Acceptance test for AT-UC28-05 in tests/acceptance/uc28_unschedule_block.test.js
+- [x] T029 [P] [US2] Acceptance test for AT-UC28-06 in tests/acceptance/uc28_no_schedule_edit.test.js
+- [x] T030 [P] [US2] Acceptance test for AT-UC28-07 in tests/acceptance/uc28_unauthorized_edit.test.js
+- [x] T031 [P] [US2] Integration test for no-schedule response in tests/integration/schedule_edit_no_schedule.test.js
+- [x] T032 [P] [US2] Unit tests for authorization checks in tests/unit/schedule_edit_auth.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T033 [US2] Block unscheduling without new assignment in src/services/schedule_validation_service.js
-- [ ] T034 [US2] Handle no-schedule state in src/controllers/schedule_edit_controller.js
-- [ ] T035 [US2] Enforce authorization and log denial in src/controllers/schedule_edit_controller.js
+- [x] T033 [US2] Block unscheduling without new assignment in src/services/schedule_validation_service.js
+- [x] T034 [US2] Handle no-schedule state in src/controllers/schedule_edit_controller.js
+- [x] T035 [US2] Enforce authorization and log denial in src/controllers/schedule_edit_controller.js
 
 **Checkpoint**: User Stories 1 and 2 independently functional
 
@@ -107,17 +107,17 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T036 [P] [US3] Acceptance test for AT-UC28-08 in tests/acceptance/uc28_db_failure.test.js
-- [ ] T037 [P] [US3] Acceptance test for AT-UC28-09 in tests/acceptance/uc28_concurrency_conflict.test.js
-- [ ] T038 [P] [US3] Acceptance test for AT-UC28-10 in tests/acceptance/uc28_notification_failure.test.js
-- [ ] T039 [P] [US3] Integration test for version mismatch response in tests/integration/schedule_edit_version_conflict.test.js
-- [ ] T040 [P] [US3] Unit tests for persistence failure handling in tests/unit/schedule_service_failure.test.js
+- [x] T036 [P] [US3] Acceptance test for AT-UC28-08 in tests/acceptance/uc28_db_failure.test.js
+- [x] T037 [P] [US3] Acceptance test for AT-UC28-09 in tests/acceptance/uc28_concurrency_conflict.test.js
+- [x] T038 [P] [US3] Acceptance test for AT-UC28-10 in tests/acceptance/uc28_notification_failure.test.js
+- [x] T039 [P] [US3] Integration test for version mismatch response in tests/integration/schedule_edit_version_conflict.test.js
+- [x] T040 [P] [US3] Unit tests for persistence failure handling in tests/unit/schedule_service_failure.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T041 [US3] Detect version mismatch and require refresh in src/services/schedule_service.js
-- [ ] T042 [US3] Handle save failure with error + logging in src/services/schedule_service.js
-- [ ] T043 [US3] Trigger notifications after save and log failures in src/services/notification_service.js
+- [x] T041 [US3] Detect version mismatch and require refresh in src/services/schedule_service.js
+- [x] T042 [US3] Handle save failure with error + logging in src/services/schedule_service.js
+- [x] T043 [US3] Trigger notifications after save and log failures in src/services/notification_service.js
 
 **Checkpoint**: All user stories independently functional
 
@@ -127,11 +127,11 @@ integration/acceptance tests mapped to AT-XX.md cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T044 [P] Add performance validation for 200 ms interaction target in tests/performance/schedule_edit_perf.test.js
-- [ ] T045 [P] Add conflict detection performance validation for 300 items in tests/performance/schedule_conflict_perf.test.js
-- [ ] T046 [P] Add accessibility checks for edit view in tests/integration/schedule_edit_a11y.test.js
-- [ ] T047 [P] Add log retention validation for 90-day audit logs in tests/integration/audit_log_retention.test.js
-- [ ] T048 [P] Update quickstart verification steps in specs/028-edit-schedule/quickstart.md
+- [x] T044 [P] Add performance validation for 200 ms interaction target in tests/performance/schedule_edit_perf.test.js
+- [x] T045 [P] Add conflict detection performance validation for 300 items in tests/performance/schedule_conflict_perf.test.js
+- [x] T046 [P] Add accessibility checks for edit view in tests/integration/schedule_edit_a11y.test.js
+- [x] T047 [P] Add log retention validation for 90-day audit logs in tests/integration/audit_log_retention.test.js
+- [x] T048 [P] Update quickstart verification steps in specs/028-edit-schedule/quickstart.md
 
 ---
 

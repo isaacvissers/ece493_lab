@@ -43,3 +43,17 @@ test('sorts items when later entry has invalid time', () => {
   const result = scheduleRenderer.renderAgenda({ items });
   expect(result.rooms[0].items[0].paperTitle).toBe('Paper First');
 });
+
+test('groups items using roomId when roomName missing', () => {
+  const items = [
+    {
+      paperTitle: 'Paper RoomId',
+      roomId: 'Room X',
+      startTime: '2026-05-01T09:00:00.000Z',
+      endTime: '2026-05-01T09:30:00.000Z',
+      status: 'scheduled',
+    },
+  ];
+  const result = scheduleRenderer.renderAgenda({ items });
+  expect(result.rooms[0].roomName).toBe('Room X');
+});

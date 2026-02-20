@@ -39,6 +39,41 @@ export const auditLogService = {
       details: { durationMs },
     });
   },
+  logScheduleEditDenied({ conferenceId, userId } = {}) {
+    auditLogService.log({
+      eventType: 'schedule_edit_denied',
+      relatedId: conferenceId || 'schedule',
+      details: { userId },
+    });
+  },
+  logScheduleEditFailed({ conferenceId, entryId, message } = {}) {
+    auditLogService.log({
+      eventType: 'schedule_edit_failed',
+      relatedId: conferenceId || 'schedule',
+      details: { entryId, message },
+    });
+  },
+  logScheduleConflict({ conferenceId, entryId, conflictEntryId } = {}) {
+    auditLogService.log({
+      eventType: 'schedule_conflict',
+      relatedId: conferenceId || 'schedule',
+      details: { entryId, conflictEntryId },
+    });
+  },
+  logScheduleConcurrency({ conferenceId, expectedVersion, actualVersion } = {}) {
+    auditLogService.log({
+      eventType: 'schedule_concurrency',
+      relatedId: conferenceId || 'schedule',
+      details: { expectedVersion, actualVersion },
+    });
+  },
+  logScheduleNotificationFailed({ conferenceId, entryId, message } = {}) {
+    auditLogService.log({
+      eventType: 'schedule_notification_failed',
+      relatedId: conferenceId || 'schedule',
+      details: { entryId, message },
+    });
+  },
   getLogs() {
     return loadLogs().slice();
   },
