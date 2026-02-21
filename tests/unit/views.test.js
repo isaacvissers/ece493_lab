@@ -1,6 +1,8 @@
 import { jest } from '@jest/globals';
 import { createLoginView } from '../../src/views/login-view.js';
-import { createRegistrationView } from '../../src/views/registration-view.js';
+import { createRegistrationView as createAccountRegistrationView } from '../../src/views/registration-view.js';
+import { createRegistrationView as createConferenceRegistrationView } from '../../src/views/registration_view.js';
+import { createRegistrationStatusView } from '../../src/views/registration_status_view.js';
 import { createDashboardView } from '../../src/views/dashboard-view.js';
 import { createAccountSettingsView } from '../../src/views/account-settings-view.js';
 import { createSubmitManuscriptView } from '../../src/views/submit-manuscript-view.js';
@@ -44,7 +46,7 @@ test('login view exposes fields and status helpers', () => {
 });
 
 test('registration view exposes fields and helpers', () => {
-  const view = createRegistrationView();
+  const view = createAccountRegistrationView();
   document.body.appendChild(view.element);
   expect(view.element.querySelector('#email')).toBeTruthy();
   expect(view.element.querySelector('#password')).toBeTruthy();
@@ -62,6 +64,100 @@ test('registration view exposes fields and helpers', () => {
   view.onLogin(onLogin);
   loginButton.click();
   expect(onLogin).toHaveBeenCalled();
+});
+
+test('conference registration view exposes fields and helpers', () => {
+  const view = createConferenceRegistrationView();
+  document.body.appendChild(view.element);
+  expect(view.element.querySelector('#registration-name')).toBeTruthy();
+  expect(view.element.querySelector('#registration-affiliation')).toBeTruthy();
+  expect(view.element.querySelector('#registration-email')).toBeTruthy();
+  expect(view.element.querySelector('#registration-attendance')).toBeTruthy();
+
+  view.setStatus('ready', false);
+  expect(view.element.querySelector('#registration-status').textContent).toBe('ready');
+  view.setStatus('ok');
+  expect(view.element.querySelector('#registration-status').className).toBe('status');
+
+  view.setWindow({ startAt: '2026-03-01', endAt: '2026-03-10', isOpen: false });
+  expect(view.element.querySelector('#registration-window').textContent).toContain('2026-03-01');
+  view.setWindow();
+  expect(view.element.querySelector('#registration-window').textContent).toContain('not set');
+
+  view.setFee(0);
+  expect(view.element.querySelector('#registration-fee').textContent).toContain('Free');
+
+  view.setFee(NaN);
+  expect(view.element.querySelector('#registration-fee').textContent).toContain('unavailable');
+
+  view.setWindow({ startAt: null, endAt: null, isOpen: false });
+  expect(view.element.querySelector('#registration-window').textContent).toContain('not set');
+
+  view.setFieldError('name', 'Required');
+  expect(view.element.querySelector('#registration-name-error').textContent).toContain('Required');
+  view.setFieldError('unknown', 'Oops');
+
+  view.clearErrors();
+  expect(view.element.querySelector('#registration-name-error').textContent).toBe('');
+
+  view.setClosed({ startAt: '2026-03-01', endAt: '2026-03-10' });
+  expect(view.element.querySelector('#registration-submit').disabled).toBe(true);
+  view.setClosed();
+
+  const receiptElement = document.createElement('div');
+  receiptElement.textContent = 'Receipt';
+  view.setReceiptView({ element: receiptElement });
+  expect(view.element.querySelector('#registration-receipt-slot').hidden).toBe(false);
+  view.setReceiptView(null);
+  expect(view.element.querySelector('#registration-receipt-slot').hidden).toBe(true);
+
+  view.setFormEnabled(false);
+  expect(view.element.querySelector('#registration-submit').disabled).toBe(true);
+  view.setFormEnabled(true);
+
+  view.setValues({
+    name: 'Ada',
+    affiliation: 'Lab',
+    contactEmail: 'ada@example.com',
+    attendanceType: 'virtual',
+  });
+  expect(view.element.querySelector('#registration-email').value).toBe('ada@example.com');
+  view.setValues();
+  expect(view.element.querySelector('#registration-attendance').value).toBe('in_person');
+
+  const onSubmit = jest.fn((event) => event.preventDefault());
+  view.onSubmit(onSubmit);
+  view.element.querySelector('#registration-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  expect(onSubmit).toHaveBeenCalled();
+});
+
+test('registration status view renders receipt and retry', () => {
+  const view = createRegistrationStatusView();
+  document.body.appendChild(view.element);
+  view.setReceipt({
+    name: 'Ada Lovelace',
+    affiliation: 'Analytical Engine',
+    attendanceType: 'virtual',
+    registrationStatus: 'Registered',
+    paymentStatus: 'succeeded',
+  });
+  expect(view.element.querySelector('#registration-receipt-name').textContent).toContain('Ada');
+  view.setRetryVisible(true);
+  const retryButton = view.element.querySelector('#registration-retry-payment');
+  expect(retryButton.hidden).toBe(false);
+  view.setRetryVisible(false);
+  expect(retryButton.hidden).toBe(true);
+  const onRetry = jest.fn();
+  view.onRetryPayment(onRetry);
+  retryButton.click();
+  expect(onRetry).toHaveBeenCalled();
+  view.setStatus('Oops', true);
+  expect(view.element.querySelector('#registration-receipt-status').className).toContain('error');
+  view.setReceipt({});
+  view.setStatus('Ok');
+  const nameNode = view.element.querySelector('#registration-receipt-name');
+  nameNode.remove();
+  view.setReceipt();
 });
 
 test('dashboard view includes email when provided', () => {

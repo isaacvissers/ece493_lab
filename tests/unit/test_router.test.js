@@ -118,6 +118,23 @@ test('router registers public schedule routes when controller provided', () => {
   expect(root.textContent).toContain('Public Schedule');
 });
 
+test('router registers registration routes when controller provided', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    init: jest.fn(),
+    show: jest.fn(),
+  };
+  controller.view.element.textContent = 'Registration';
+  router.registerRegistrationRoutes({ controller });
+  const result = router.navigate('registration');
+  expect(result).toBe(true);
+  expect(controller.init).toHaveBeenCalled();
+  expect(controller.show).toHaveBeenCalled();
+  expect(root.textContent).toContain('Registration');
+});
+
 test('router handles schedule HTML route without payload or show method', () => {
   const root = document.getElementById('root');
   router.setRoot(root);
@@ -189,6 +206,12 @@ test('router ignores public schedule registration when controller missing', () =
   expect(result).toBe(false);
 });
 
+test('router ignores registration route when controller missing', () => {
+  router.registerRegistrationRoutes();
+  const result = router.navigate('registration');
+  expect(result).toBe(false);
+});
+
 test('router handles schedule edit route without init or show', () => {
   const root = document.getElementById('root');
   router.setRoot(root);
@@ -240,6 +263,35 @@ test('router renders empty public schedule view when view missing', () => {
   expect(result).toBe(true);
   expect(root.textContent).toBe('');
   expect(controller.show).toHaveBeenCalledWith('conf_none');
+});
+
+test('router renders empty registration view when view missing', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: null,
+    init: jest.fn(),
+    show: jest.fn(),
+  };
+  router.registerRegistrationRoutes({ controller });
+  const result = router.navigate('registration');
+  expect(result).toBe(true);
+  expect(root.textContent).toBe('');
+  expect(controller.init).toHaveBeenCalled();
+  expect(controller.show).toHaveBeenCalled();
+});
+
+test('router handles registration route without init or show', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+  };
+  controller.view.element.textContent = 'Registration';
+  router.registerRegistrationRoutes({ controller });
+  const result = router.navigate('registration');
+  expect(result).toBe(true);
+  expect(root.textContent).toContain('Registration');
 });
 
 test('router passes null conferenceId for author schedule when payload missing', () => {

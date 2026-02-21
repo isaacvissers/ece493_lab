@@ -37,3 +37,10 @@ export const scheduleStorage = {
   remove,
   clearAll,
 };
+
+export const registrationStorage = {
+  read,
+  write,
+  remove,
+  clearAll,
+};

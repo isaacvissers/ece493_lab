@@ -1,10 +1,11 @@
-import { decisionStorage, scheduleStorage } from './storage.js';
+import { decisionStorage, scheduleStorage, registrationStorage } from './storage.js';
 import { notificationPrefs } from './notification_prefs.js';
 import { createNotification } from '../models/notification.js';
 import { createNotificationLog } from '../models/notification_log.js';
 
 const NOTIFICATION_KEY = 'cms.notifications';
 const SCHEDULE_NOTIFICATION_KEY = 'cms.schedule_notifications';
+const REGISTRATION_NOTIFICATION_KEY = 'cms.registration_notifications';
 
 let failureMode = {
   email: false,
@@ -25,6 +26,14 @@ function loadScheduleNotifications() {
 
 function persistScheduleNotifications(entries) {
   scheduleStorage.write(SCHEDULE_NOTIFICATION_KEY, entries);
+}
+
+function loadRegistrationNotifications() {
+  return registrationStorage.read(REGISTRATION_NOTIFICATION_KEY, []);
+}
+
+function persistRegistrationNotifications(entries) {
+  registrationStorage.write(REGISTRATION_NOTIFICATION_KEY, entries);
 }
 
 function isValidEmail(email) {
@@ -51,12 +60,41 @@ export const notificationService = {
     failureMode = { email: false, inApp: false };
     decisionStorage.remove(NOTIFICATION_KEY);
     scheduleStorage.remove(SCHEDULE_NOTIFICATION_KEY);
+    registrationStorage.remove(REGISTRATION_NOTIFICATION_KEY);
   },
   getNotifications() {
     return loadNotifications().slice();
   },
   getScheduleNotifications() {
     return loadScheduleNotifications().slice();
+  },
+  getRegistrationNotifications() {
+    return loadRegistrationNotifications().slice();
+  },
+  sendRegistrationConfirmation({ registration, channels = ['email', 'in_app'] } = {}) {
+    if (!registration) {
+      return { ok: false, reason: 'missing_registration' };
+    }
+    const entries = loadRegistrationNotifications().slice();
+    const results = [];
+    let failed = false;
+    channels.forEach((channel) => {
+      const normalized = channel === 'in_app' ? 'in_app' : 'email';
+      const shouldFail = normalized === 'email' ? failureMode.email : failureMode.inApp;
+      entries.push(createNotification({
+        registrationId: registration.id,
+        recipientId: registration.userId,
+        channel: normalized,
+        status: shouldFail ? 'failed' : 'sent',
+        reason: shouldFail ? `${normalized}_failure` : 'registration_confirmation',
+      }));
+      results.push({ channel: normalized, status: shouldFail ? 'failed' : 'sent' });
+      if (shouldFail) {
+        failed = true;
+      }
+    });
+    persistRegistrationNotifications(entries);
+    return { ok: !failed, results, reason: failed ? 'notification_failed' : null };
   },
   triggerScheduleNotifications({ schedule, entry } = {}) {
     if (!schedule || !entry) {

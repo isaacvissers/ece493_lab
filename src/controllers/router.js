@@ -84,6 +84,20 @@ export const router = {
       return controller.view ? controller.view.element : null;
     });
   },
+  registerRegistrationRoutes({ controller } = {}) {
+    if (!controller) {
+      return;
+    }
+    routes.set('registration', () => {
+      if (controller.init) {
+        controller.init();
+      }
+      if (controller.show) {
+        controller.show();
+      }
+      return controller.view ? controller.view.element : null;
+    });
+  },
   register(path, handler) {
     routes.set(path, handler);
   },
