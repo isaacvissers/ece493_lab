@@ -111,12 +111,17 @@ export function createDashboardView(user, manuscripts = [], assignablePapers = [
   submitButton.className = 'button';
   submitButton.id = 'submit-paper-button';
   submitButton.textContent = 'Submit paper';
+  const priceListButton = document.createElement('button');
+  priceListButton.type = 'button';
+  priceListButton.className = 'button secondary';
+  priceListButton.id = 'price-list-button';
+  priceListButton.textContent = 'View price list';
   const changePasswordButton = document.createElement('button');
   changePasswordButton.type = 'button';
   changePasswordButton.className = 'button secondary';
   changePasswordButton.id = 'change-password-button';
   changePasswordButton.textContent = 'Change password';
-  actions.append(submitButton, changePasswordButton);
+  actions.append(submitButton, priceListButton, changePasswordButton);
 
   container.append(title, status, message, submissionsSection, assignmentSection, actions);
   return {
@@ -126,6 +131,9 @@ export function createDashboardView(user, manuscripts = [], assignablePapers = [
     },
     onSubmitPaper(handler) {
       submitButton.addEventListener('click', handler);
+    },
+    onViewPriceList(handler) {
+      priceListButton.addEventListener('click', handler);
     },
     onAssignReferees(handler) {
       if (!isEditor) {

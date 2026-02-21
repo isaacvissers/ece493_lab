@@ -107,6 +107,62 @@ test('app routes to submit manuscript from dashboard', async () => {
   expect(appRoot.querySelector('#title')).toBeTruthy();
 });
 
+test('app routes to price list from dashboard', async () => {
+  await setupApp();
+  const { sessionState } = await import('../../src/models/session-state.js');
+  sessionState.authenticate({ id: 'acct_20', email: 'viewer@example.com', createdAt: new Date().toISOString() });
+  const module = await import('../../src/app.js');
+  const appRoot = document.getElementById('app');
+  module.__testShowDashboard();
+  appRoot.querySelector('#price-list-button').click();
+  expect(appRoot.querySelector('h1').textContent).toContain('Price list');
+});
+
+test('app falls back to price list view when controller returns null', async () => {
+  await setupApp();
+  const module = await import('../../src/app.js');
+  module.__testShowPriceList({ show: () => null });
+  const appRoot = document.getElementById('app');
+  expect(appRoot.querySelector('h1').textContent).toContain('Price list');
+});
+
+test('app redirects to login when price list access is restricted', async () => {
+  await setupApp();
+  const { pricingPolicyService } = await import('../../src/services/pricing_policy_service.js');
+  pricingPolicyService.setAccessLevel('registered');
+  const module = await import('../../src/app.js');
+  module.__testShowPriceList();
+  const appRoot = document.getElementById('app');
+  expect(appRoot.querySelector('#login-email')).toBeTruthy();
+});
+
+test('app returns to price list after login when access is restricted', async () => {
+  const { storageService } = await setupApp();
+  const { pricingPolicyService } = await import('../../src/services/pricing_policy_service.js');
+  const { priceListService } = await import('../../src/services/price_list_service.js');
+  pricingPolicyService.setAccessLevel('registered');
+  priceListService.savePriceList({
+    conferenceId: 'conf_app',
+    status: 'published',
+    items: [{ category: 'student', label: 'Standard', amount: 120, status: 'valid' }],
+  });
+  storageService.saveAccount({
+    id: 'acct_price',
+    email: 'price@example.com',
+    normalizedEmail: 'price@example.com',
+    password: 'validPass1!',
+    createdAt: new Date().toISOString(),
+  });
+  const module = await import('../../src/app.js');
+  module.__testShowPriceList();
+  const appRoot = document.getElementById('app');
+  appRoot.querySelector('#login-email').value = 'price@example.com';
+  appRoot.querySelector('#login-password').value = 'validPass1!';
+  const event = new Event('submit', { bubbles: true, cancelable: true });
+  appRoot.querySelector('form').dispatchEvent(event);
+  expect(appRoot.querySelector('h1').textContent).toContain('Price list');
+});
+
 test('dashboard shows assignable papers for editors', async () => {
   await setupApp();
   const { sessionState } = await import('../../src/models/session-state.js');

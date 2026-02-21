@@ -17,11 +17,11 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Ensure MVC directories exist for pricing in src/models/ src/services/ src/controllers/ src/views/
-- [ ] T002 [P] Add price list route placeholder in src/controllers/router.js
-- [ ] T003 [P] Create price list view shell in src/views/price_list_view.js
-- [ ] T004 [P] Create price list error view shell in src/views/price_list_error_view.js
-- [ ] T042 [P] Add CMS navigation entry linking to Price List in src/views/navigation_view.js (or existing nav view)
+- [x] T001 Ensure MVC directories exist for pricing in src/models/ src/services/ src/controllers/ src/views/
+- [x] T002 [P] Add price list route placeholder in src/controllers/router.js
+- [x] T003 [P] Create price list view shell in src/views/price_list_view.js
+- [x] T004 [P] Create price list error view shell in src/views/price_list_error_view.js
+- [x] T042 [P] Add CMS navigation entry linking to Price List in src/views/navigation_view.js (or existing nav view)
 
 ---
 
@@ -31,15 +31,15 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 [P] Create PriceList model in src/models/price_list.js
-- [ ] T006 [P] Create PriceItem model in src/models/price_item.js
-- [ ] T007 [P] Create PricingPolicy model in src/models/pricing_policy.js
-- [ ] T008 [P] Create PriceListLog model in src/models/price_list_log.js
-- [ ] T009 [P] Implement price list retrieval service in src/services/price_list_service.js
-- [ ] T010 [P] Implement access policy service in src/services/pricing_policy_service.js (read localStorage key `pricingPolicy`)
-- [ ] T011 [P] Implement price list logging helper in src/services/price_list_log_service.js
-- [ ] T043 [P] Enforce allowed pricing categories in src/models/price_item.js
-- [ ] T044 [P] Implement log retention (90 days) in src/services/price_list_log_service.js
+- [x] T005 [P] Create PriceList model in src/models/price_list.js
+- [x] T006 [P] Create PriceItem model in src/models/price_item.js
+- [x] T007 [P] Create PricingPolicy model in src/models/pricing_policy.js
+- [x] T008 [P] Create PriceListLog model in src/models/price_list_log.js
+- [x] T009 [P] Implement price list retrieval service in src/services/price_list_service.js
+- [x] T010 [P] Implement access policy service in src/services/pricing_policy_service.js (read localStorage key `pricingPolicy`)
+- [x] T011 [P] Implement price list logging helper in src/services/price_list_log_service.js
+- [x] T043 [P] Enforce allowed pricing categories in src/models/price_item.js
+- [x] T044 [P] Implement log retention (90 days) in src/services/price_list_log_service.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -53,17 +53,17 @@
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T012 [P] [US1] Acceptance test for AT-UC32-01 in tests/acceptance/uc32_guest_view_prices.test.js
-- [ ] T013 [P] [US1] Acceptance test for AT-UC32-02 in tests/acceptance/uc32_registered_view_prices.test.js
-- [ ] T014 [P] [US1] Integration test for price list retrieval in tests/integration/price_list_retrieval.test.js
-- [ ] T015 [P] [US1] Unit tests for price list mapping/formatting (USD/en-US) in tests/unit/price_list_service.test.js
+- [x] T012 [P] [US1] Acceptance test for AT-UC32-01 in tests/acceptance/uc32_guest_view_prices.test.js
+- [x] T013 [P] [US1] Acceptance test for AT-UC32-02 in tests/acceptance/uc32_registered_view_prices.test.js
+- [x] T014 [P] [US1] Integration test for price list retrieval in tests/integration/price_list_retrieval.test.js
+- [x] T015 [P] [US1] Unit tests for price list mapping/formatting (USD/en-US) in tests/unit/price_list_service.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T016 [P] [US1] Render price list table (Category/Label, Rate Type, Amount) with USD/en-US formatting in src/views/price_list_view.js
-- [ ] T017 [US1] Implement price list controller action in src/controllers/price_list_controller.js
-- [ ] T018 [US1] Wire price list route in src/controllers/router.js
-- [ ] T019 [US1] Load published price list in src/services/price_list_service.js
+- [x] T016 [P] [US1] Render price list table (Category/Label, Rate Type, Amount) with USD/en-US formatting in src/views/price_list_view.js
+- [x] T017 [US1] Implement price list controller action in src/controllers/price_list_controller.js
+- [x] T018 [US1] Wire price list route in src/controllers/router.js
+- [x] T019 [US1] Load published price list in src/services/price_list_service.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -77,16 +77,16 @@
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T020 [P] [US2] Acceptance test for AT-UC32-03 in tests/acceptance/uc32_price_list_unavailable.test.js
-- [ ] T021 [P] [US2] Acceptance test for AT-UC32-04 in tests/acceptance/uc32_price_list_tbd_items.test.js
-- [ ] T022 [P] [US2] Integration test for data-quality handling in tests/integration/price_list_data_quality.test.js
-- [ ] T023 [P] [US2] Unit tests for missing/invalid item labeling and allowed category validation in tests/unit/price_item_validation.test.js
+- [x] T020 [P] [US2] Acceptance test for AT-UC32-03 in tests/acceptance/uc32_price_list_unavailable.test.js
+- [x] T021 [P] [US2] Acceptance test for AT-UC32-04 in tests/acceptance/uc32_price_list_tbd_items.test.js
+- [x] T022 [P] [US2] Integration test for data-quality handling in tests/integration/price_list_data_quality.test.js
+- [x] T023 [P] [US2] Unit tests for missing/invalid item labeling and allowed category validation in tests/unit/price_item_validation.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T024 [US2] Render “Price list not available yet” state in src/views/price_list_view.js
-- [ ] T025 [US2] Label missing items as "TBD" by default and omit only when policy enables in src/services/price_list_service.js
-- [ ] T026 [US2] Log data-quality issues in src/services/price_list_log_service.js
+- [x] T024 [US2] Render “Price list not available yet” state in src/views/price_list_view.js
+- [x] T025 [US2] Label missing items as "TBD" by default and omit only when policy enables in src/services/price_list_service.js
+- [x] T026 [US2] Log data-quality issues in src/services/price_list_log_service.js
 
 **Checkpoint**: User Stories 1 and 2 independently functional
 
@@ -100,20 +100,20 @@
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T027 [P] [US3] Acceptance test for AT-UC32-05 (includes retry cue) in tests/acceptance/uc32_render_failure.test.js
-- [ ] T028 [P] [US3] Acceptance test for AT-UC32-06 in tests/acceptance/uc32_access_restricted.test.js
-- [ ] T029 [P] [US3] Acceptance test for AT-UC32-07 in tests/acceptance/uc32_high_traffic_timeout.test.js
-- [ ] T030 [P] [US3] Integration test for access policy enforcement in tests/integration/price_list_access_policy.test.js
-- [ ] T031 [P] [US3] Unit tests for timeout/loader behavior in tests/unit/price_list_timeout.test.js
+- [x] T027 [P] [US3] Acceptance test for AT-UC32-05 (includes retry cue) in tests/acceptance/uc32_render_failure.test.js
+- [x] T028 [P] [US3] Acceptance test for AT-UC32-06 in tests/acceptance/uc32_access_restricted.test.js
+- [x] T029 [P] [US3] Acceptance test for AT-UC32-07 in tests/acceptance/uc32_high_traffic_timeout.test.js
+- [x] T030 [P] [US3] Integration test for access policy enforcement in tests/integration/price_list_access_policy.test.js
+- [x] T031 [P] [US3] Unit tests for timeout/loader behavior in tests/unit/price_list_timeout.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T032 [US3] Enforce access policy in src/services/pricing_policy_service.js
-- [ ] T033 [US3] Show access message or redirect in src/controllers/price_list_controller.js
-- [ ] T034 [US3] Show friendly error message in src/views/price_list_error_view.js
-- [ ] T035 [US3] Show loading indicator and timeout message in src/views/price_list_view.js
-- [ ] T036 [US3] Log render failures and timeouts in src/services/price_list_log_service.js
-- [ ] T037 [US3] Ensure guests cannot initiate registration from price list view in src/controllers/price_list_controller.js
+- [x] T032 [US3] Enforce access policy in src/services/pricing_policy_service.js
+- [x] T033 [US3] Show access message or redirect in src/controllers/price_list_controller.js
+- [x] T034 [US3] Show friendly error message in src/views/price_list_error_view.js
+- [x] T035 [US3] Show loading indicator and timeout message in src/views/price_list_view.js
+- [x] T036 [US3] Log render failures and timeouts in src/services/price_list_log_service.js
+- [x] T037 [US3] Ensure guests cannot initiate registration from price list view in src/controllers/price_list_controller.js
 
 **Checkpoint**: All user stories independently functional
 
@@ -123,12 +123,12 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T038 [P] Add performance validation for 200 ms interaction target in tests/performance/price_list_perf.test.js
-- [ ] T039 [P] Add accessibility checks for price list page in tests/integration/price_list_a11y.test.js
-- [ ] T040 [P] Add log retention validation for 90-day price list logs in tests/integration/price_list_log_retention.test.js
-- [ ] T041 [P] Update quickstart verification steps in specs/032-view-price-list/quickstart.md
-- [ ] T045 [P] Add long-task validation for <=50 ms main-thread work in tests/performance/price_list_long_task.test.js
-- [ ] T046 [P] Add end-to-end view completion timing test for 2s target in tests/performance/price_list_view_timing.test.js
+- [x] T038 [P] Add performance validation for 200 ms interaction target in tests/performance/price_list_perf.test.js
+- [x] T039 [P] Add accessibility checks for price list page in tests/integration/price_list_a11y.test.js
+- [x] T040 [P] Add log retention validation for 90-day price list logs in tests/integration/price_list_log_retention.test.js
+- [x] T041 [P] Update quickstart verification steps in specs/032-view-price-list/quickstart.md
+- [x] T045 [P] Add long-task validation for <=50 ms main-thread work in tests/performance/price_list_long_task.test.js
+- [x] T046 [P] Add end-to-end view completion timing test for 2s target in tests/performance/price_list_view_timing.test.js
 
 ---
 

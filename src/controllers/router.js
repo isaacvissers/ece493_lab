@@ -98,6 +98,17 @@ export const router = {
       return controller.view ? controller.view.element : null;
     });
   },
+  registerPriceListRoutes({ controller } = {}) {
+    if (!controller) {
+      return;
+    }
+    routes.set('price-list', (payload) => {
+      if (controller.show) {
+        controller.show(payload && payload.conferenceId ? payload.conferenceId : null);
+      }
+      return controller.view ? controller.view.element : null;
+    });
+  },
   register(path, handler) {
     routes.set(path, handler);
   },

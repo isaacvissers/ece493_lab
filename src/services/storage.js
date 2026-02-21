@@ -44,3 +44,10 @@ export const registrationStorage = {
   remove,
   clearAll,
 };
+
+export const priceListStorage = {
+  read,
+  write,
+  remove,
+  clearAll,
+};

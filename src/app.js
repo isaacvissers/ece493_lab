@@ -9,6 +9,9 @@ import { createSubmitManuscriptView } from './views/submit-manuscript-view.js';
 import { createManuscriptSubmissionController } from './controllers/manuscript-submission-controller.js';
 import { createRefereeAssignmentView } from './views/referee-assignment-view.js';
 import { createRefereeAssignmentController } from './controllers/referee-assignment-controller.js';
+import { createPriceListView } from './views/price_list_view.js';
+import { createPriceListErrorView } from './views/price_list_error_view.js';
+import { createPriceListController } from './controllers/price_list_controller.js';
 import { isEligibleStatus } from './models/paper.js';
 import { storageService } from './services/storage-service.js';
 import { sessionState } from './models/session-state.js';
@@ -52,6 +55,10 @@ function showLogin(accessDeniedMessage = null) {
       }
       if (nextRoute === 'assign-referees') {
         showRefereeAssignment(nextPaperId);
+        return;
+      }
+      if (nextRoute === 'price-list') {
+        showPriceList();
         return;
       }
       showDashboard();
@@ -122,6 +129,29 @@ function showSubmitManuscript() {
   submitController.init();
   submitView.onBack(showDashboard);
   render(submitView.element);
+}
+
+function showPriceList(controllerOverride = null) {
+  const priceListView = createPriceListView();
+  const priceListErrorView = createPriceListErrorView();
+  let authRedirected = false;
+  const priceListController = controllerOverride || createPriceListController({
+    view: priceListView,
+    errorView: priceListErrorView,
+    sessionState,
+    onAuthRequired: (message) => {
+      authRedirected = true;
+      pendingRoute = 'price-list';
+      showLogin(message);
+    },
+  });
+  const activeView = priceListController && priceListController.show
+    ? priceListController.show(null)
+    : null;
+  if (authRedirected) {
+    return;
+  }
+  render(activeView && activeView.element ? activeView.element : priceListView.element);
 }
 
 function showUploadManuscript() {
@@ -205,6 +235,7 @@ function showDashboard() {
   const dashboardView = createDashboardView(viewUser, manuscripts, assignablePapers);
   dashboardView.onChangePassword(showAccountSettings);
   dashboardView.onSubmitPaper(showSubmitManuscript);
+  dashboardView.onViewPriceList(showPriceList);
   dashboardView.onAssignReferees(showRefereeAssignment);
   render(dashboardView.element);
 }
@@ -257,5 +288,6 @@ export {
   showUploadManuscript as __testShowUploadManuscript,
   showMetadata as __testShowMetadata,
   showSubmissionValidation as __testShowSubmissionValidation,
+  showPriceList as __testShowPriceList,
   showRefereeAssignment as __testShowRefereeAssignment,
 };

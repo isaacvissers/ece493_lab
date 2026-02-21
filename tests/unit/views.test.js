@@ -186,6 +186,12 @@ test('dashboard view includes email when provided', () => {
   view.onChangePassword(onChange);
   changeButton.click();
   expect(onChange).toHaveBeenCalled();
+  const priceListButton = view.element.querySelector('#price-list-button');
+  expect(priceListButton).toBeTruthy();
+  const onPriceList = jest.fn();
+  view.onViewPriceList(onPriceList);
+  priceListButton.click();
+  expect(onPriceList).toHaveBeenCalled();
   const submitButton = view.element.querySelector('#submit-paper-button');
   expect(submitButton).toBeTruthy();
   const onSubmit = jest.fn();

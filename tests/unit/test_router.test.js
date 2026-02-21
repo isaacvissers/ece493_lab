@@ -135,6 +135,62 @@ test('router registers registration routes when controller provided', () => {
   expect(root.textContent).toContain('Registration');
 });
 
+test('router registers price list routes when controller provided', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  controller.view.element.textContent = 'Price List';
+  router.registerPriceListRoutes({ controller });
+  const result = router.navigate('price-list', { conferenceId: 'conf_1' });
+  expect(result).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith('conf_1');
+  expect(root.textContent).toContain('Price List');
+});
+
+test('router handles price list route without payload or show method', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+  };
+  controller.view.element.textContent = 'Price List';
+  router.registerPriceListRoutes({ controller });
+  const result = router.navigate('price-list');
+  expect(result).toBe(true);
+  expect(root.textContent).toContain('Price List');
+});
+
+test('router returns null view for price list when controller view missing', () => {
+  const root = document.getElementById('root');
+  root.textContent = 'Existing';
+  router.setRoot(root);
+  const controller = {
+    show: jest.fn(),
+  };
+  router.registerPriceListRoutes({ controller });
+  const result = router.navigate('price-list', { conferenceId: 'conf_2' });
+  expect(result).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith('conf_2');
+  expect(root.textContent).toBe('');
+});
+
+test('router passes null conferenceId for price list when payload missing', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  controller.view.element.textContent = 'Price List';
+  router.registerPriceListRoutes({ controller });
+  const result = router.navigate('price-list');
+  expect(result).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith(null);
+});
+
 test('router handles schedule HTML route without payload or show method', () => {
   const root = document.getElementById('root');
   router.setRoot(root);
@@ -179,6 +235,12 @@ test('router renders empty schedule view when controller view missing', () => {
 test('router ignores schedule registration when controller missing', () => {
   router.registerScheduleRoutes();
   const result = router.navigate('schedule');
+  expect(result).toBe(false);
+});
+
+test('router ignores price list registration when controller missing', () => {
+  router.registerPriceListRoutes();
+  const result = router.navigate('price-list');
   expect(result).toBe(false);
 });
 

@@ -8,55 +8,55 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are all access policy outcomes defined for guest and registered users? [Completeness, Spec §FR-009, §FR-010, §FR-013]
-- [ ] CHK002 Are "not available" and "missing/invalid entry" behaviors both defined? [Completeness, Spec §FR-004, §FR-005]
-- [ ] CHK003 Are logging requirements defined for data-quality, rendering, and timeout issues? [Completeness, Spec §FR-006, §FR-008, §FR-012]
-- [ ] CHK004 Are loading indicator requirements defined for slow retrieval? [Completeness, Spec §FR-011]
-- [ ] CHK005 Are primary success outcomes defined for viewing pricing? [Completeness, Spec §SC-001, §SC-004]
-- [ ] CHK006 Are the price list display elements (categories, labels, currency/format) explicitly specified? [Gap]
+- [x] CHK001 Are all access policy outcomes defined for guest and registered users? [Completeness, Spec §FR-009, §FR-010, §FR-013]
+- [x] CHK002 Are "not available" and "missing/invalid entry" behaviors both defined? [Completeness, Spec §FR-004, §FR-005]
+- [x] CHK003 Are logging requirements defined for data-quality, rendering, and timeout issues? [Completeness, Spec §FR-006, §FR-008, §FR-012]
+- [x] CHK004 Are loading indicator requirements defined for slow retrieval? [Completeness, Spec §FR-011]
+- [x] CHK005 Are primary success outcomes defined for viewing pricing? [Completeness, Spec §SC-001, §SC-004]
+- [x] CHK006 Are the price list display elements (categories, labels, currency/format) explicitly specified? [Gap]
 
 ## Requirement Clarity
 
-- [ ] CHK007 Is "clear, readable format" defined with measurable criteria? [Ambiguity, Spec §FR-003]
-- [ ] CHK008 Is the timeout threshold explicitly defined for "loading exceeds the allowed threshold"? [Gap, Spec §FR-012]
-- [ ] CHK009 Is the friendly error message requirement clarified with an example or minimum content? [Ambiguity, Spec §FR-007]
-- [ ] CHK010 Is the default missing-item policy unambiguous (TBD vs omit)? [Clarity, Spec §FR-005]
+- [x] CHK007 Is "clear, readable format" defined with measurable criteria? [Ambiguity, Spec §FR-003]
+- [x] CHK008 Is the timeout threshold explicitly defined for "loading exceeds the allowed threshold"? [Gap, Spec §FR-012]
+- [x] CHK009 Is the friendly error message requirement clarified with an example or minimum content? [Ambiguity, Spec §FR-007]
+- [x] CHK010 Is the default missing-item policy unambiguous (TBD vs omit)? [Clarity, Spec §FR-005]
 
 ## Requirement Consistency
 
-- [ ] CHK011 Are access policy statements consistent across Requirements and Assumptions? [Consistency, Spec §FR-009, §Assumptions]
-- [ ] CHK012 Is guest view-only behavior consistent with user stories and FR-013? [Consistency, Spec §FR-013, §User Story 1]
-- [ ] CHK013 Are performance expectations consistent between NFR-001 and SC-001? [Consistency, Spec §NFR-001, §SC-001]
+- [x] CHK011 Are access policy statements consistent across Requirements and Assumptions? [Consistency, Spec §FR-009, §Assumptions]
+- [x] CHK012 Is guest view-only behavior consistent with user stories and FR-013? [Consistency, Spec §FR-013, §User Story 1]
+- [x] CHK013 Are performance expectations consistent between NFR-001 and SC-001? [Consistency, Spec §NFR-001, §SC-001]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK014 Do acceptance scenarios cover AT-UC32-01 through AT-UC32-07? [Coverage, Spec §User Scenarios]
-- [ ] CHK015 Are acceptance scenarios testable without implementation detail? [Measurability, Spec §User Scenarios]
+- [x] CHK014 Do acceptance scenarios cover AT-UC32-01 through AT-UC32-07? [Coverage, Spec §User Scenarios]
+- [x] CHK015 Are acceptance scenarios testable without implementation detail? [Measurability, Spec §User Scenarios]
 
 ## Scenario Coverage
 
-- [ ] CHK016 Are alternate scenarios for unpublished and incomplete pricing covered? [Coverage, Spec §User Story 2]
-- [ ] CHK017 Are error/failure scenarios covered for rendering failure and timeout? [Coverage, Spec §User Story 3]
-- [ ] CHK018 Are access-restriction scenarios covered (guest blocked, registered allowed)? [Coverage, Spec §User Story 3]
+- [x] CHK016 Are alternate scenarios for unpublished and incomplete pricing covered? [Coverage, Spec §User Story 2]
+- [x] CHK017 Are error/failure scenarios covered for rendering failure and timeout? [Coverage, Spec §User Story 3]
+- [x] CHK018 Are access-restriction scenarios covered (guest blocked, registered allowed)? [Coverage, Spec §User Story 3]
 
 ## Edge Case Coverage
 
-- [ ] CHK019 Are edge cases listed and aligned with acceptance scenarios? [Coverage, Spec §Edge Cases]
+- [x] CHK019 Are edge cases listed and aligned with acceptance scenarios? [Coverage, Spec §Edge Cases]
 
 ## Non-Functional Requirements
 
-- [ ] CHK020 Are performance targets specified for interactions and page load? [Completeness, Spec §NFR-001, §SC-001]
-- [ ] CHK021 Are accessibility requirements specified for the Price List page? [Completeness, Spec §NFR-002]
-- [ ] CHK022 Is log retention specified for pricing-related issues? [Completeness, Spec §NFR-003]
+- [x] CHK020 Are performance targets specified for interactions and page load? [Completeness, Spec §NFR-001, §SC-001]
+- [x] CHK021 Are accessibility requirements specified for the Price List page? [Completeness, Spec §NFR-002]
+- [x] CHK022 Is log retention specified for pricing-related issues? [Completeness, Spec §NFR-003]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK023 Are pricing data and policy configuration assumptions documented? [Assumption, Spec §Assumptions]
+- [x] CHK023 Are pricing data and policy configuration assumptions documented? [Assumption, Spec §Assumptions]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK024 Is pricing currency/locale format explicitly defined? [Gap]
-- [ ] CHK025 Are pricing categories and rate types explicitly defined or bounded? [Gap]
+- [x] CHK024 Is pricing currency/locale format explicitly defined? [Gap]
+- [x] CHK025 Are pricing categories and rate types explicitly defined or bounded? [Gap]
 
 ## Notes
 
