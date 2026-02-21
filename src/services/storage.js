@@ -45,6 +45,13 @@ export const registrationStorage = {
   clearAll,
 };
 
+export const paymentStorage = {
+  read,
+  write,
+  remove,
+  clearAll,
+};
+
 export const priceListStorage = {
   read,
   write,

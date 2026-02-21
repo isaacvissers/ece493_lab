@@ -22,3 +22,4 @@ npm test
 8. If 3-D Secure is required, complete authentication and verify payment continues; cancel to verify failure.
 9. Verify $0 total bypasses payment and confirms registration.
 10. Verify payment status page shows amount and date after success.
+11. If confirmation display fails, verify the receipt is available via the payment status view.

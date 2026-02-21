@@ -150,6 +150,89 @@ test('router registers price list routes when controller provided', () => {
   expect(root.textContent).toContain('Price List');
 });
 
+test('router registers payment routes when controllers provided', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  controller.view.element.textContent = 'Payment';
+  const statusController = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  statusController.view.element.textContent = 'Payment Status';
+  router.registerPaymentRoutes({ controller, statusController });
+  const payResult = router.navigate('payment', { registrationId: 'reg_1' });
+  const statusResult = router.navigate('payment-status', { registrationId: 'reg_1' });
+  expect(payResult).toBe(true);
+  expect(statusResult).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith({ registrationId: 'reg_1' });
+  expect(statusController.show).toHaveBeenCalledWith({ registrationId: 'reg_1' });
+});
+
+test('router payment routes default payload to empty object', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  router.registerPaymentRoutes({ controller });
+  const result = router.navigate('payment');
+  expect(result).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith({});
+});
+
+test('router registers payment routes when only status controller provided', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const statusController = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  statusController.view.element.textContent = 'Payment Status';
+  router.registerPaymentRoutes({ statusController });
+  const result = router.navigate('payment-status', { registrationId: 'reg_status' });
+  expect(result).toBe(true);
+  expect(statusController.show).toHaveBeenCalledWith({ registrationId: 'reg_status' });
+});
+
+test('router ignores payment routes when no controllers provided', () => {
+  router.registerPaymentRoutes();
+  const result = router.navigate('payment');
+  expect(result).toBe(false);
+});
+
+test('router handles payment routes without views', () => {
+  const root = document.getElementById('root');
+  root.textContent = 'Existing';
+  router.setRoot(root);
+  const controller = { show: jest.fn() };
+  const statusController = { show: jest.fn() };
+  router.registerPaymentRoutes({ controller, statusController });
+  const payResult = router.navigate('payment');
+  const statusResult = router.navigate('payment-status');
+  expect(payResult).toBe(true);
+  expect(statusResult).toBe(true);
+  expect(root.textContent).toBe('');
+});
+
+test('router handles payment routes without show handlers', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = { view: { element: document.createElement('div') } };
+  const statusController = { view: { element: document.createElement('div') } };
+  controller.view.element.textContent = 'Payment';
+  statusController.view.element.textContent = 'Payment Status';
+  router.registerPaymentRoutes({ controller, statusController });
+  const payResult = router.navigate('payment');
+  const statusResult = router.navigate('payment-status');
+  expect(payResult).toBe(true);
+  expect(statusResult).toBe(true);
+});
+
 test('router handles price list route without payload or show method', () => {
   const root = document.getElementById('root');
   router.setRoot(root);

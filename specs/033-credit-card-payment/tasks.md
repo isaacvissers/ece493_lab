@@ -17,11 +17,11 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Ensure MVC directories exist for payments in src/models/ src/services/ src/controllers/ src/views/
-- [ ] T002 [P] Add payment routes placeholder in src/controllers/router.js
-- [ ] T003 [P] Create payment form view shell in src/views/payment_form_view.js
-- [ ] T004 [P] Create payment status view shell in src/views/payment_status_view.js
-- [ ] T005 [P] Create payment error view shell in src/views/payment_error_view.js
+- [X] T001 Ensure MVC directories exist for payments in src/models/ src/services/ src/controllers/ src/views/
+- [X] T002 [P] Add payment routes placeholder in src/controllers/router.js
+- [X] T003 [P] Create payment form view shell in src/views/payment_form_view.js
+- [X] T004 [P] Create payment status view shell in src/views/payment_status_view.js
+- [X] T005 [P] Create payment error view shell in src/views/payment_error_view.js
 
 ---
 
@@ -31,15 +31,15 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 [P] Create Payment model in src/models/payment.js
-- [ ] T007 [P] Create RegistrationBalance model in src/models/registration_balance.js
-- [ ] T008 [P] Create PaymentReceipt model in src/models/payment_receipt.js
-- [ ] T009 [P] Create PaymentGatewayResponse model in src/models/payment_gateway_response.js
-- [ ] T010 [P] Implement payment storage helper in src/services/payment_storage_service.js
-- [ ] T011 [P] Implement payment gateway simulator in src/services/payment_gateway_service.js
-- [ ] T012 [P] Implement notification service (email + in-app) in src/services/payment_notification_service.js
-- [ ] T013 [P] Implement payment reconciliation helper in src/services/payment_reconciliation_service.js
-- [ ] T014 [P] Add 3-D Secure auth-required state handling in src/models/payment_gateway_response.js
+- [X] T006 [P] Create Payment model in src/models/payment.js
+- [X] T007 [P] Create RegistrationBalance model in src/models/registration_balance.js
+- [X] T008 [P] Create PaymentReceipt model in src/models/payment_receipt.js
+- [X] T009 [P] Create PaymentGatewayResponse model in src/models/payment_gateway_response.js
+- [X] T010 [P] Implement payment storage helper in src/services/payment_storage_service.js
+- [X] T011 [P] Implement payment gateway simulator in src/services/payment_gateway_service.js
+- [X] T012 [P] Implement notification service (email + in-app) in src/services/payment_notification_service.js
+- [X] T013 [P] Implement payment reconciliation helper in src/services/payment_reconciliation_service.js
+- [X] T014 [P] Add 3-D Secure auth-required state handling in src/models/payment_gateway_response.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -53,20 +53,20 @@
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T015 [P] [US1] Acceptance test for AT-UC33-01 in tests/acceptance/uc33_payment_success.test.js
-- [ ] T016 [P] [US1] Acceptance test for AT-UC33-02 in tests/acceptance/uc33_payment_cancel.test.js
-- [ ] T017 [P] [US1] Integration test for payment submission flow in tests/integration/payment_submit_flow.test.js
-- [ ] T018 [P] [US1] Unit tests for payment validation in tests/unit/payment_validation.test.js
+- [X] T015 [P] [US1] Acceptance test for AT-UC33-01 in tests/acceptance/uc33_payment_success.test.js
+- [X] T016 [P] [US1] Acceptance test for AT-UC33-02 in tests/acceptance/uc33_payment_cancel.test.js
+- [X] T017 [P] [US1] Integration test for payment submission flow in tests/integration/payment_submit_flow.test.js
+- [X] T018 [P] [US1] Unit tests for payment validation in tests/unit/payment_validation.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T019 [US1] Implement payment form rendering with required fields in src/views/payment_form_view.js
-- [ ] T020 [US1] Implement payment form controller for submit/cancel in src/controllers/payment_controller.js
-- [ ] T021 [US1] Validate required card fields and idempotency key in src/services/payment_validation_service.js
-- [ ] T022 [US1] Implement authorize-then-capture flow in src/services/payment_service.js
-- [ ] T023 [US1] Generate receipt/transaction reference in src/services/payment_receipt_service.js
-- [ ] T024 [US1] Send confirmation notifications in src/services/payment_notification_service.js
-- [ ] T025 [US1] Wire payment routes in src/controllers/router.js
+- [X] T019 [US1] Implement payment form rendering with required fields in src/views/payment_form_view.js
+- [X] T020 [US1] Implement payment form controller for submit/cancel in src/controllers/payment_controller.js
+- [X] T021 [US1] Validate required card fields and idempotency key in src/services/payment_validation_service.js
+- [X] T022 [US1] Implement authorize-then-capture flow in src/services/payment_service.js
+- [X] T023 [US1] Generate receipt/transaction reference in src/services/payment_receipt_service.js
+- [X] T024 [US1] Send confirmation notifications in src/services/payment_notification_service.js
+- [X] T025 [US1] Wire payment routes in src/controllers/router.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -80,21 +80,21 @@
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T026 [P] [US2] Acceptance test for AT-UC33-03 in tests/acceptance/uc33_invalid_card.test.js
-- [ ] T027 [P] [US2] Acceptance test for AT-UC33-04 in tests/acceptance/uc33_gateway_error.test.js
-- [ ] T028 [P] [US2] Acceptance test for AT-UC33-06 in tests/acceptance/uc33_persist_failure.test.js
-- [ ] T029 [P] [US2] Acceptance test for AT-UC33-07 in tests/acceptance/uc33_3ds_flow.test.js
-- [ ] T030 [P] [US2] Integration test for failure handling in tests/integration/payment_failure_flow.test.js
-- [ ] T031 [P] [US2] Unit tests for retry/idempotency in tests/unit/payment_idempotency.test.js
+- [X] T026 [P] [US2] Acceptance test for AT-UC33-03 in tests/acceptance/uc33_invalid_card.test.js
+- [X] T027 [P] [US2] Acceptance test for AT-UC33-04 in tests/acceptance/uc33_gateway_error.test.js
+- [X] T028 [P] [US2] Acceptance test for AT-UC33-06 in tests/acceptance/uc33_persist_failure.test.js
+- [X] T029 [P] [US2] Acceptance test for AT-UC33-07 in tests/acceptance/uc33_3ds_flow.test.js
+- [X] T030 [P] [US2] Integration test for failure handling in tests/integration/payment_failure_flow.test.js
+- [X] T031 [P] [US2] Unit tests for retry/idempotency in tests/unit/payment_idempotency.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T032 [US2] Handle issuer decline and invalid card errors in src/services/payment_service.js
-- [ ] T033 [US2] Handle gateway errors/timeouts and generic failure messaging in src/views/payment_error_view.js
-- [ ] T034 [US2] Implement 3-D Secure required flow handling in src/controllers/payment_controller.js
-- [ ] T035 [US2] Persist auth-required status and resume flow in src/services/payment_service.js
-- [ ] T036 [US2] Implement persistence failure handling and reconciliation flagging in src/services/payment_reconciliation_service.js
-- [ ] T037 [US2] Ensure retry after failure does not duplicate charges in src/services/payment_service.js
+- [X] T032 [US2] Handle issuer decline and invalid card errors in src/services/payment_service.js
+- [X] T033 [US2] Handle gateway errors/timeouts and generic failure messaging in src/views/payment_error_view.js
+- [X] T034 [US2] Implement 3-D Secure required flow handling in src/controllers/payment_controller.js
+- [X] T035 [US2] Persist auth-required status and resume flow in src/services/payment_service.js
+- [X] T036 [US2] Implement persistence failure handling and reconciliation flagging in src/services/payment_reconciliation_service.js
+- [X] T037 [US2] Ensure retry after failure does not duplicate charges in src/services/payment_service.js
 
 **Checkpoint**: User Stories 1 and 2 independently functional
 
@@ -108,18 +108,18 @@
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T038 [P] [US3] Acceptance test for AT-UC33-05 in tests/acceptance/uc33_payment_status.test.js
-- [ ] T039 [P] [US3] Acceptance test for AT-UC33-08 in tests/acceptance/uc33_zero_amount_bypass.test.js
-- [ ] T040 [P] [US3] Integration test for status view in tests/integration/payment_status_view.test.js
-- [ ] T041 [P] [US3] Unit tests for payment status mapping in tests/unit/payment_status_service.test.js
+- [X] T038 [P] [US3] Acceptance test for AT-UC33-05 in tests/acceptance/uc33_payment_status.test.js
+- [X] T039 [P] [US3] Acceptance test for AT-UC33-08 in tests/acceptance/uc33_zero_amount_bypass.test.js
+- [X] T040 [P] [US3] Integration test for status view in tests/integration/payment_status_view.test.js
+- [X] T041 [P] [US3] Unit tests for payment status mapping in tests/unit/payment_status_service.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T042 [US3] Implement payment status view rendering in src/views/payment_status_view.js
-- [ ] T043 [US3] Implement payment status controller action in src/controllers/payment_status_controller.js
-- [ ] T044 [US3] Implement registration status lookup in src/services/payment_status_service.js
-- [ ] T045 [US3] Implement $0 total bypass logic in src/services/payment_service.js
-- [ ] T046 [US3] Implement confirmation-display fallback to payment status in src/controllers/payment_status_controller.js
+- [X] T042 [US3] Implement payment status view rendering in src/views/payment_status_view.js
+- [X] T043 [US3] Implement payment status controller action in src/controllers/payment_status_controller.js
+- [X] T044 [US3] Implement registration status lookup in src/services/payment_status_service.js
+- [X] T045 [US3] Implement $0 total bypass logic in src/services/payment_service.js
+- [X] T046 [US3] Implement confirmation-display fallback to payment status in src/controllers/payment_status_controller.js
 
 **Checkpoint**: All user stories independently functional
 
@@ -129,11 +129,11 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T047 [P] Add sensitive data handling safeguards (no plain-text storage) in src/services/payment_storage_service.js
-- [ ] T048 [P] Add performance validation for 200 ms submission target in tests/performance/payment_submit_perf.test.js
-- [ ] T049 [P] Add performance validation for 2s status view target in tests/performance/payment_status_perf.test.js
-- [ ] T050 [P] Add storage safety unit test for no plain-text card data in tests/unit/payment_storage_safety.test.js
-- [ ] T051 [P] Update quickstart verification steps in specs/033-credit-card-payment/quickstart.md
+- [X] T047 [P] Add sensitive data handling safeguards (no plain-text storage) in src/services/payment_storage_service.js
+- [X] T048 [P] Add performance validation for 200 ms submission target in tests/performance/payment_submit_perf.test.js
+- [X] T049 [P] Add performance validation for 2s status view target in tests/performance/payment_status_perf.test.js
+- [X] T050 [P] Add storage safety unit test for no plain-text card data in tests/unit/payment_storage_safety.test.js
+- [X] T051 [P] Update quickstart verification steps in specs/033-credit-card-payment/quickstart.md
 
 ---
 

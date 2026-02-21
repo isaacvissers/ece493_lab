@@ -109,6 +109,24 @@ export const router = {
       return controller.view ? controller.view.element : null;
     });
   },
+  registerPaymentRoutes({ controller, statusController } = {}) {
+    if (controller) {
+      routes.set('payment', (payload) => {
+        if (controller.show) {
+          controller.show(payload || {});
+        }
+        return controller.view ? controller.view.element : null;
+      });
+    }
+    if (statusController) {
+      routes.set('payment-status', (payload) => {
+        if (statusController.show) {
+          statusController.show(payload || {});
+        }
+        return statusController.view ? statusController.view.element : null;
+      });
+    }
+  },
   register(path, handler) {
     routes.set(path, handler);
   },

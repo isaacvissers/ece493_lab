@@ -8,56 +8,56 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are authentication requirements explicitly stated for payment submission? [Completeness, Spec §FR-001/FR-001a]
-- [ ] CHK002 Are required payment form fields fully enumerated in the requirements? [Completeness, Spec §FR-002]
-- [ ] CHK003 Are gateway decline, error, and timeout cases explicitly covered in requirements? [Completeness, Spec §FR-005/FR-009]
-- [ ] CHK004 Are receipt/confirmation notification requirements explicitly stated? [Completeness, Spec §FR-004a/FR-004b]
-- [ ] CHK005 Are reconciliation requirements defined for post-authorization persistence failures? [Completeness, Spec §FR-010]
+- [x] CHK001 Are authentication requirements explicitly stated for payment submission? [Completeness, Spec §FR-001/FR-001a]
+- [x] CHK002 Are required payment form fields fully enumerated in the requirements? [Completeness, Spec §FR-002]
+- [x] CHK003 Are gateway decline, error, and timeout cases explicitly covered in requirements? [Completeness, Spec §FR-005/FR-009]
+- [x] CHK004 Are receipt/confirmation notification requirements explicitly stated? [Completeness, Spec §FR-004a/FR-004b]
+- [x] CHK005 Are reconciliation requirements defined for post-authorization persistence failures? [Completeness, Spec §FR-010]
 
 ## Requirement Clarity
 
-- [ ] CHK006 Is “authenticated attendee/registrant” terminology consistent and unambiguous? [Clarity, Spec §FR-001/FR-001a]
-- [ ] CHK007 Is “generic failure message” defined clearly enough to avoid sensitive detail leakage while enabling recovery? [Clarity, Spec §FR-005a]
-- [ ] CHK008 Is the authorization-then-capture policy stated in a testable way? [Clarity, Spec §FR-003a]
-- [ ] CHK009 Is the $0 bypass rule unambiguous about when payment is skipped? [Clarity, Spec §FR-011]
+- [x] CHK006 Is “authenticated attendee/registrant” terminology consistent and unambiguous? [Clarity, Spec §FR-001/FR-001a]
+- [x] CHK007 Is “generic failure message” defined clearly enough to avoid sensitive detail leakage while enabling recovery? [Clarity, Spec §FR-005a]
+- [x] CHK008 Is the authorization-then-capture policy stated in a testable way? [Clarity, Spec §FR-003a]
+- [x] CHK009 Is the $0 bypass rule unambiguous about when payment is skipped? [Clarity, Spec §FR-011]
 
 ## Requirement Consistency
 
-- [ ] CHK010 Do user stories and FRs align on the actor (attendee vs registrant)? [Consistency, Spec §User Story 1/FR-001]
-- [ ] CHK011 Are retry requirements consistent with duplicate-charge prevention rules? [Consistency, Spec §FR-003/FR-006]
-- [ ] CHK012 Do failure-handling requirements align with success confirmation requirements (no confirmed ticket on failure)? [Consistency, Spec §FR-004/FR-009/FR-010]
+- [x] CHK010 Do user stories and FRs align on the actor (attendee vs registrant)? [Consistency, Spec §User Story 1/FR-001]
+- [x] CHK011 Are retry requirements consistent with duplicate-charge prevention rules? [Consistency, Spec §FR-003/FR-006]
+- [x] CHK012 Do failure-handling requirements align with success confirmation requirements (no confirmed ticket on failure)? [Consistency, Spec §FR-004/FR-009/FR-010]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK013 Are success criteria measurable without implementation details? [Acceptance Criteria, Spec §SC-001..SC-004]
-- [ ] CHK014 Is the “payment completed under 3 minutes” criterion tied to a defined start/end in the spec? [Clarity, Spec §SC-003]
+- [x] CHK013 Are success criteria measurable without implementation details? [Acceptance Criteria, Spec §SC-001..SC-004]
+- [x] CHK014 Is the “payment completed under 3 minutes” criterion tied to a defined start/end in the spec? [Clarity, Spec §SC-003]
 
 ## Scenario Coverage
 
-- [ ] CHK015 Are primary success flows fully specified across stories and FRs? [Coverage, Spec §User Story 1/FR-001..FR-004]
-- [ ] CHK016 Are alternate flows for cancel-before-submit and retry-after-failure explicitly specified? [Coverage, Spec §User Story 1/2]
-- [ ] CHK017 Are exception flows for gateway errors/timeouts and persistence failures fully specified? [Coverage, Spec §User Story 2/FR-009/FR-010]
-- [ ] CHK018 Are recovery paths after 3‑D Secure failure clearly defined? [Coverage, Spec §User Story 2]
+- [x] CHK015 Are primary success flows fully specified across stories and FRs? [Coverage, Spec §User Story 1/FR-001..FR-004]
+- [x] CHK016 Are alternate flows for cancel-before-submit and retry-after-failure explicitly specified? [Coverage, Spec §User Story 1/2]
+- [x] CHK017 Are exception flows for gateway errors/timeouts and persistence failures fully specified? [Coverage, Spec §User Story 2/FR-009/FR-010]
+- [x] CHK018 Are recovery paths after 3‑D Secure failure clearly defined? [Coverage, Spec §User Story 2]
 
 ## Edge Case Coverage
 
-- [ ] CHK019 Are edge cases for missing fields, duplicate submit, and network interruption specified in requirements (not just listed)? [Gap, Edge Cases]
-- [ ] CHK020 Is the payment-confirmation-display failure addressed with required behavior? [Gap, Edge Cases]
+- [x] CHK019 Are edge cases for missing fields, duplicate submit, and network interruption specified in requirements (not just listed)? [Gap, Edge Cases]
+- [x] CHK020 Is the payment-confirmation-display failure addressed with required behavior? [Gap, Edge Cases]
 
 ## Non-Functional Requirements
 
-- [ ] CHK021 Are performance expectations for payment submission and status view explicitly specified? [Gap, Non-Functional]
-- [ ] CHK022 Are security/privacy requirements defined for handling sensitive card data? [Gap]
+- [x] CHK021 Are performance expectations for payment submission and status view explicitly specified? [Gap, Non-Functional]
+- [x] CHK022 Are security/privacy requirements defined for handling sensitive card data? [Gap]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK023 Are external payment gateway assumptions and failure modes documented in the spec? [Assumption, Spec §Assumptions]
-- [ ] CHK024 Are notification delivery dependencies (email/in-app) explicitly bounded in requirements? [Completeness, Spec §FR-004b]
+- [x] CHK023 Are external payment gateway assumptions and failure modes documented in the spec? [Assumption, Spec §Assumptions]
+- [x] CHK024 Are notification delivery dependencies (email/in-app) explicitly bounded in requirements? [Completeness, Spec §FR-004b]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK025 Is there any conflict between “attendee” vs “registrant” roles across sections? [Conflict, Spec §User Stories/FR-001]
-- [ ] CHK026 Is the term “payment status” consistently defined across user stories and FRs? [Consistency, Spec §FR-007/User Story 3]
+- [x] CHK025 Is there any conflict between “attendee” vs “registrant” roles across sections? [Conflict, Spec §User Stories/FR-001]
+- [x] CHK026 Is the term “payment status” consistently defined across user stories and FRs? [Consistency, Spec §FR-007/User Story 3]
 
 ## Notes
 
