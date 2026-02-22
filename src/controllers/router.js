@@ -127,6 +127,24 @@ export const router = {
       });
     }
   },
+  registerConfirmationRoutes({ controller, ticketsController } = {}) {
+    if (controller) {
+      routes.set('confirmation', (payload) => {
+        if (controller.show) {
+          controller.show(payload || {});
+        }
+        return controller.view ? controller.view.element : null;
+      });
+    }
+    if (ticketsController) {
+      routes.set('tickets', () => {
+        if (ticketsController.show) {
+          ticketsController.show();
+        }
+        return ticketsController.view ? ticketsController.view.element : null;
+      });
+    }
+  },
   register(path, handler) {
     routes.set(path, handler);
   },

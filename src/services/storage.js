@@ -58,3 +58,10 @@ export const priceListStorage = {
   remove,
   clearAll,
 };
+
+export const confirmationStorage = {
+  read,
+  write,
+  remove,
+  clearAll,
+};

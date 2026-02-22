@@ -17,11 +17,11 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Ensure MVC directories exist for confirmations in src/models/ src/services/ src/controllers/ src/views/
-- [ ] T002 [P] Add confirmation routes placeholder in src/controllers/router.js
-- [ ] T003 [P] Create confirmation view shell in src/views/confirmation_view.js
-- [ ] T004 [P] Create confirmation error view shell in src/views/confirmation_error_view.js
-- [ ] T005 [P] Create tickets list view shell in src/views/tickets_view.js
+- [X] T001 Ensure MVC directories exist for confirmations in src/models/ src/services/ src/controllers/ src/views/
+- [X] T002 [P] Add confirmation routes placeholder in src/controllers/router.js
+- [X] T003 [P] Create confirmation view shell in src/views/confirmation_view.js
+- [X] T004 [P] Create confirmation error view shell in src/views/confirmation_error_view.js
+- [X] T005 [P] Create tickets list view shell in src/views/tickets_view.js
 
 ---
 
@@ -31,13 +31,13 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 [P] Create TicketReceipt model in src/models/ticket_receipt.js
-- [ ] T007 [P] Create ConfirmationRecord model in src/models/confirmation_record.js
-- [ ] T008 [P] Create DeliveryLog model in src/models/delivery_log.js
-- [ ] T009 [P] Implement confirmation storage helper in src/services/confirmation_storage_service.js
-- [ ] T010 [P] Implement confirmation generation service in src/services/confirmation_generator_service.js
-- [ ] T011 [P] Implement confirmation notification service (email + in-app) in src/services/confirmation_notification_service.js
-- [ ] T012 [P] Implement delivery log service in src/services/delivery_log_service.js
+- [X] T006 [P] Create TicketReceipt model in src/models/ticket_receipt.js
+- [X] T007 [P] Create ConfirmationRecord model in src/models/confirmation_record.js
+- [X] T008 [P] Create DeliveryLog model in src/models/delivery_log.js
+- [X] T009 [P] Implement confirmation storage helper in src/services/confirmation_storage_service.js
+- [X] T010 [P] Implement confirmation generation service in src/services/confirmation_generator_service.js
+- [X] T011 [P] Implement confirmation notification service (email + in-app) in src/services/confirmation_notification_service.js
+- [X] T012 [P] Implement delivery log service in src/services/delivery_log_service.js
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -51,19 +51,19 @@
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T013 [P] [US1] Acceptance test for AT-UC34-01 in tests/acceptance/uc34_confirmation_generate.test.js
-- [ ] T014 [P] [US1] Acceptance test for AT-UC34-02 in tests/acceptance/uc34_confirmation_display.test.js
-- [ ] T015 [P] [US1] Integration test for confirmation generation in tests/integration/confirmation_generation.test.js
-- [ ] T016 [P] [US1] Unit tests for confirmation details mapping in tests/unit/confirmation_generator.test.js
+- [X] T013 [P] [US1] Acceptance test for AT-UC34-01 in tests/acceptance/uc34_confirmation_generate.test.js
+- [X] T014 [P] [US1] Acceptance test for AT-UC34-02 in tests/acceptance/uc34_confirmation_display.test.js
+- [X] T015 [P] [US1] Integration test for confirmation generation in tests/integration/confirmation_generation.test.js
+- [X] T016 [P] [US1] Unit tests for confirmation details mapping in tests/unit/confirmation_generator.test.js
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Generate confirmation with required details in src/services/confirmation_generator_service.js
-- [ ] T018 [US1] Render confirmation HTML summary in src/views/confirmation_view.js
-- [ ] T019 [US1] Implement confirmation controller action in src/controllers/confirmation_controller.js
-- [ ] T020 [US1] Store confirmation record and receipt in src/services/confirmation_storage_service.js
-- [ ] T021 [US1] Send confirmation notifications in src/services/confirmation_notification_service.js
-- [ ] T022 [US1] Wire confirmation routes in src/controllers/router.js
+- [X] T017 [US1] Generate confirmation with required details in src/services/confirmation_generator_service.js
+- [X] T018 [US1] Render confirmation HTML summary in src/views/confirmation_view.js
+- [X] T019 [US1] Implement confirmation controller action in src/controllers/confirmation_controller.js
+- [X] T020 [US1] Store confirmation record and receipt in src/services/confirmation_storage_service.js
+- [X] T021 [US1] Send confirmation notifications in src/services/confirmation_notification_service.js
+- [X] T022 [US1] Wire confirmation routes in src/controllers/router.js
 
 **Checkpoint**: User Story 1 fully functional and testable independently
 
@@ -77,19 +77,19 @@
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T023 [P] [US2] Acceptance test for AT-UC34-03 in tests/acceptance/uc34_confirmation_pending.test.js
-- [ ] T024 [P] [US2] Acceptance test for AT-UC34-04 in tests/acceptance/uc34_storage_failure.test.js
-- [ ] T025 [P] [US2] Acceptance test for AT-UC34-05 in tests/acceptance/uc34_notification_failure.test.js
-- [ ] T026 [P] [US2] Integration test for failure handling in tests/integration/confirmation_failure_flow.test.js
-- [ ] T027 [P] [US2] Unit tests for delivery log behavior in tests/unit/delivery_log.test.js
+- [X] T023 [P] [US2] Acceptance test for AT-UC34-03 in tests/acceptance/uc34_confirmation_pending.test.js
+- [X] T024 [P] [US2] Acceptance test for AT-UC34-04 in tests/acceptance/uc34_storage_failure.test.js
+- [X] T025 [P] [US2] Acceptance test for AT-UC34-05 in tests/acceptance/uc34_notification_failure.test.js
+- [X] T026 [P] [US2] Integration test for failure handling in tests/integration/confirmation_failure_flow.test.js
+- [X] T027 [P] [US2] Unit tests for delivery log behavior in tests/unit/delivery_log.test.js
 
 ### Implementation for User Story 2
 
-- [ ] T028 [US2] Implement pending confirmation state and message in src/views/confirmation_error_view.js
-- [ ] T029 [US2] Log generation/storage failures for reconciliation in src/services/delivery_log_service.js
-- [ ] T030 [US2] Implement retry on next access for pending confirmations in src/services/confirmation_generator_service.js
-- [ ] T031 [US2] Ensure ticket remains available after notification failure in src/services/confirmation_notification_service.js
-- [ ] T032 [US2] Ensure storage failure shows error and keeps payment recorded in src/controllers/confirmation_controller.js
+- [X] T028 [US2] Implement pending confirmation state and message in src/views/confirmation_error_view.js
+- [X] T029 [US2] Log generation/storage failures for reconciliation in src/services/delivery_log_service.js
+- [X] T030 [US2] Implement retry on next access for pending confirmations in src/services/confirmation_generator_service.js
+- [X] T031 [US2] Ensure ticket remains available after notification failure in src/services/confirmation_notification_service.js
+- [X] T032 [US2] Ensure storage failure shows error and keeps payment recorded in src/controllers/confirmation_controller.js
 
 **Checkpoint**: User Stories 1 and 2 independently functional
 
@@ -103,19 +103,19 @@
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T033 [P] [US3] Acceptance test for AT-UC34-06 in tests/acceptance/uc34_tickets_retrieve.test.js
-- [ ] T034 [P] [US3] Acceptance test for AT-UC34-07 in tests/acceptance/uc34_no_duplicate_ticket.test.js
-- [ ] T035 [P] [US3] Integration test for ticket retrieval in tests/integration/ticket_retrieval.test.js
-- [ ] T036 [P] [US3] Unit tests for confirmation access control in tests/unit/confirmation_access.test.js
+- [X] T033 [P] [US3] Acceptance test for AT-UC34-06 in tests/acceptance/uc34_tickets_retrieve.test.js
+- [X] T034 [P] [US3] Acceptance test for AT-UC34-07 in tests/acceptance/uc34_no_duplicate_ticket.test.js
+- [X] T035 [P] [US3] Integration test for ticket retrieval in tests/integration/ticket_retrieval.test.js
+- [X] T036 [P] [US3] Unit tests for confirmation access control in tests/unit/confirmation_access.test.js
 
 ### Implementation for User Story 3
 
-- [ ] T037 [US3] Implement tickets list view in src/views/tickets_view.js
-- [ ] T038 [US3] Implement tickets retrieval controller action in src/controllers/tickets_controller.js
-- [ ] T039 [US3] Enforce authentication for confirmation view in src/controllers/confirmation_controller.js
-- [ ] T039a [US3] Enforce authentication for tickets view in src/controllers/tickets_controller.js
-- [ ] T040 [US3] Prevent duplicate ticket creation in src/services/confirmation_storage_service.js
-- [ ] T040a [US3] Implement $0 registration confirmation generation in src/services/confirmation_generator_service.js
+- [X] T037 [US3] Implement tickets list view in src/views/tickets_view.js
+- [X] T038 [US3] Implement tickets retrieval controller action in src/controllers/tickets_controller.js
+- [X] T039 [US3] Enforce authentication for confirmation view in src/controllers/confirmation_controller.js
+- [X] T039a [US3] Enforce authentication for tickets view in src/controllers/tickets_controller.js
+- [X] T040 [US3] Prevent duplicate ticket creation in src/services/confirmation_storage_service.js
+- [X] T040a [US3] Implement $0 registration confirmation generation in src/services/confirmation_generator_service.js
 
 **Checkpoint**: All user stories independently functional
 
@@ -125,10 +125,10 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T041 [P] Add performance validation for confirmation retrieval target in tests/performance/confirmation_retrieval_perf.test.js
-- [ ] T042 [P] Add performance validation for 200 ms interaction target in tests/performance/confirmation_interaction_perf.test.js
-- [ ] T043 [P] Add privacy checks for confirmation details visibility in tests/integration/confirmation_privacy.test.js
-- [ ] T044 [P] Update quickstart verification steps in specs/034-payment-confirmation/quickstart.md
+- [X] T041 [P] Add performance validation for confirmation retrieval target in tests/performance/confirmation_retrieval_perf.test.js
+- [X] T042 [P] Add performance validation for 200 ms interaction target in tests/performance/confirmation_interaction_perf.test.js
+- [X] T043 [P] Add privacy checks for confirmation details visibility in tests/integration/confirmation_privacy.test.js
+- [X] T044 [P] Update quickstart verification steps in specs/034-payment-confirmation/quickstart.md
 
 ---
 

@@ -124,6 +124,9 @@ export const registrationService = {
   getRegistrationForUser(userId) {
     return findRegistrationByUser(userId);
   },
+  getRegistrationById(registrationId) {
+    return findRegistrationById(registrationId);
+  },
   getRegistrationStatus({ userId, paymentService = defaultPaymentService } = {}) {
     const registration = findRegistrationByUser(userId);
     if (!registration) {

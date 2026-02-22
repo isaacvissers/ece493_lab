@@ -8,55 +8,55 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are authentication requirements specified for viewing confirmation tickets? [Completeness, Spec §FR-012]
-- [ ] CHK002 Are requirements defined for confirmation delivery channels (email + in-app)? [Completeness, Spec §FR-005]
-- [ ] CHK003 Are notification failure handling requirements explicitly stated? [Completeness, Spec §FR-011]
-- [ ] CHK004 Are requirements for preventing duplicate confirmations specified? [Completeness, Spec §FR-007]
-- [ ] CHK005 Are requirements defined for the $0 confirmation path? [Completeness, Spec §FR-013]
+- [x] CHK001 Are authentication requirements specified for viewing confirmation tickets? [Completeness, Spec §FR-012]
+- [x] CHK002 Are requirements defined for confirmation delivery channels (email + in-app)? [Completeness, Spec §FR-005]
+- [x] CHK003 Are notification failure handling requirements explicitly stated? [Completeness, Spec §FR-011]
+- [x] CHK004 Are requirements for preventing duplicate confirmations specified? [Completeness, Spec §FR-007]
+- [x] CHK005 Are requirements defined for the $0 confirmation path? [Completeness, Spec §FR-013]
 
 ## Requirement Clarity
 
-- [ ] CHK006 Is “authentication required” unambiguous about where it is enforced (viewing confirmation, retrieval area)? [Clarity, Spec §FR-012]
-- [ ] CHK007 Is the HTML-only confirmation format stated clearly without conflicting language? [Clarity, Spec §FR-003, Spec §Assumptions]
-- [ ] CHK008 Is “confirmation pending” defined clearly as a user-facing state after generation failure? [Clarity, Spec §FR-009]
+- [x] CHK006 Is “authentication required” unambiguous about where it is enforced (viewing confirmation, retrieval area)? [Clarity, Spec §FR-012]
+- [x] CHK007 Is the HTML-only confirmation format stated clearly without conflicting language? [Clarity, Spec §FR-003, Spec §Assumptions]
+- [x] CHK008 Is “confirmation pending” defined clearly as a user-facing state after generation failure? [Clarity, Spec §FR-009]
 
 ## Requirement Consistency
 
-- [ ] CHK009 Do user stories and FRs consistently describe confirmation delivery channels? [Consistency, Spec §User Story 1/FR-005]
-- [ ] CHK010 Do requirements for storage and retrieval align across FR-004 and FR-006? [Consistency, Spec §FR-004/FR-006]
-- [ ] CHK011 Do failure-handling requirements avoid implying confirmation when payment is not completed? [Consistency, Spec §FR-008/FR-009/FR-010]
+- [x] CHK009 Do user stories and FRs consistently describe confirmation delivery channels? [Consistency, Spec §User Story 1/FR-005]
+- [x] CHK010 Do requirements for storage and retrieval align across FR-004 and FR-006? [Consistency, Spec §FR-004/FR-006]
+- [x] CHK011 Do failure-handling requirements avoid implying confirmation when payment is not completed? [Consistency, Spec §FR-008/FR-009/FR-010]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK012 Are success criteria measurable without implementation details? [Acceptance Criteria, Spec §SC-001..SC-004]
-- [ ] CHK013 Is the 1-minute confirmation SLA defined with a clear start/end trigger? [Clarity, Spec §SC-001]
-- [ ] CHK014 Is the 2-minute retrieval target defined with a clear start/end trigger? [Clarity, Spec §SC-003]
+- [x] CHK012 Are success criteria measurable without implementation details? [Acceptance Criteria, Spec §SC-001..SC-004]
+- [x] CHK013 Is the 1-minute confirmation SLA defined with a clear start/end trigger? [Clarity, Spec §SC-001]
+- [x] CHK014 Is the 2-minute retrieval target defined with a clear start/end trigger? [Clarity, Spec §SC-003]
 
 ## Scenario Coverage
 
-- [ ] CHK015 Are primary success flows fully specified (generate, display, store, notify)? [Coverage, Spec §User Story 1/FR-001..FR-005]
-- [ ] CHK016 Are exception flows for generation/storage/notification failure covered in requirements? [Coverage, Spec §User Story 2/FR-009..FR-011]
-- [ ] CHK017 Are recovery paths for pending confirmations and retries explicitly stated? [Coverage, Spec §FR-009/FR-011]
+- [x] CHK015 Are primary success flows fully specified (generate, display, store, notify)? [Coverage, Spec §User Story 1/FR-001..FR-005]
+- [x] CHK016 Are exception flows for generation/storage/notification failure covered in requirements? [Coverage, Spec §User Story 2/FR-009..FR-011]
+- [x] CHK017 Are recovery paths for pending confirmations and retries explicitly stated? [Coverage, Spec §FR-009/FR-011]
 
 ## Edge Case Coverage
 
-- [ ] CHK018 Are edge cases for unauthenticated access and duplicate requests addressed in requirements? [Edge Case, Spec §FR-012/FR-007]
-- [ ] CHK019 Are edge cases for $0 confirmation and payment-not-completed covered? [Edge Case, Spec §FR-013/FR-008]
+- [x] CHK018 Are edge cases for unauthenticated access and duplicate requests addressed in requirements? [Edge Case, Spec §FR-012/FR-007]
+- [x] CHK019 Are edge cases for $0 confirmation and payment-not-completed covered? [Edge Case, Spec §FR-013/FR-008]
 
 ## Non-Functional Requirements
 
-- [ ] CHK020 Are performance/retrieval time expectations explicitly defined for confirmation access? [Gap, Spec §SC-003]
-- [ ] CHK021 Are privacy/data exposure requirements for confirmation details specified? [Gap]
+- [x] CHK020 Are performance/retrieval time expectations explicitly defined for confirmation access? [Gap, Spec §SC-003]
+- [x] CHK021 Are privacy/data exposure requirements for confirmation details specified? [Gap]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK022 Are dependencies on notification services clearly documented? [Assumption, Spec §Assumptions]
-- [ ] CHK023 Are assumptions about payer-only delivery consistent with requirements? [Consistency, Spec §Assumptions/FR-005]
+- [x] CHK022 Are dependencies on notification services clearly documented? [Assumption, Spec §Assumptions]
+- [x] CHK023 Are assumptions about payer-only delivery consistent with requirements? [Consistency, Spec §Assumptions/FR-005]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK024 Is the term “confirmation” used consistently (ticket vs receipt vs confirmation)? [Ambiguity, Spec §User Stories/FR-001]
-- [ ] CHK025 Are there any conflicts between HTML-only confirmation and “download/print” language? [Conflict, Spec §FR-003/User Story 1]
+- [x] CHK024 Is the term “confirmation” used consistently (ticket vs receipt vs confirmation)? [Ambiguity, Spec §User Stories/FR-001]
+- [x] CHK025 Are there any conflicts between HTML-only confirmation and “download/print” language? [Conflict, Spec §FR-003/User Story 1]
 
 ## Notes
 

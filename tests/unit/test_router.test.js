@@ -172,6 +172,73 @@ test('router registers payment routes when controllers provided', () => {
   expect(statusController.show).toHaveBeenCalledWith({ registrationId: 'reg_1' });
 });
 
+test('router registers confirmation routes when controllers provided', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  controller.view.element.textContent = 'Confirmation';
+  const ticketsController = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  ticketsController.view.element.textContent = 'Tickets';
+  router.registerConfirmationRoutes({ controller, ticketsController });
+  const confirmResult = router.navigate('confirmation', { registrationId: 'reg_1' });
+  const ticketsResult = router.navigate('tickets');
+  expect(confirmResult).toBe(true);
+  expect(ticketsResult).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith({ registrationId: 'reg_1' });
+  expect(ticketsController.show).toHaveBeenCalled();
+});
+
+test('router handles confirmation routes without controllers', () => {
+  router.registerConfirmationRoutes();
+  const result = router.navigate('confirmation');
+  expect(result).toBe(false);
+});
+
+test('router handles confirmation routes without show handlers', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = { view: { element: document.createElement('div') } };
+  const ticketsController = { view: { element: document.createElement('div') } };
+  controller.view.element.textContent = 'Confirmation';
+  ticketsController.view.element.textContent = 'Tickets';
+  router.registerConfirmationRoutes({ controller, ticketsController });
+  const confirmResult = router.navigate('confirmation');
+  const ticketsResult = router.navigate('tickets');
+  expect(confirmResult).toBe(true);
+  expect(ticketsResult).toBe(true);
+});
+
+test('router confirmation routes handle missing views', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = { show: jest.fn() };
+  const ticketsController = { show: jest.fn() };
+  router.registerConfirmationRoutes({ controller, ticketsController });
+  const confirmResult = router.navigate('confirmation');
+  const ticketsResult = router.navigate('tickets');
+  expect(confirmResult).toBe(true);
+  expect(ticketsResult).toBe(true);
+});
+
+test('router confirmation routes default payload to empty object', () => {
+  const root = document.getElementById('root');
+  router.setRoot(root);
+  const controller = {
+    view: { element: document.createElement('div') },
+    show: jest.fn(),
+  };
+  router.registerConfirmationRoutes({ controller });
+  const result = router.navigate('confirmation');
+  expect(result).toBe(true);
+  expect(controller.show).toHaveBeenCalledWith({});
+});
+
 test('router payment routes default payload to empty object', () => {
   const root = document.getElementById('root');
   router.setRoot(root);
