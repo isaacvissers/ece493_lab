@@ -8,63 +8,63 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are ingestion channel requirements (redirect + webhook) explicitly documented? [Completeness, Spec §FR-014]
-- [ ] CHK002 Are validation requirements for authenticity, amount, currency, and order match fully specified? [Completeness, Spec §FR-001]
-- [ ] CHK003 Are idempotency requirements defined with a specific key and behavior? [Completeness, Spec §FR-002]
-- [ ] CHK004 Are storage requirements for confirmation fields fully enumerated? [Completeness, Spec §FR-003]
-- [ ] CHK005 Are status update requirements defined after successful storage? [Completeness, Spec §FR-004]
-- [ ] CHK006 Are audit logging requirements defined for confirmation and status update? [Completeness, Spec §FR-005]
-- [ ] CHK007 Are unmatched confirmation handling requirements specified? [Completeness, Spec §FR-007]
-- [ ] CHK008 Are downstream trigger requirements defined, including non-blocking failure behavior? [Completeness, Spec §FR-013]
+- [x] CHK001 Are ingestion channel requirements (redirect + webhook) explicitly documented? [Completeness, Spec §FR-014]
+- [x] CHK002 Are validation requirements for authenticity, amount, currency, and order match fully specified? [Completeness, Spec §FR-001]
+- [x] CHK003 Are idempotency requirements defined with a specific key and behavior? [Completeness, Spec §FR-002]
+- [x] CHK004 Are storage requirements for confirmation fields fully enumerated? [Completeness, Spec §FR-003]
+- [x] CHK005 Are status update requirements defined after successful storage? [Completeness, Spec §FR-004]
+- [x] CHK006 Are audit logging requirements defined for confirmation and status update? [Completeness, Spec §FR-005]
+- [x] CHK007 Are unmatched confirmation handling requirements specified? [Completeness, Spec §FR-007]
+- [x] CHK008 Are downstream trigger requirements defined, including non-blocking failure behavior? [Completeness, Spec §FR-013]
 
 ## Requirement Clarity
 
-- [ ] CHK009 Is “Paid/Confirmed” status transition defined unambiguously? [Clarity, Spec §FR-004]
-- [ ] CHK010 Is the HMAC signature verification requirement precise enough to implement (e.g., header + verification scope)? [Clarity, Spec §FR-001]
-- [ ] CHK011 Is the idempotency rule explicit about what constitutes a duplicate and expected response? [Clarity, Spec §FR-002]
-- [ ] CHK012 Is the “unmatched queue/store” behavior described in a testable way? [Clarity, Spec §FR-007]
-- [ ] CHK013 Is the “retry or queue” requirement for status update failures specific enough to verify? [Clarity, Spec §FR-010]
+- [x] CHK009 Is “Paid/Confirmed” status transition defined unambiguously? [Clarity, Spec §FR-004]
+- [x] CHK010 Is the HMAC signature verification requirement precise enough to implement (e.g., header + verification scope)? [Clarity, Spec §FR-001]
+- [x] CHK011 Is the idempotency rule explicit about what constitutes a duplicate and expected response? [Clarity, Spec §FR-002]
+- [x] CHK012 Is the “unmatched queue/store” behavior described in a testable way? [Clarity, Spec §FR-007]
+- [x] CHK013 Is the “retry or queue” requirement for status update failures specific enough to verify? [Clarity, Spec §FR-010]
 
 ## Requirement Consistency
 
-- [ ] CHK014 Do duplicate-handling requirements match idempotency expectations across scenarios and FRs? [Consistency, Spec §User Story 2, Spec §FR-002, Spec §FR-008]
-- [ ] CHK015 Are validation failure behaviors consistent between scenarios and requirements? [Consistency, Spec §User Story 2, Spec §FR-006]
-- [ ] CHK016 Do assumptions about retention align with any data storage requirements? [Consistency, Spec §Assumptions, Spec §FR-003, Spec §FR-005, Spec §FR-007]
+- [x] CHK014 Do duplicate-handling requirements match idempotency expectations across scenarios and FRs? [Consistency, Spec §User Story 2, Spec §FR-002, Spec §FR-008]
+- [x] CHK015 Are validation failure behaviors consistent between scenarios and requirements? [Consistency, Spec §User Story 2, Spec §FR-006]
+- [x] CHK016 Do assumptions about retention align with any data storage requirements? [Consistency, Spec §Assumptions, Spec §FR-003, Spec §FR-005, Spec §FR-007]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK017 Are success criteria measurable and tied to confirmation storage and status update outcomes? [Measurability, Spec §SC-001]
-- [ ] CHK018 Do success criteria fully cover invalid confirmations and duplicates? [Completeness, Spec §SC-002, Spec §SC-003]
-- [ ] CHK019 Is the failure-handling success criterion specific enough to be objectively verified? [Clarity, Spec §SC-004]
+- [x] CHK017 Are success criteria measurable and tied to confirmation storage and status update outcomes? [Measurability, Spec §SC-001]
+- [x] CHK018 Do success criteria fully cover invalid confirmations and duplicates? [Completeness, Spec §SC-002, Spec §SC-003]
+- [x] CHK019 Is the failure-handling success criterion specific enough to be objectively verified? [Clarity, Spec §SC-004]
 
 ## Scenario Coverage
 
-- [ ] CHK020 Are primary flows fully captured for valid confirmation ingestion and status update? [Coverage, Spec §User Story 1]
-- [ ] CHK021 Are alternate flows defined for invalid and duplicate confirmations? [Coverage, Spec §User Story 2]
-- [ ] CHK022 Are recovery flows defined for storage, status update, and audit log failures? [Coverage, Spec §User Story 3]
+- [x] CHK020 Are primary flows fully captured for valid confirmation ingestion and status update? [Coverage, Spec §User Story 1]
+- [x] CHK021 Are alternate flows defined for invalid and duplicate confirmations? [Coverage, Spec §User Story 2]
+- [x] CHK022 Are recovery flows defined for storage, status update, and audit log failures? [Coverage, Spec §User Story 3]
 
 ## Edge Case Coverage
 
-- [ ] CHK023 Are all listed edge cases mapped to explicit requirements or acceptance scenarios? [Coverage, Spec §Edge Cases]
-- [ ] CHK024 Is the “no matching order” edge case fully specified with queueing and logging requirements? [Completeness, Spec §Edge Cases, Spec §FR-007]
-- [ ] CHK025 Is downstream trigger failure behavior defined without rollback ambiguity? [Clarity, Spec §Edge Cases, Spec §FR-013]
+- [x] CHK023 Are all listed edge cases mapped to explicit requirements or acceptance scenarios? [Coverage, Spec §Edge Cases]
+- [x] CHK024 Is the “no matching order” edge case fully specified with queueing and logging requirements? [Completeness, Spec §Edge Cases, Spec §FR-007]
+- [x] CHK025 Is downstream trigger failure behavior defined without rollback ambiguity? [Clarity, Spec §Edge Cases, Spec §FR-013]
 
 ## Non-Functional Requirements
 
-- [ ] CHK026 Are performance expectations for confirmation handling explicitly stated beyond the 1-minute success criterion? [Gap]
-- [ ] CHK027 Are security requirements beyond HMAC (e.g., replay protection or timestamp tolerance) explicitly documented? [Gap]
-- [ ] CHK028 Is accessibility explicitly scoped out or defined for any UI surfaced by this feature? [Completeness, Spec §Assumptions]
+- [x] CHK026 Are performance expectations for confirmation handling explicitly stated beyond the 1-minute success criterion? [Gap]
+- [x] CHK027 Are security requirements beyond HMAC (e.g., replay protection or timestamp tolerance) explicitly documented? [Gap]
+- [x] CHK028 Is accessibility explicitly scoped out or defined for any UI surfaced by this feature? [Completeness, Spec §Assumptions]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK029 Are assumptions about required confirmation fields complete and aligned with data model expectations? [Consistency, Spec §Assumptions, Spec §FR-003]
-- [ ] CHK030 Are retention assumptions explicit for confirmations, audit logs, and unmatched queues? [Completeness, Spec §Assumptions]
-- [ ] CHK031 Are delivery channel assumptions (redirect + webhook) consistent with requirements? [Consistency, Spec §Clarifications, Spec §FR-014]
+- [x] CHK029 Are assumptions about required confirmation fields complete and aligned with data model expectations? [Consistency, Spec §Assumptions, Spec §FR-003]
+- [x] CHK030 Are retention assumptions explicit for confirmations, audit logs, and unmatched queues? [Completeness, Spec §Assumptions]
+- [x] CHK031 Are delivery channel assumptions (redirect + webhook) consistent with requirements? [Consistency, Spec §Clarifications, Spec §FR-014]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK032 Are any terms like “valid confirmation” or “fallback logging” defined with concrete criteria? [Ambiguity, Spec §FR-001, Spec §FR-011]
-- [ ] CHK033 Are there any conflicts between failure-handling requirements and success criteria? [Conflict, Spec §FR-009, Spec §FR-010, Spec §SC-004]
+- [x] CHK032 Are any terms like “valid confirmation” or “fallback logging” defined with concrete criteria? [Ambiguity, Spec §FR-001, Spec §FR-011]
+- [x] CHK033 Are there any conflicts between failure-handling requirements and success criteria? [Conflict, Spec §FR-009, Spec §FR-010, Spec §SC-004]
 
 ## Notes
 

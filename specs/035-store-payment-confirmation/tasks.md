@@ -27,9 +27,9 @@ integration/acceptance tests mapped to AT-UC35-XX cases.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create missing directories for MVC and tests in `src/models/`, `src/controllers/`, `src/services/`, `src/views/`, `tests/unit/`, `tests/integration/`, `tests/acceptance/`
-- [ ] T002 [P] Add feature constants for storage keys and status values in `src/services/payment_constants.js`
-- [ ] T003 [P] Add shared error types and result helpers in `src/services/payment_errors.js`
+- [X] T001 Create missing directories for MVC and tests in `src/models/`, `src/controllers/`, `src/services/`, `src/views/`, `tests/unit/`, `tests/integration/`, `tests/acceptance/`
+- [X] T002 [P] Add feature constants for storage keys and status values in `src/services/payment_constants.js`
+- [X] T003 [P] Add shared error types and result helpers in `src/services/payment_errors.js`
 
 ---
 
@@ -39,13 +39,13 @@ integration/acceptance tests mapped to AT-UC35-XX cases.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Implement localStorage + in-memory adapter in `src/services/storage_adapter.js`
-- [ ] T005 [P] Implement HMAC verification helper in `src/services/hmac.js`
-- [ ] T006 [P] Implement time/replay window helpers in `src/services/time_window.js`
-- [ ] T007 [P] Implement idempotency index access in `src/services/idempotency_store.js`
-- [ ] T008 Implement audit logging service with fallback path in `src/services/audit_logger.js`
-- [ ] T009 Implement retry queue persistence + retrieval for status updates in `src/services/retry_queue.js`
-- [ ] T010 Implement reconciliation queue for unmatched confirmations in `src/services/reconciliation_queue.js`
+- [X] T004 Implement localStorage + in-memory adapter in `src/services/storage_adapter.js`
+- [X] T005 [P] Implement HMAC verification helper in `src/services/hmac.js`
+- [X] T006 [P] Implement time/replay window helpers in `src/services/time_window.js`
+- [X] T007 [P] Implement idempotency index access in `src/services/idempotency_store.js`
+- [X] T008 Implement audit logging service with fallback path in `src/services/audit_logger.js`
+- [X] T009 Implement retry queue persistence + retrieval for status updates in `src/services/retry_queue.js`
+- [X] T010 Implement reconciliation queue for unmatched confirmations in `src/services/reconciliation_queue.js`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -59,23 +59,23 @@ integration/acceptance tests mapped to AT-UC35-XX cases.
 
 ### Tests for User Story 1 (REQUIRED) ⚠️
 
-- [ ] T011 [P] [US1] Acceptance test for AT-UC35-01 in `tests/acceptance/test_uc35_store_confirmation.js`
-- [ ] T012 [P] [US1] Acceptance test for AT-UC35-02 in `tests/acceptance/test_uc35_status_exposed.js`
-- [ ] T013 [P] [US1] Integration test for redirect confirmation flow in `tests/integration/test_payment_confirmation_redirect.js`
-- [ ] T014 [P] [US1] Integration test for webhook confirmation flow in `tests/integration/test_payment_confirmation_webhook.js`
-- [ ] T015 [P] [US1] Unit tests for confirmation validation + storage in `tests/unit/test_confirmation_service.js`
-- [ ] T016 [P] [US1] Unit tests for registration status update in `tests/unit/test_registration_order.js`
-- [ ] T017 [P] [US1] Unit tests for downstream trigger payload + failure logging in `tests/unit/test_downstream_trigger.js`
+- [X] T011 [P] [US1] Acceptance test for AT-UC35-01 in `tests/acceptance/test_uc35_store_confirmation.js`
+- [X] T012 [P] [US1] Acceptance test for AT-UC35-02 in `tests/acceptance/test_uc35_status_exposed.js`
+- [X] T013 [P] [US1] Integration test for redirect confirmation flow in `tests/integration/test_payment_confirmation_redirect.js`
+- [X] T014 [P] [US1] Integration test for webhook confirmation flow in `tests/integration/test_payment_confirmation_webhook.js`
+- [X] T015 [P] [US1] Unit tests for confirmation validation + storage in `tests/unit/test_confirmation_service.js`
+- [X] T016 [P] [US1] Unit tests for registration status update in `tests/unit/test_registration_order.js`
+- [X] T017 [P] [US1] Unit tests for downstream trigger payload + failure logging in `tests/unit/test_downstream_trigger.js`
 
 ### Implementation for User Story 1
 
-- [ ] T018 [P] [US1] Create PaymentConfirmation model in `src/models/payment_confirmation.js`
-- [ ] T019 [P] [US1] Create RegistrationOrder model with paid_at transition in `src/models/registration_order.js`
-- [ ] T020 [P] [US1] Create AuditLogEntry model in `src/models/audit_log_entry.js`
-- [ ] T021 [US1] Implement confirmation service (validate, store, status update) in `src/services/confirmation_service.js`
-- [ ] T022 [US1] Implement redirect controller handler in `src/controllers/payment_confirmation_redirect_controller.js`
-- [ ] T023 [US1] Implement webhook controller handler in `src/controllers/payment_confirmation_webhook_controller.js`
-- [ ] T024 [US1] Implement downstream trigger dispatch + failure audit logging in `src/services/downstream_trigger.js`
+- [X] T018 [P] [US1] Create PaymentConfirmation model in `src/models/payment_confirmation.js`
+- [X] T019 [P] [US1] Create RegistrationOrder model with paid_at transition in `src/models/registration_order.js`
+- [X] T020 [P] [US1] Create AuditLogEntry model in `src/models/audit_log_entry.js`
+- [X] T021 [US1] Implement confirmation service (validate, store, status update) in `src/services/confirmation_service.js`
+- [X] T022 [US1] Implement redirect controller handler in `src/controllers/payment_confirmation_redirect_controller.js`
+- [X] T023 [US1] Implement webhook controller handler in `src/controllers/payment_confirmation_webhook_controller.js`
+- [X] T024 [US1] Implement downstream trigger dispatch + failure audit logging in `src/services/downstream_trigger.js`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -89,19 +89,19 @@ integration/acceptance tests mapped to AT-UC35-XX cases.
 
 ### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T025 [P] [US2] Acceptance test for AT-UC35-03 in `tests/acceptance/test_uc35_reject_invalid.js`
-- [ ] T026 [P] [US2] Acceptance test for AT-UC35-04 in `tests/acceptance/test_uc35_idempotency.js`
-- [ ] T027 [P] [US2] Integration test for invalid confirmation rejection in `tests/integration/test_confirmation_reject_invalid.js`
-- [ ] T028 [P] [US2] Integration test for duplicate acknowledgement in `tests/integration/test_confirmation_duplicate.js`
-- [ ] T029 [P] [US2] Unit tests for idempotency store behavior in `tests/unit/test_idempotency_store.js`
+- [X] T025 [P] [US2] Acceptance test for AT-UC35-03 in `tests/acceptance/test_uc35_reject_invalid.js`
+- [X] T026 [P] [US2] Acceptance test for AT-UC35-04 in `tests/acceptance/test_uc35_idempotency.js`
+- [X] T027 [P] [US2] Integration test for invalid confirmation rejection in `tests/integration/test_confirmation_reject_invalid.js`
+- [X] T028 [P] [US2] Integration test for duplicate acknowledgement in `tests/integration/test_confirmation_duplicate.js`
+- [X] T029 [P] [US2] Unit tests for idempotency store behavior in `tests/unit/test_idempotency_store.js`
 
 ### Implementation for User Story 2
 
-- [ ] T030 [P] [US2] Create UnmatchedPayment model in `src/models/unmatched_payment.js`
-- [ ] T031 [US2] Enforce idempotency checks in `src/services/confirmation_service.js`
-- [ ] T032 [US2] Implement unmatched confirmation handling in `src/services/reconciliation_queue.js`
-- [ ] T033 [US2] Add validation failure response mapping in `src/controllers/payment_confirmation_redirect_controller.js`
-- [ ] T034 [US2] Add validation failure response mapping in `src/controllers/payment_confirmation_webhook_controller.js`
+- [X] T030 [P] [US2] Create UnmatchedPayment model in `src/models/unmatched_payment.js`
+- [X] T031 [US2] Enforce idempotency checks in `src/services/confirmation_service.js`
+- [X] T032 [US2] Implement unmatched confirmation handling in `src/services/reconciliation_queue.js`
+- [X] T033 [US2] Add validation failure response mapping in `src/controllers/payment_confirmation_redirect_controller.js`
+- [X] T034 [US2] Add validation failure response mapping in `src/controllers/payment_confirmation_webhook_controller.js`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -115,19 +115,19 @@ integration/acceptance tests mapped to AT-UC35-XX cases.
 
 ### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T035 [P] [US3] Acceptance test for AT-UC35-05 in `tests/acceptance/test_uc35_storage_failure.js`
-- [ ] T036 [P] [US3] Acceptance test for AT-UC35-06 in `tests/acceptance/test_uc35_status_retry.js`
-- [ ] T037 [P] [US3] Acceptance test for AT-UC35-07 in `tests/acceptance/test_uc35_audit_fallback.js`
-- [ ] T038 [P] [US3] Integration test for storage failure reconciliation in `tests/integration/test_storage_failure_reconcile.js`
-- [ ] T039 [P] [US3] Integration test for status update retry queue in `tests/integration/test_status_retry_queue.js`
-- [ ] T040 [P] [US3] Unit tests for audit fallback logging in `tests/unit/test_audit_logger_fallback.js`
+- [X] T035 [P] [US3] Acceptance test for AT-UC35-05 in `tests/acceptance/test_uc35_storage_failure.js`
+- [X] T036 [P] [US3] Acceptance test for AT-UC35-06 in `tests/acceptance/test_uc35_status_retry.js`
+- [X] T037 [P] [US3] Acceptance test for AT-UC35-07 in `tests/acceptance/test_uc35_audit_fallback.js`
+- [X] T038 [P] [US3] Integration test for storage failure reconciliation in `tests/integration/test_storage_failure_reconcile.js`
+- [X] T039 [P] [US3] Integration test for status update retry queue in `tests/integration/test_status_retry_queue.js`
+- [X] T040 [P] [US3] Unit tests for audit fallback logging in `tests/unit/test_audit_logger_fallback.js`
 
 ### Implementation for User Story 3
 
-- [ ] T041 [P] [US3] Create AuditFallbackEntry model in `src/models/audit_fallback_entry.js`
-- [ ] T042 [US3] Implement reconciliation queue persistence in `src/services/reconciliation_queue.js`
-- [ ] T043 [US3] Implement retry queue processing for status updates in `src/services/retry_queue.js`
-- [ ] T044 [US3] Implement audit fallback persistence + retrieval API in `src/services/audit_logger.js`
+- [X] T041 [P] [US3] Create AuditFallbackEntry model in `src/models/audit_fallback_entry.js`
+- [X] T042 [US3] Implement reconciliation queue persistence in `src/services/reconciliation_queue.js`
+- [X] T043 [US3] Implement retry queue processing for status updates in `src/services/retry_queue.js`
+- [X] T044 [US3] Implement audit fallback persistence + retrieval API in `src/services/audit_logger.js`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -137,9 +137,9 @@ integration/acceptance tests mapped to AT-UC35-XX cases.
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T045 [P] Add performance timing guardrails for confirmation processing in `src/services/perf_monitor.js`
-- [ ] T046 [P] Add performance validation test for SC-005 in `tests/integration/test_confirmation_performance.js`
-- [ ] T047 Update quickstart notes for confirmation ingestion and testing in `specs/035-store-payment-confirmation/quickstart.md`
+- [X] T045 [P] Add performance timing guardrails for confirmation processing in `src/services/perf_monitor.js`
+- [X] T046 [P] Add performance validation test for SC-005 in `tests/integration/test_confirmation_performance.js`
+- [X] T047 Update quickstart notes for confirmation ingestion and testing in `specs/035-store-payment-confirmation/quickstart.md`
 
 ---
 

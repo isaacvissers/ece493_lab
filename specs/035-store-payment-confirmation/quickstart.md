@@ -12,3 +12,5 @@ npm run lint
 ## Local usage notes
 - This feature stores data in browser localStorage with an in-memory cache.
 - Confirmations can be ingested via redirect or webhook-style handlers in the app.
+- Use the `X-Signature` header with an HMAC-SHA256 signature of the raw JSON body.
+- Transaction IDs are idempotent; sending the same transaction_id returns a duplicate acknowledgement.
