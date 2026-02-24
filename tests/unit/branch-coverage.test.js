@@ -86,10 +86,10 @@ import { createReviewSubmitController as createReviewSubmitControllerAlias } fro
 import { createReviewValidationController as createReviewValidationControllerAlias } from '../../src/controllers/reviewValidationController.js';
 import { createAuditLog as createAuditLogAlias } from '../../src/models/AuditLog.js';
 import { createDeliveryEvent as createDeliveryEventAlias } from '../../src/models/DeliveryEvent.js';
-import { createEditor as createEditorAlias } from '../../src/models/Editor.js';
-import { createNotification as createNotificationAlias } from '../../src/models/Notification.js';
-import { createPaper as createPaperAlias } from '../../src/models/Paper.js';
-import { createReview as createReviewAlias } from '../../src/models/Review.js';
+import { createEditor as createEditorAlias } from '../../src/models/editor.js';
+import { createNotification as createNotificationAlias } from '../../src/models/notification.js';
+import { createPaper as createPaperAlias } from '../../src/models/paper.js';
+import { createReview as createReviewAlias } from '../../src/models/review.js';
 import { createReviewDraft as createReviewDraftAlias } from '../../src/models/ReviewDraft.js';
 import { createReviewForm as createReviewFormAlias } from '../../src/models/ReviewForm.js';
 import { createValidationError as createValidationErrorAlias } from '../../src/models/ValidationError.js';

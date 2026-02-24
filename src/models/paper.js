@@ -53,3 +53,5 @@ export function isPaperAvailable(paper) {
   const normalized = `${paper.status}`.trim().toLowerCase();
   return ['available', 'submitted', 'eligible'].includes(normalized);
 }
+
+export const __paperModule = true;

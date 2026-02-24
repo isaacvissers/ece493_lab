@@ -13,10 +13,10 @@
 
 ## Phase 2: Foundational
 
-- [ ] T004 Implement Paper model with status and editor assignment in src/models/Paper.js
-- [ ] T005 Implement Review model with submitted status in src/models/Review.js
-- [ ] T006 Implement Decision model with finality guard in src/models/Decision.js
-- [ ] T007 Implement Notification model in src/models/Notification.js
+- [ ] T004 Implement Paper model with status and editor assignment in src/models/paper.js
+- [ ] T005 Implement Review model with submitted status in src/models/review.js
+- [ ] T006 Implement Decision model with finality guard in src/models/decision.js
+- [ ] T007 Implement Notification model in src/models/notification.js
 - [ ] T008 Implement AuditLog model in src/models/AuditLog.js
 - [X] T009 Implement decision eligibility service (exactly 3 reviews) in src/services/decisionEligibilityService.js
 - [X] T010 Implement decision persistence service (atomic save) in src/services/decisionService.js

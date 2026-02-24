@@ -10,20 +10,20 @@ import {
   createEditor,
   hasEditorPermission,
   __editorModule,
-} from '../../src/models/Editor.js';
+} from '../../src/models/editor.js';
 import {
   createNotification,
   __notificationModule,
-} from '../../src/models/Notification.js';
+} from '../../src/models/notification.js';
 import {
   createPaper,
   __paperModule,
-} from '../../src/models/Paper.js';
+} from '../../src/models/paper.js';
 import {
   createReview,
   isSubmittedReview,
   __reviewModule,
-} from '../../src/models/Review.js';
+} from '../../src/models/review.js';
 import {
   createReviewDraft,
   __reviewDraftModule,

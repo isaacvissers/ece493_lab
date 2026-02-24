@@ -23,3 +23,5 @@ export function createReview({
 export function isSubmittedReview(review) {
   return Boolean(review && review.status === 'submitted');
 }
+
+export const __reviewModule = true;

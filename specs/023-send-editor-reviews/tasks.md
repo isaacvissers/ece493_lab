@@ -13,11 +13,11 @@
 
 ## Phase 2: Foundational
 
-- [X] T004 Implement Review model with submitted state in src/models/Review.js
-- [X] T005 Implement Paper model with editor assignment in src/models/Paper.js
-- [X] T006 Implement Editor model with permissions in src/models/Editor.js
+- [X] T004 Implement Review model with submitted state in src/models/review.js
+- [X] T005 Implement Paper model with editor assignment in src/models/paper.js
+- [X] T006 Implement Editor model with permissions in src/models/editor.js
 - [X] T007 Implement DeliveryEvent model in src/models/DeliveryEvent.js
-- [X] T008 Implement Notification model with channels in src/models/Notification.js
+- [X] T008 Implement Notification model with channels in src/models/notification.js
 - [X] T009 Implement AuditLog model in src/models/AuditLog.js
 - [X] T010 Implement delivery service with idempotency checks in src/services/reviewDeliveryService.js
 - [X] T011 Implement notification service with dual-channel send in src/services/notificationService.js

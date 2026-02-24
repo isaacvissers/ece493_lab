@@ -34,3 +34,5 @@ export function createNotification({
     reason,
   };
 }
+
+export const __notificationModule = true;

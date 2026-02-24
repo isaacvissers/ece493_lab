@@ -27,10 +27,10 @@ import { createNotificationLogEntry } from '../../src/models/notification-log.js
 
 import '../../src/models/AuditLog.js';
 import '../../src/models/DeliveryEvent.js';
-import '../../src/models/Editor.js';
-import '../../src/models/Notification.js';
-import '../../src/models/Paper.js';
-import '../../src/models/Review.js';
+import '../../src/models/editor.js';
+import '../../src/models/notification.js';
+import '../../src/models/paper.js';
+import '../../src/models/review.js';
 import '../../src/models/ReviewDraft.js';
 import '../../src/models/ReviewForm.js';
 import '../../src/models/ValidationError.js';

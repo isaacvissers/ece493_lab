@@ -51,10 +51,10 @@ import { createReviewSubmitController as createReviewSubmitControllerAlias } fro
 import { createReviewValidationController as createReviewValidationControllerAlias } from '../../src/controllers/reviewValidationController.js';
 import { createAuditLog } from '../../src/models/AuditLog.js';
 import { createDeliveryEvent } from '../../src/models/DeliveryEvent.js';
-import { createEditor } from '../../src/models/Editor.js';
-import { createNotification } from '../../src/models/Notification.js';
-import { createPaper as createPaperAlias } from '../../src/models/Paper.js';
-import { createReview } from '../../src/models/Review.js';
+import { createEditor } from '../../src/models/editor.js';
+import { createNotification } from '../../src/models/notification.js';
+import { createPaper as createPaperAlias } from '../../src/models/paper.js';
+import { createReview } from '../../src/models/review.js';
 import { createReviewDraft } from '../../src/models/ReviewDraft.js';
 import { createReviewForm as createReviewFormAlias } from '../../src/models/ReviewForm.js';
 import { createValidationError } from '../../src/models/ValidationError.js';

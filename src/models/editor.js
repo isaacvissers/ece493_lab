@@ -15,3 +15,5 @@ export function hasEditorPermission(editor, permission) {
   }
   return editor.permissions.includes(permission);
 }
+
+export const __editorModule = true;

@@ -1,4 +1,4 @@
-import { createDecision } from '../../src/models/Decision.js';
+import { createDecision } from '../../src/models/decision.js';
 import { DECISION_VALUES, REQUIRED_REVIEW_COUNT } from '../../src/models/decisionConstants.js';
 import { createDecision as createDecisionImpl } from '../../src/models/decision.js';
 import { DECISION_VALUES as decisionValuesImpl } from '../../src/models/decision-constants.js';
